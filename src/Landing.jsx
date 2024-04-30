@@ -8,14 +8,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import LandingLogo from "./LandingLogo";
+import LandingNavBar from "./LandingNavBar";
 import { Button } from "./components/ui/button";
 import { FileCheck, GraduationCap, ShieldCheck, Users } from "lucide-react";
 
 function Landing() {
   return (
     <GridLayout>
-      <LandingLogo />
+      <LandingNavBar />
       <Separator className="col-span-12" />
 
       <div className="col-span-12 max-w-lg mx-auto text-center py-14">

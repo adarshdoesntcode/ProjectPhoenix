@@ -1,6 +1,6 @@
 import { Button } from "./components/ui/button";
 
-function LandingLogo() {
+function LandingNavBar() {
   return (
     <div className="col-span-12  self-center p-2 flex justify-between">
       <div className="flex items-center  gap-2">
@@ -17,4 +17,4 @@ function LandingLogo() {
   );
 }
 
-export default LandingLogo;
+export default LandingNavBar;
