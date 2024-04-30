@@ -10,31 +10,21 @@ import {
   CardTitle,
 } from "./components/ui/card";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-function StudentLogin() {
+function SupervisorLogin() {
   return (
     <GridLayout>
       <LandingNavBar />
-      {/* <Separator className="col-span-12" /> */}
-
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
         <h1 className="font-bold text-3xl tracking-tight leading-10">
-          Student Portal
+          Supervisor Portal
         </h1>
-        <p className="text-slate-500">Great ideas starts with you.</p>
+        <p className="text-slate-500">Guidance, Feedback, Progress.</p>
       </div>
 
       <Tabs
@@ -60,7 +50,7 @@ function StudentLogin() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="name.rollno@ncit.edu.np"
+                    placeholder="name@ncit.edu.np"
                     required
                   />
                 </div>
@@ -108,25 +98,10 @@ function StudentLogin() {
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Roll number</Label>
-                  <Input id="rollno" type="number" required />
+                  <Label htmlFor="email">Phone number</Label>
+                  <Input id="phoneno" type="number" required />
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Program</Label>
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="apple">BESE</SelectItem>
-                        <SelectItem value="banana">BECE</SelectItem>
-                        <SelectItem value="blueberry">BEIT</SelectItem>
-                        <SelectItem value="grapes">BCA</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
+
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -162,4 +137,4 @@ function StudentLogin() {
   );
 }
 
-export default StudentLogin;
+export default SupervisorLogin;

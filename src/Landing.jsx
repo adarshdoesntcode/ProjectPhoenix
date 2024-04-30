@@ -16,7 +16,7 @@ function Landing() {
   return (
     <GridLayout>
       <LandingNavBar />
-      <Separator className="col-span-12" />
+      {/* <Separator className="col-span-12" /> */}
 
       <div className="col-span-12 max-w-lg mx-auto text-center py-14">
         <h1 className="font-bold text-3xl tracking-tight leading-10">
@@ -26,7 +26,7 @@ function Landing() {
           A Complete Solution for College Projects.
         </p>
       </div>
-      <Card className="mt-8 col-span-12 w-[350px] max-w-xl mx-auto">
+      <Card className="mt-4 col-span-12 w-[350px] max-w-xl mx-auto">
         <CardHeader>
           <CardTitle>Welcome</CardTitle>
           <CardDescription>
@@ -49,8 +49,8 @@ function Landing() {
           </Button>
         </CardContent>
       </Card>
-      <div className="col-span-12 max-w-lg mx-auto text-center mt-14 text-slate-400 text-xs">
-        <p>Made by the students for the students of NCIT.</p>
+      <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
+        <p>Made by the students for the students.</p>
         <p></p>
       </div>
     </GridLayout>
