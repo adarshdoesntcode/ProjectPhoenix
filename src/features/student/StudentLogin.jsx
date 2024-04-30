@@ -1,5 +1,5 @@
-import GridLayout from "./GridLayout";
-import LandingNavBar from "./LandingNavBar";
+import GridLayout from "../../components/layouts/GridLayout";
+import LandingNavBar from "../home/LandingNavBar";
 import { Separator } from "@/components/ui/separator";
 
 import {
@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./components/ui/card";
+} from "../../components/ui/card";
 
 import {
   Select,
