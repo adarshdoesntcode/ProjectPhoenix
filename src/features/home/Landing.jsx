@@ -1,4 +1,3 @@
-import GridLayout from "../../components/layouts/GridLayout";
 import {
   Card,
   CardContent,
@@ -7,16 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import LandingNavBar from "./LandingNavBar";
 import { Button } from "../../components/ui/button";
 import { FileCheck, GraduationCap, ShieldCheck, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Landing() {
   return (
-    <GridLayout>
-      <LandingNavBar />
-      {/* <Separator className="col-span-12" /> */}
-
+    <>
       <div className="col-span-12 max-w-lg mx-auto text-center pt-12 pb-10">
         <img
           src="phoenix-logo.png"
@@ -39,26 +35,38 @@ function Landing() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button className="w-full mt-0" variant="secondary">
-            <GraduationCap className="mr-2 h-4 w-4" /> Student
-          </Button>
-          <Button className="w-full mt-4" variant="secondary">
-            <Users className="mr-2 h-4 w-4" /> Supervisor
-          </Button>
-          <Button className="w-full mt-4 " variant="secondary">
-            <FileCheck className="mr-2 h-4 w-4" /> Defense
-          </Button>
-          <Button className="w-full mt-4" variant="secondary">
-            <ShieldCheck className="mr-2 h-4 w-4" />
-            Administrator
-          </Button>
+          <Link to={"student/login"}>
+            <Button className="w-full mt-0" variant="secondary">
+              <GraduationCap className="mr-2 h-4 w-4" /> Student
+            </Button>
+          </Link>
+
+          <Link to={"supervisor/login"}>
+            <Button className="w-full mt-4" variant="secondary">
+              <Users className="mr-2 h-4 w-4" /> Supervisor
+            </Button>
+          </Link>
+
+          <Link to={"defense/login"}>
+            <Button className="w-full mt-4 " variant="secondary">
+              <FileCheck className="mr-2 h-4 w-4" /> Defense
+            </Button>
+          </Link>
+
+          <Link to={"admin/login"}>
+            <Button className="w-full mt-4" variant="secondary">
+              <ShieldCheck className="mr-2 h-4 w-4" />
+              Administrator
+            </Button>
+          </Link>
         </CardContent>
       </Card>
+
       <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
         <p>Made by the students for the students.</p>
         <p></p>
       </div>
-    </GridLayout>
+    </>
   );
 }
 

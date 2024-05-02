@@ -1,6 +1,3 @@
-import GridLayout from "../../components/layouts/GridLayout";
-import LandingNavBar from "../home/LandingNavBar";
-
 import {
   Card,
   CardContent,
@@ -20,9 +17,7 @@ import {
 
 function DefenseLogin() {
   return (
-    <GridLayout>
-      <LandingNavBar />
-
+    <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
         <h1 className="font-bold text-3xl tracking-tight leading-10">
           Defense Portal
@@ -34,12 +29,8 @@ function DefenseLogin() {
         <CardHeader>
           <CardTitle className="text-lg">Login with Access Code</CardTitle>
           <CardDescription>
-            <ul>
-              <li>
-                The defense portal is accessible with your access code only on
-                the specified date and time.
-              </li>
-            </ul>
+            The defense portal is accessible with your access code only on the
+            specified date and time.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,7 +65,7 @@ function DefenseLogin() {
       <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
         <p>Made by the students for the students.</p>
       </div>
-    </GridLayout>
+    </>
   );
 }
 

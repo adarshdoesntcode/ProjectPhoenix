@@ -1,6 +1,4 @@
 import { Label } from "@radix-ui/react-label";
-import GridLayout from "../../components/layouts/GridLayout";
-import LandingNavBar from "../home/LandingNavBar";
 import {
   Card,
   CardContent,
@@ -10,12 +8,10 @@ import {
 } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-import { Separator } from "../../components/ui/separator";
 
 function AdminLogin() {
   return (
-    <GridLayout>
-      <LandingNavBar />
+    <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
         <h1 className="font-bold text-3xl tracking-tight leading-10">
           Administrator Portal
@@ -54,7 +50,16 @@ function AdminLogin() {
               Login
             </Button>
 
-            <Separator className="my-2 w-full" />
+            <div className="relative my-1">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t"></span>
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-slate-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
 
             <Button className="w-full">Login with Google</Button>
             <div className="  mx-auto text-center  text-slate-400 text-xs">
@@ -67,7 +72,7 @@ function AdminLogin() {
       <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
         <p>Made by the students for the students.</p>
       </div>
-    </GridLayout>
+    </>
   );
 }
 

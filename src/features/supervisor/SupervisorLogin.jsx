@@ -1,7 +1,3 @@
-import GridLayout from "../../components/layouts/GridLayout";
-import LandingNavBar from "../home/LandingNavBar";
-import { Separator } from "@/components/ui/separator";
-
 import {
   Card,
   CardContent,
@@ -18,8 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function SupervisorLogin() {
   return (
-    <GridLayout>
-      <LandingNavBar />
+    <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
         <h1 className="font-bold text-3xl tracking-tight leading-10">
           Supervisor Portal
@@ -67,7 +62,16 @@ function SupervisorLogin() {
                   Login
                 </Button>
 
-                <Separator className="my-2 w-full" />
+                <div className="relative my-1">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t"></span>
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-slate-400">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
 
                 <Button className="w-full">Login with Google</Button>
                 <div className="  mx-auto text-center  text-slate-400 text-xs">
@@ -118,7 +122,16 @@ function SupervisorLogin() {
                 <Button type="submit" variant="secondary" className="w-full">
                   Create an account
                 </Button>
-                <Separator className="my-2 w-full" />
+                <div className="relative my-1">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t"></span>
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-slate-400">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
 
                 <Button className="w-full">Sign Up with Google</Button>
                 <div className="  mx-auto text-center  text-slate-400 text-xs">
@@ -133,7 +146,7 @@ function SupervisorLogin() {
       <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
         <p>Made by the students for the students.</p>
       </div>
-    </GridLayout>
+    </>
   );
 }
 
