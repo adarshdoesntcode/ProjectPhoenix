@@ -9,6 +9,7 @@ import {
 import { Button } from "../../components/ui/button";
 import { FileCheck, GraduationCap, ShieldCheck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ROLES_LIST } from "@/config/roleList";
 
 function Landing() {
   return (
@@ -53,7 +54,7 @@ function Landing() {
             </Button>
           </Link>
 
-          <Link to={"admin/login"}>
+          <Link to={`${ROLES_LIST.admin}/login`}>
             <Button className="w-full mt-4" variant="secondary">
               <ShieldCheck className="mr-2 h-4 w-4" />
               Administrator

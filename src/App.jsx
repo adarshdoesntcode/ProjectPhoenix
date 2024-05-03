@@ -5,6 +5,8 @@ import PublicRoutes from "./routes/PublicRoutes";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { ROLES_LIST } from "./config/roleList";
+import AdminDashboard from "./features/admin/AdminDashboard";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +15,11 @@ const router = createBrowserRouter([
   },
 
   {
-    element: <ProtectedRoute />,
+    element: <ProtectedRoute allowedRole={ROLES_LIST.admin} />,
     children: [
       {
-        path: "admin/dashboard",
-        element: <div>Admin ko kando</div>,
+        path: `${ROLES_LIST.admin}/dashboard`,
+        element: <AdminDashboard />,
       },
     ],
   },

@@ -1,6 +1,6 @@
-const ROLES_LIST = {
-  Admin: 5150,
-  Supervisor: 1984,
-  Student: 2001,
-  Defense: 4334,
+export const ROLES_LIST = {
+  admin: 5150,
+  supervisor: 1984,
+  student: 2001,
+  defense: 4334,
 };

@@ -17,6 +17,8 @@ import { setCredentials } from "../auth/authSlice";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
+import { ROLES_LIST } from "@/config/roleList";
+
 function AdminLogin() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,15 +32,21 @@ function AdminLogin() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const from = location.state?.from?.pathname || "/admin/dashboard";
+  const from =
+    location.state?.from?.pathname || `/${ROLES_LIST.admin}/dashboard`;
 
   const onSubmit = async ({ email, password }) => {
     try {
-      const userData = await login({ user: email, pwd: password });
+      const userData = await login({
+        email,
+        password,
+      });
+      console.log(userData);
       dispatch(setCredentials({ ...userData }));
       reset();
       navigate(from, { replace: true });
     } catch (err) {
+      console.log(err);
       toast({
         variant: "destructive",
         title: "Login Failed",
@@ -47,6 +55,7 @@ function AdminLogin() {
       });
     }
   };
+
   return (
     <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">

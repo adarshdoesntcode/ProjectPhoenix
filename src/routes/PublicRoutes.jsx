@@ -1,8 +1,10 @@
+import { ROLES_LIST } from "@/config/roleList";
 import AdminLogin from "@/features/admin/AdminLogin";
 import DefenseLogin from "@/features/defense/DefenseLogin";
 import Landing from "@/features/home/Landing";
 import StudentLogin from "@/features/student/StudentLogin";
 import SupervisorLogin from "@/features/supervisor/SupervisorLogin";
+import Unauthorized from "./Unauthorized";
 
 const PublicRoutes = [
   {
@@ -11,7 +13,7 @@ const PublicRoutes = [
     element: <Landing />,
   },
   {
-    path: "admin/login",
+    path: `${ROLES_LIST.admin}/login`,
     element: <AdminLogin />,
   },
   {
@@ -25,6 +27,10 @@ const PublicRoutes = [
   {
     path: "supervisor/login",
     element: <SupervisorLogin />,
+  },
+  {
+    path: "unauthorized",
+    element: <Unauthorized />,
   },
 ];
 
