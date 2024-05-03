@@ -64,7 +64,6 @@ function Landing() {
 
       <div className="col-span-12 max-w-lg mx-auto text-center my-14 text-slate-400 text-xs">
         <p>Made by the students for the students.</p>
-        <p></p>
       </div>
     </>
   );

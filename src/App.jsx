@@ -1,40 +1,32 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import AdminLogin from "./features/admin/AdminLogin";
-import DefenseLogin from "./features/defense/DefenseLogin";
-import Landing from "./features/home/Landing";
-import StudentLogin from "./features/student/StudentLogin";
-import SupervisorLogin from "./features/supervisor/SupervisorLogin";
+
 import PublicAppLayout from "./components/layouts/PublicAppLayout";
+import PublicRoutes from "./routes/PublicRoutes";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const router = createBrowserRouter([
   {
     element: <PublicAppLayout />,
+    children: PublicRoutes,
+  },
+
+  {
+    element: <ProtectedRoute />,
     children: [
       {
-        path: "/",
-        index: true,
-        element: <Landing />,
-      },
-      {
-        path: "admin/login",
-        element: <AdminLogin />,
-      },
-      {
-        path: "student/login",
-        element: <StudentLogin />,
-      },
-      {
-        path: "defense/login",
-        element: <DefenseLogin />,
-      },
-      {
-        path: "supervisor/login",
-        element: <SupervisorLogin />,
+        path: "admin/dashboard",
+        element: <div>Admin ko kando</div>,
       },
     ],
   },
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />;
+    </Provider>
+  );
 }
