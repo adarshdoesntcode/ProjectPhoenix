@@ -41,12 +41,10 @@ function AdminLogin() {
         email,
         password,
       });
-      console.log(userData);
       dispatch(setCredentials({ ...userData }));
       reset();
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
       toast({
         variant: "destructive",
         title: "Login Failed",

@@ -20,9 +20,10 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     const refreshResult = await baseQuery("/refresh", api, extraOptions);
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
-      console.log({ ...refreshResult.data, user });
-      api.dispatch(setCredentials({ ...refreshResult.data, user }));
+      const token = api.getState().auth.token;
+      await api.dispatch(setCredentials({ ...refreshResult, user, token }));
       result = await baseQuery(args, api, extraOptions);
+      console.log(result);
     } else {
       api.dispatch(logOut());
     }
@@ -40,23 +41,7 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
-    refresh: builder.query({
-      query: () => ({
-        url: "/refresh",
-        method: "GET",
-      }),
-
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        queryFulfilled
-          .then((result) => {
-            dispatch(setCredentials({ ...result }));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      },
-    }),
   }),
 });
 
-export const { useRefreshQuery, useGetUsersQuery } = apiSlice;
+export const { useGetUsersQuery } = apiSlice;
