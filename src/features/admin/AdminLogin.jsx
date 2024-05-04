@@ -40,6 +40,7 @@ function AdminLogin() {
       const userData = await login({
         email,
         password,
+        role: ROLES_LIST.admin,
       });
       dispatch(setCredentials({ ...userData }));
       reset();
@@ -48,7 +49,7 @@ function AdminLogin() {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "Something went wrong",
+        description: "Use correct credentials",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }

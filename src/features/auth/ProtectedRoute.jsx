@@ -4,6 +4,7 @@ import { selectCurrentToken, selectCurrentUser } from "./authSlice";
 import { useEffect, useState } from "react";
 import useRefreshToken from "@/hooks/useRefreshToken";
 import { toast } from "@/components/ui/use-toast";
+import PersistLoader from "@/components/ui/PersistLoader";
 
 const ProtectedRoute = ({ allowedRole }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,7 @@ const ProtectedRoute = ({ allowedRole }) => {
   }, [isLoading, refresh, token, user]);
 
   return isLoading ? (
-    <p>Loading...</p>
+    <PersistLoader />
   ) : user?.roles?.find((role) => allowedRole === role) ? (
     <Outlet />
   ) : token ? (

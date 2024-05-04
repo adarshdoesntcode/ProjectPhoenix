@@ -19,8 +19,51 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../auth/authApiSlice";
+import { useDispatch } from "react-redux";
+import { useToast } from "@/components/ui/use-toast";
+import { useForm } from "react-hook-form";
+import { ROLES_LIST } from "@/config/roleList";
+import { Loader2 } from "lucide-react";
+import { setCredentials } from "../auth/authSlice";
+import { ToastAction } from "@radix-ui/react-toast";
 
 function StudentLogin() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const from =
+    location.state?.from?.pathname || `/${ROLES_LIST.student}/dashboard`;
+
+  const onSubmit = async ({ email, password }) => {
+    try {
+      const userData = await login({
+        email,
+        password,
+        role: ROLES_LIST.student,
+      });
+      dispatch(setCredentials({ ...userData }));
+      reset();
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: "Use correct credentials",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+  };
   return (
     <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
@@ -48,27 +91,70 @@ function StudentLogin() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name.rollno@ncit.edu.np"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a className="ml-auto font-normal leading-none inline-block py-0 text-sm underline">
-                      Forgot your password?
-                    </a>
+                <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="email">
+                      {errors.email ? (
+                        <span className="text-red-500">
+                          {errors.email.message}
+                        </span>
+                      ) : (
+                        <span>Email</span>
+                      )}
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="name@ncit.edu.np"
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[a-zA-Z]+@ncit.edu.np$/,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      className={errors.email ? "border-red-500" : ""}
+                    />
                   </div>
-                  <Input id="password" type="password" required />
-                </div>
-                <Button variant="secondary" type="submit" className="w-full">
-                  Login
-                </Button>
+                  <div className="grid gap-2">
+                    <div className="flex items-center">
+                      <Label htmlFor="password">
+                        {errors.password ? (
+                          <span className="text-red-500">
+                            {errors.password.message}
+                          </span>
+                        ) : (
+                          <span>Password</span>
+                        )}
+                      </Label>
+                      <a className="ml-auto font-normal leading-none inline-block py-0 text-sm underline">
+                        Forgot your password?
+                      </a>
+                    </div>
+                    <Input
+                      id="password"
+                      type="password"
+                      {...register("password", {
+                        required: "Password is required",
+                      })}
+                      className={errors.password ? "border-red-500" : ""}
+                    />
+                  </div>
+                  {isSubmitting || isLoading ? (
+                    <Button variant="secondary" disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging In
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      type="submit"
+                      className="w-full"
+                    >
+                      Login
+                    </Button>
+                  )}
+                </form>
 
                 <div className="relative my-1">
                   <div className="absolute inset-0 flex items-center">
