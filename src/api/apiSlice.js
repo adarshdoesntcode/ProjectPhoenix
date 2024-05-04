@@ -23,7 +23,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       const token = api.getState().auth.token;
       await api.dispatch(setCredentials({ ...refreshResult, user, token }));
       result = await baseQuery(args, api, extraOptions);
-      console.log(result);
     } else {
       api.dispatch(logOut());
     }
