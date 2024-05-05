@@ -1,10 +1,10 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentToken, selectCurrentUser } from "./authSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useRefreshToken from "@/hooks/useRefreshToken";
 import { toast } from "@/components/ui/use-toast";
-import PersistLoader from "@/components/ui/PersistLoader";
+import PersistLoader from "@/components/PersistLoader";
 
 const ProtectedRoute = ({ allowedRole }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,8 +13,13 @@ const ProtectedRoute = ({ allowedRole }) => {
   const token = useSelector(selectCurrentToken);
   const location = useLocation();
 
+  const isAllowedRole = useMemo(() => {
+    return user?.roles?.includes(allowedRole);
+  }, [user, allowedRole]);
+
   useEffect(() => {
     let isMounted = true;
+
     const verifyRefreshToken = async () => {
       try {
         await refresh();
@@ -25,22 +30,36 @@ const ProtectedRoute = ({ allowedRole }) => {
           description: err.message,
         });
       } finally {
-        isMounted && setIsLoading(false);
+        if (isMounted && user && token) {
+          setIsLoading(false);
+        }
       }
     };
 
-    !user && !token ? verifyRefreshToken() : setIsLoading(false);
+    if (!user && !token) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
 
-    return () => (isMounted = false);
-  }, [isLoading, refresh, token, user]);
+    return () => {
+      isMounted = false;
+    };
+  }, [refresh, token, user]);
 
-  return isLoading ? (
-    <PersistLoader />
-  ) : user?.roles?.find((role) => allowedRole === role) ? (
-    <Outlet />
-  ) : token ? (
-    <Navigate to="/unauthorized" state={{ from: location }} replace />
-  ) : (
+  if (isLoading) {
+    return <PersistLoader />;
+  }
+
+  if (isAllowedRole) {
+    return <Outlet />;
+  }
+
+  if (token) {
+    return <Navigate to="/unauthorized" state={{ from: location }} replace />;
+  }
+
+  return (
     <Navigate to={`${allowedRole}/login`} state={{ from: location }} replace />
   );
 };

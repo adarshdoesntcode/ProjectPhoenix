@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { ROLES_LIST } from "./config/roleList";
 import AdminDashboard from "./features/admin/AdminDashboard";
-import NotFound from "./components/ui/NotFound";
+import NotFound from "./components/NotFound";
 import AdminLayout from "./components/layouts/AdminLayout";
 import AdminRoutes from "./routes/AdminRoutes";
 

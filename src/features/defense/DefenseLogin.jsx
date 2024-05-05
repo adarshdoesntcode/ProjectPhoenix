@@ -25,7 +25,7 @@ function DefenseLogin() {
         <p className="text-slate-500">Assessment and Evaluation</p>
       </div>
 
-      <Card className="w-[400px] mt-4 col-span-12  max-w-xl mx-auto">
+      <Card className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto">
         <CardHeader>
           <CardTitle className="text-lg">Login with Access Code</CardTitle>
           <CardDescription>

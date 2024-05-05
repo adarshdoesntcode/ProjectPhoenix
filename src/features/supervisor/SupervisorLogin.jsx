@@ -67,7 +67,7 @@ function SupervisorLogin() {
 
       <Tabs
         defaultValue="login"
-        className="w-[400px] mt-4 col-span-12  max-w-xl mx-auto"
+        className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto"
       >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>

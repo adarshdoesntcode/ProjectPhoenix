@@ -22,12 +22,6 @@ function Landing() {
   return (
     <>
       <div className="col-span-12 max-w-lg mx-auto text-center pt-12 pb-10">
-        {/* <img
-          src="phoenix-logo.png"
-          className="w-14 mx-auto"
-          alt="Phoenix Logo"
-        /> */}
-        {/* <Origami className="w-14 h-14 mx-auto" /> */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="60"
@@ -45,7 +39,7 @@ function Landing() {
           <path d="m12.214 3.381 8.414 14.966a1 1 0 0 1-.167 1.199l-1.168 1.163a1 1 0 0 1-.706.291H6.351a1 1 0 0 1-.625-.219L3.25 18.8a1 1 0 0 1 .631-1.781l4.165.027" />
         </svg>
 
-        <h1 className="font-bold text-3xl pt-2 tracking-tight leading-10">
+        <h1 className="font-bold text-2xl lg:text-3xl pt-2 tracking-tight leading-10">
           New Proposal, Whole Notion
         </h1>
         <p className="text-slate-500">

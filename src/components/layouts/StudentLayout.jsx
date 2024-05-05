@@ -8,14 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
 import { Input } from "@/components/ui/input";
 
@@ -26,31 +18,15 @@ import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
 import useLogout from "@/hooks/useLogout";
 import { Outlet } from "react-router-dom";
 
-function AdminLayout() {
+function StudentLayout() {
   const logout = useLogout();
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <AdminSideBar />
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4  bg-slate-50 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <AdminMobileSideBar />
-          <Breadcrumb className="mr-20 hidden lg:block">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
           <div className="w-full flex-1">
             <form>
               <div className="relative">
@@ -90,4 +66,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout;
+export default StudentLayout;

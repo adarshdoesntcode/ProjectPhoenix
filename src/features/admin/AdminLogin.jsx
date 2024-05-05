@@ -63,7 +63,7 @@ function AdminLogin() {
         <p className="text-slate-500">Management, Control, Precision.</p>
       </div>
 
-      <Card className="mt-4 col-span-12 w-[400px] max-w-xl mx-auto">
+      <Card className="mt-4 col-span-12 w-[350px] lg:w-[400px] max-w-xl mx-auto">
         <CardHeader>
           <CardTitle className="text-xl">Login</CardTitle>
           <CardDescription>
