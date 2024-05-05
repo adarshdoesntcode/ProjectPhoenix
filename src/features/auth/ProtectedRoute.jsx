@@ -21,7 +21,7 @@ const ProtectedRoute = ({ allowedRole }) => {
       } catch (err) {
         toast({
           variant: "destructive",
-          title: "Your Token Expired",
+          title: err.response.status === 401 ? "Unauthorized" : "Token Expired",
           description: err.message,
         });
       } finally {
@@ -29,7 +29,7 @@ const ProtectedRoute = ({ allowedRole }) => {
       }
     };
 
-    !user || !token ? verifyRefreshToken() : setIsLoading(false);
+    !user && !token ? verifyRefreshToken() : setIsLoading(false);
 
     return () => (isMounted = false);
   }, [isLoading, refresh, token, user]);

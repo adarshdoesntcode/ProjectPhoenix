@@ -32,8 +32,7 @@ function AdminLogin() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const from =
-    location.state?.from?.pathname || `/${ROLES_LIST.admin}/dashboard`;
+  const from = location.state?.from?.pathname || `/${ROLES_LIST.admin}`;
 
   const onSubmit = async ({ email, password }) => {
     try {
