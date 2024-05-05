@@ -34,7 +34,7 @@ function AdminMobileSideBar() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="flex flex-col">
-        <nav className="grid gap-2 text-lg font-medium">
+        <nav className="grid gap-2 text-slate-600 text-lg font-medium">
           <div className="hidden lg:flex items-center gap-2 text-base font-semibold ">
             <Origami className="h-6 w-6" />
             <span>. / Project Phoenix / Admin</span>
