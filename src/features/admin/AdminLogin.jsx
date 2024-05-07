@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../auth/authSlice";
-import { ToastAction } from "@/components/ui/toast";
+
 import { useToast } from "@/components/ui/use-toast";
 
 import { ROLES_LIST } from "@/config/roleList";
@@ -45,12 +45,10 @@ function AdminLogin() {
       reset();
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
       toast({
         variant: "destructive",
         title: "Login Failed",
         description: "Use correct credentials",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };

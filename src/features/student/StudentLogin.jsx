@@ -35,8 +35,7 @@ function StudentLogin() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const from =
-    location.state?.from?.pathname || `/${ROLES_LIST.student}/dashboard`;
+  const from = location.state?.from?.pathname || `/${ROLES_LIST.student}`;
 
   const onLogin = async ({ email, password }) => {
     try {
@@ -68,9 +67,9 @@ function StudentLogin() {
 
       <Tabs
         defaultValue="login"
-        value={searchParams.get("mode")}
+        value={searchParams.get("tab")}
         onValueChange={(value) => {
-          navigate(`/${ROLES_LIST.student}/login?mode=${value}`);
+          navigate(`/${ROLES_LIST.student}/login?tab=${value}`);
         }}
         className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto"
       >

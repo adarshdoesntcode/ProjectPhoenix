@@ -12,18 +12,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLoginMutation } from "../auth/authApiSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { ROLES_LIST } from "@/config/roleList";
 import { setCredentials } from "../auth/authSlice";
-import { ToastAction } from "@radix-ui/react-toast";
 import { Loader2 } from "lucide-react";
+import SupervisorSignup from "./SupervisorSignup";
 
 function SupervisorLogin() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -34,8 +35,7 @@ function SupervisorLogin() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const from =
-    location.state?.from?.pathname || `/${ROLES_LIST.supervisor}/dashboard`;
+  const from = location.state?.from?.pathname || `/${ROLES_LIST.supervisor}`;
 
   const onSubmit = async ({ email, password }) => {
     try {
@@ -52,7 +52,6 @@ function SupervisorLogin() {
         variant: "destructive",
         title: "Login Failed",
         description: "Use correct credentials",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };
@@ -67,6 +66,10 @@ function SupervisorLogin() {
 
       <Tabs
         defaultValue="login"
+        value={searchParams.get("tab")}
+        onValueChange={(value) => {
+          navigate(`/${ROLES_LIST.supervisor}/login?tab=${value}`);
+        }}
         className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto"
       >
         <TabsList className="grid w-full grid-cols-2">
@@ -176,54 +179,7 @@ function SupervisorLogin() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="first-name">First name</Label>
-                    <Input id="first-name" required />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="last-name">Last name</Label>
-                    <Input id="last-name" required />
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Phone number</Label>
-                  <Input id="phoneno" type="number" required />
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name.rollno@ncit.edu.np"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
-                </div>
-                <Button type="submit" variant="secondary" className="w-full">
-                  Create an account
-                </Button>
-                <div className="relative my-1">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t"></span>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-slate-400">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                <Button className="w-full">Sign Up with Google</Button>
-                <div className="  mx-auto text-center  text-slate-400 text-xs">
-                  <p>Use the Google Account provided by the college.</p>
-                </div>
-              </div>
+              <SupervisorSignup />
             </CardContent>
           </Card>
         </TabsContent>

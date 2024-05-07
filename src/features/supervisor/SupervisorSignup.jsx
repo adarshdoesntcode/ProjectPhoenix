@@ -1,29 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
-import { ROLES_LIST } from "@/config/roleList";
-import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../auth/authApiSlice";
+import { ROLES_LIST } from "@/config/roleList";
+import { toast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
-function StudentSignup() {
+function SupervisorSignup() {
   const navigate = useNavigate();
   const [signup, { isLoading }] = useSignupMutation();
   const {
     handleSubmit,
     register,
     reset,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -33,9 +24,8 @@ function StudentSignup() {
         name: data.name,
         email: data.email,
         password: data.password,
-        roles: [ROLES_LIST.student],
+        roles: [ROLES_LIST.supervisor],
         phone: data.phone,
-        // program: data.program,
       });
       if (res.error) {
         if (res.error.originalStatus === 409) {
@@ -48,7 +38,7 @@ function StudentSignup() {
           title: "Account created successfully!",
           description: "You can now login.",
         });
-        navigate(`/${ROLES_LIST.student}/login?tab=login`);
+        navigate(`/${ROLES_LIST.supervisor}/login?mode=login`);
       }
     } catch (error) {
       toast({
@@ -58,7 +48,6 @@ function StudentSignup() {
       });
     }
   };
-
   return (
     <div className="grid gap-4">
       <form onSubmit={handleSubmit(onSignup)} className="grid gap-4">
@@ -93,17 +82,18 @@ function StudentSignup() {
           <Input
             id="email"
             type="email"
-            placeholder="name.rollno@ncit.edu.np"
+            placeholder="name@ncit.edu.np"
             {...register("email", {
               required: "Email is required",
               pattern: {
-                value: /^[a-zA-Z0-9._%+-]+\.(\d{6})@ncit\.edu\.np$/,
+                value: /^[a-zA-Z]+@ncit.edu.np$/,
                 message: "Invalid email address",
               },
             })}
             className={errors.email ? "border-red-500" : ""}
           />
         </div>
+
         <div className="grid gap-2">
           <Label htmlFor="phone">
             {errors.phone ? (
@@ -124,26 +114,6 @@ function StudentSignup() {
             })}
             className={errors.phone ? "border-red-500" : ""}
           />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="program">Program</Label>
-          <Select
-            onValueChange={(value) => setValue("program", value)}
-            required
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="SE">Software Engineering</SelectItem>
-                <SelectItem value="CE">Computer Engineering</SelectItem>
-                <SelectItem value="ELX">Electrical Engineering</SelectItem>
-                <SelectItem value="IT">Information Technology</SelectItem>
-                <SelectItem value="CA">Computer Application</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
         </div>
 
         <div className="grid gap-2">
@@ -201,4 +171,4 @@ function StudentSignup() {
   );
 }
 
-export default StudentSignup;
+export default SupervisorSignup;
