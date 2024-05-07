@@ -22,7 +22,7 @@ function PublicAppLayout() {
         </Link>
         <div>
           <Button variant="link">About</Button>
-          <Button variant="link">Contact</Button>
+          <Button variant="link">Support</Button>
         </div>
       </div>
       <Outlet />

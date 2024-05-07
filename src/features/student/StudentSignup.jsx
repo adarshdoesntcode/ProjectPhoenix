@@ -14,9 +14,11 @@ import { ROLES_LIST } from "@/config/roleList";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useSignupMutation } from "../auth/authApiSlice";
 
 function StudentSignup() {
   const navigate = useNavigate();
+  const [signup, { isLoading }] = useSignupMutation();
   const {
     handleSubmit,
     register,
@@ -26,11 +28,35 @@ function StudentSignup() {
   } = useForm();
 
   const onSignup = async (data) => {
-    reset();
-    toast({
-      description: "Your Account has been created",
-    });
-    navigate(`/${ROLES_LIST.student}/login`);
+    try {
+      const res = await signup({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        roles: [ROLES_LIST.student],
+        phone: data.phone,
+        // program: data.program,
+      });
+      if (res.error) {
+        if (res.error.originalStatus === 409) {
+          throw new Error("Conflict error occurred");
+        }
+      }
+      if (!res.error) {
+        reset();
+        toast({
+          title: "Account created successfully!",
+          description: "You can now login.",
+        });
+        navigate(`/${ROLES_LIST.student}/login?mode=login`);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh Oh !!",
+        description: "Account with this email already exists.",
+      });
+    }
   };
 
   return (
@@ -49,7 +75,7 @@ function StudentSignup() {
             {...register("name", {
               required: "Full name is required",
               pattern: {
-                value: /^[a-zA-Z]+$/,
+                value: /^[a-z ,.'-]+$/i,
                 message: "Invalid name",
               },
             })}
@@ -137,7 +163,7 @@ function StudentSignup() {
             className={errors.password ? "border-red-500" : ""}
           />
         </div>
-        {isSubmitting ? (
+        {isSubmitting || isLoading ? (
           <Button variant="secondary" disabled>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Creating Acount

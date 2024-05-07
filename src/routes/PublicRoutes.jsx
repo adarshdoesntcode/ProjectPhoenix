@@ -28,10 +28,6 @@ const PublicRoutes = [
     path: `${ROLES_LIST.supervisor}/login`,
     element: <SupervisorLogin />,
   },
-  {
-    path: "unauthorized",
-    element: <Unauthorized />,
-  },
 ];
 
 export default PublicRoutes;

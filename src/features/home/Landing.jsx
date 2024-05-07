@@ -39,7 +39,7 @@ function Landing() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Link to={`${ROLES_LIST.student}/login`}>
+          <Link to={`${ROLES_LIST.student}/login?mode=login`}>
             <Button className="w-full mt-0" variant="secondary">
               <GraduationCap className="mr-2 h-4 w-4" /> Student
             </Button>

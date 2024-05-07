@@ -10,6 +10,7 @@ import AdminDashboard from "./features/admin/AdminDashboard";
 import NotFound from "./components/NotFound";
 import AdminLayout from "./components/layouts/AdminLayout";
 import AdminRoutes from "./routes/AdminRoutes";
+import Unauthorized from "./components/Unauthorized";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         element: <AdminDashboard />,
       },
     ],
+  },
+  {
+    path: "unauthorized",
+    element: <Unauthorized />,
   },
   {
     path: "*",

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,11 +19,11 @@ import { useForm } from "react-hook-form";
 import { ROLES_LIST } from "@/config/roleList";
 import { Loader2 } from "lucide-react";
 import { setCredentials } from "../auth/authSlice";
-import { ToastAction } from "@radix-ui/react-toast";
 import StudentSignup from "./StudentSignup";
 
 function StudentLogin() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
@@ -53,7 +53,6 @@ function StudentLogin() {
         variant: "destructive",
         title: "Login Failed",
         description: "Use correct credentials",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };
@@ -69,6 +68,10 @@ function StudentLogin() {
 
       <Tabs
         defaultValue="login"
+        value={searchParams.get("mode")}
+        onValueChange={(value) => {
+          navigate(`/${ROLES_LIST.student}/login?mode=${value}`);
+        }}
         className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto"
       >
         <TabsList className="grid w-full grid-cols-2">
