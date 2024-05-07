@@ -6,14 +6,6 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
@@ -28,6 +20,7 @@ import { ROLES_LIST } from "@/config/roleList";
 import { Loader2 } from "lucide-react";
 import { setCredentials } from "../auth/authSlice";
 import { ToastAction } from "@radix-ui/react-toast";
+import StudentSignup from "./StudentSignup";
 
 function StudentLogin() {
   const navigate = useNavigate();
@@ -45,7 +38,7 @@ function StudentLogin() {
   const from =
     location.state?.from?.pathname || `/${ROLES_LIST.student}/dashboard`;
 
-  const onSubmit = async ({ email, password }) => {
+  const onLogin = async ({ email, password }) => {
     try {
       const userData = await login({
         email,
@@ -64,6 +57,7 @@ function StudentLogin() {
       });
     }
   };
+
   return (
     <>
       <div className="col-span-12 max-w-lg mx-auto text-center py-10">
@@ -91,7 +85,7 @@ function StudentLogin() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
-                <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+                <form onSubmit={handleSubmit(onLogin)} className="grid gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="email">
                       {errors.email ? (
@@ -105,11 +99,11 @@ function StudentLogin() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="name@ncit.edu.np"
+                      placeholder="name.rollno@ncit.edu.np"
                       {...register("email", {
                         required: "Email is required",
                         pattern: {
-                          value: /^[a-zA-Z]+@ncit.edu.np$/,
+                          value: /^[a-zA-Z0-9._%+-]+\.(\d{6})@ncit\.edu\.np$/,
                           message: "Invalid email address",
                         },
                       })}
@@ -184,69 +178,7 @@ function StudentLogin() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="first-name">First name</Label>
-                    <Input id="first-name" required />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="last-name">Last name</Label>
-                    <Input id="last-name" required />
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Roll number</Label>
-                  <Input id="rollno" type="number" required />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Program</Label>
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="apple">BESE</SelectItem>
-                        <SelectItem value="banana">BECE</SelectItem>
-                        <SelectItem value="blueberry">BEIT</SelectItem>
-                        <SelectItem value="grapes">BCA</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name.rollno@ncit.edu.np"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
-                </div>
-                <Button type="submit" variant="secondary" className="w-full">
-                  Create an account
-                </Button>
-                <div className="relative my-1">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t"></span>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-slate-400">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                <Button className="w-full">Sign Up with Google</Button>
-                <div className="  mx-auto text-center  text-slate-400 text-xs">
-                  <p>Use the Google Account provided by the college.</p>
-                </div>
-              </div>
+              <StudentSignup />
             </CardContent>
           </Card>
         </TabsContent>

@@ -28,7 +28,7 @@ function AdminSideBar() {
 
   return (
     <div className="hidden border-r /40 md:block">
-      <div className="flex h-full max-h-screen flex-col gap-2">
+      <div className="sticky top-0 flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <div className="flex items-center gap-2 font-semibold select-none">
             <Origami className="h-5 w-5 lg:w-6 lg-h6" />
@@ -152,20 +152,10 @@ function AdminSideBar() {
             </Link>
           </nav>
         </div>
-        <Popover>
-          <PopoverTrigger asChild>
-            <div className="mt-auto p-4 cursor-pointer">
-              <CurrentClock />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto">
-            <Calendar
-              mode="single"
-              selected={date}
-              className="rounded-md border"
-            />
-          </PopoverContent>
-        </Popover>
+
+        <div className="mt-auto p-4 ">
+          <CurrentClock date={date} />
+        </div>
       </div>
     </div>
   );

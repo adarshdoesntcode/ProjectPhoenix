@@ -6,8 +6,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import { Calendar } from "./ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "./ui/button";
 
-function CurrentClock() {
+const css = `
+  .my-today { 
+    color: white;
+    background:black;
+    user-select: none;
+  }
+  .my-today:hover { 
+    color: white;
+    background:black;
+  }
+`;
+
+function CurrentClock({ dateObject }) {
   const [clock, setClock] = useState({ date: "", time: "" });
 
   useEffect(() => {
@@ -35,12 +54,33 @@ function CurrentClock() {
   }, []);
 
   return (
-    <Card>
-      <CardHeader className="p-2 pt-0 md:p-4">
-        <CardTitle className="text-center">{clock.time}</CardTitle>
-        <CardDescription className="text-center">{clock.date}</CardDescription>
-      </CardHeader>
-    </Card>
+    <>
+      <style>{css}</style>
+      <Card>
+        <CardHeader className="p-2 pt-0 md:p-4">
+          <CardTitle className="text-center">{clock.time}</CardTitle>
+          <CardDescription className="text-center">
+            {clock.date}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="secondary" className="mt-2 w-full">
+                  View Calander
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  selected={dateObject}
+                  modifiersClassNames={{
+                    today: "my-today",
+                  }}
+                  className="rounded-md"
+                />
+              </PopoverContent>
+            </Popover>
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </>
   );
 }
 

@@ -45,6 +45,7 @@ function AdminLogin() {
       reset();
       navigate(from, { replace: true });
     } catch (err) {
+      console.log(err);
       toast({
         variant: "destructive",
         title: "Login Failed",
