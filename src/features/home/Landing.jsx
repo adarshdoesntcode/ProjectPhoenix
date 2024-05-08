@@ -23,7 +23,9 @@ function Landing() {
     <>
       <div className="col-span-12 max-w-lg mx-auto text-center pt-12 pb-10">
         <Phoenix className="mx-auto" />
-
+        <h2 className="font-bold text-lg lg:text-xl pt-2 tracking-tight leading-none">
+          Project Phoenix
+        </h2>
         <h1 className="font-bold text-2xl lg:text-3xl pt-2 tracking-tight leading-10">
           New Proposal, Whole Notion
         </h1>
@@ -35,7 +37,7 @@ function Landing() {
         <CardHeader>
           <CardTitle>Portals</CardTitle>
           <CardDescription>
-            Click the link below to explore your portal.
+            Click the link below to access your portal.
           </CardDescription>
         </CardHeader>
         <CardContent>
