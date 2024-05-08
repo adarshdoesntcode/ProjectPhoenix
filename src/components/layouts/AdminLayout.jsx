@@ -13,7 +13,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
@@ -24,10 +23,23 @@ import { CircleUser, Search } from "lucide-react";
 import AdminSideBar from "../../features/admin/AdminSideBar";
 import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
 import useLogout from "@/hooks/useLogout";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { ROLES_LIST } from "@/config/roleList";
+import BreadCrumbGenerator from "../BreadCrumbGenerator";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/features/auth/authSlice";
 
 function AdminLayout() {
+  const location = useLocation();
   const logout = useLogout();
+
+  const user = useSelector(selectCurrentUser);
+
+  const crumbs = location.pathname.split("/").filter((crumb) => {
+    if (crumb !== "" && crumb != ROLES_LIST.admin) {
+      return crumb;
+    }
+  });
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -38,16 +50,12 @@ function AdminLayout() {
           <Breadcrumb className="hidden md:flex">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink>
+                  {user.name ? user.name.split(" ")[0] : "Admin"}
+                </BreadcrumbLink>
+                <BreadcrumbSeparator />
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-              </BreadcrumbItem>
+              <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />
             </BreadcrumbList>
           </Breadcrumb>
 
