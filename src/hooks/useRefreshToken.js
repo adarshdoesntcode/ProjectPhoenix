@@ -1,17 +1,20 @@
-import axios from "@/api/axios";
 import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { authApiSlice } from "@/features/auth/authApiSlice";
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();
 
   const refresh = async () => {
-    const response = await axios.get("/refresh", {
-      withCredentials: true,
-    });
+    try {
+      const { data: refreshData } = await dispatch(
+        authApiSlice.endpoints.refresh.initiate()
+      );
 
-    if (response.status === 200)
-      dispatch(setCredentials({ data: response.data }));
+      if (refreshData) dispatch(setCredentials({ data: refreshData }));
+    } catch (error) {
+      console.log(error);
+    }
   };
   return refresh;
 };
