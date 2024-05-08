@@ -24,6 +24,7 @@ function StudentSignup() {
     register,
     reset,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -167,12 +168,37 @@ function StudentSignup() {
                 value:
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
                 message:
-                  "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+                  "Password must contain 1 lowercase, 1 uppercase, 1 number, and 1 special character",
               },
             })}
             className={errors.password ? "border-red-500" : ""}
           />
         </div>
+        <div className="grid gap-2">
+          <Label htmlFor="confirmPassword">
+            {errors.confirmPassword ? (
+              <span className="text-red-500">
+                {errors.confirmPassword.message}
+              </span>
+            ) : (
+              <span>Confirm Password</span>
+            )}
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            {...register("confirmPassword", {
+              validate: (value) =>
+                value === watch("password") || "The passwords do not match",
+            })}
+            className={errors.confirmPassword ? "border-red-500" : ""}
+          />
+          {errors.confirmPassword && (
+            <span>{errors.confirmPassword.message}</span>
+          )}
+        </div>
+
         {isSubmitting || isLoading ? (
           <Button variant="secondary" disabled>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
