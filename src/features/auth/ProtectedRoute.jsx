@@ -41,7 +41,11 @@ const ProtectedRoute = ({ allowedRole }) => {
   ) : token ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
-    <Navigate to={`${allowedRole}/login`} state={{ from: location }} replace />
+    <Navigate
+      to={`${allowedRole}/login?tab=login`}
+      state={{ from: location }}
+      replace
+    />
   );
 };
 export default ProtectedRoute;

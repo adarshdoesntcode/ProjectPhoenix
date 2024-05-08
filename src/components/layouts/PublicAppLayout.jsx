@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
-import { getRoleByValue, isTabActive } from "@/lib/utils";
+import { getRoleByValue } from "@/lib/utils";
 import { Origami } from "lucide-react";
 
 function PublicAppLayout() {

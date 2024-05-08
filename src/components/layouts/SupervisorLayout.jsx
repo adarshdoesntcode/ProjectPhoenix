@@ -26,7 +26,7 @@ import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
 import useLogout from "@/hooks/useLogout";
 import { Outlet } from "react-router-dom";
 
-function StudentLayout() {
+function SupervisorLayout() {
   const logout = useLogout();
 
   return (
@@ -86,4 +86,4 @@ function StudentLayout() {
   );
 }
 
-export default StudentLayout;
+export default SupervisorLayout;
