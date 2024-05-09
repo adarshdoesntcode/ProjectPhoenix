@@ -18,3 +18,10 @@ export const getRoleByValue = (value) => {
   }
   return "Home";
 };
+
+export const getInitials = (fullName) => {
+  const parts = fullName.split(" ");
+  const firstNameInitial = parts[0].charAt(0).toUpperCase();
+  const lastNameInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+  return `${firstNameInitial}${lastNameInitial}`;
+};

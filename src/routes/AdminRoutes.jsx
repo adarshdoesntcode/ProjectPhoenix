@@ -1,6 +1,7 @@
 import AdminDashboard from "@/features/admin/AdminDashboard";
 import AdminEvaluators from "@/features/admin/AdminEvaluators";
 import AdminEvents from "@/features/admin/AdminEvents";
+import AdminNewEvent from "@/features/admin/AdminNewEvent";
 import AdminNotices from "@/features/admin/AdminNotices";
 import AdminProjects from "@/features/admin/AdminProjects";
 import AdminStudents from "@/features/admin/AdminStudents";
@@ -20,6 +21,10 @@ const AdminRoutes = [
   {
     path: "events",
     element: <AdminEvents />,
+  },
+  {
+    path: "events/new",
+    element: <AdminNewEvent />,
   },
   {
     path: "projects",
