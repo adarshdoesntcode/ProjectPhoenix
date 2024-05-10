@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -34,10 +35,23 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { cn, newEventDateMatcher } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, ChevronLeft, ShieldAlert } from "lucide-react";
+import {
+  CalendarIcon,
+  ChevronLeft,
+  CreditCard,
+  ShieldAlert,
+} from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
+import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const initalState = {
   proposal: {
@@ -60,16 +74,17 @@ const checkKeyDown = (e) => {
 function AdminNewEvent() {
   const navigate = useNavigate();
   const [subEvent, setSubEvent] = useState(initalState);
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(true);
   const submitRef = useRef(null);
 
   const {
     handleSubmit,
     register,
+    setError,
     reset,
     control,
-    setValue,
-
+    clearErrors,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -91,11 +106,12 @@ function AdminNewEvent() {
 
   async function onSubmit(data) {
     console.log(data);
+    console.log(subEvent);
   }
 
   return (
     <div className="flex items-center flex-col px-4">
-      <div className="max-w-2xl  mx-auto">
+      <div className="  mx-auto">
         <div className="flex items-center gap-4 mt-4">
           <Button
             variant="outline"
@@ -110,7 +126,7 @@ function AdminNewEvent() {
           </h1>
         </div>
         <form
-          className="w-[672px]"
+          className="w-full md:w-[490px]  lg:w-[700px]"
           onSubmit={handleSubmit(onSubmit)}
           onKeyDown={(e) => checkKeyDown(e)}
         >
@@ -141,7 +157,7 @@ function AdminNewEvent() {
                     })}
                   />
                 </div>
-                <div className="grid gap-3 grid-cols-2">
+                <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
                   <div className="grid gap-2">
                     <Label htmlFor="eventType">
                       {errors.eventType ? (
@@ -257,10 +273,16 @@ function AdminNewEvent() {
             </CardHeader>
             {subEvent.proposal.defense && (
               <CardContent>
-                <div className="grid gap-3 grid-cols-2">
+                <div className="grid gap-3  grid-cols-1 md:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="description">
-                      Report Submission Deadline
+                    <Label htmlFor="report submission">
+                      {errors.proposalDefenseDate ? (
+                        <span className="text-red-500">
+                          {errors.proposalDefenseDate.message}
+                        </span>
+                      ) : (
+                        <span>Report Submission Deadline</span>
+                      )}
                     </Label>
 
                     <Popover>
@@ -286,6 +308,19 @@ function AdminNewEvent() {
                           selected={subEvent.proposal.reportDeadline}
                           disabled={proposalReportMatcher}
                           onSelect={(date) => {
+                            if (
+                              subEvent.proposal.defenseDate &&
+                              date > subEvent.proposal.defenseDate
+                            ) {
+                              setError("proposalDefenseDate", {
+                                type: "custom",
+                                message:
+                                  "Report Submission should come before Defense",
+                              });
+                              return;
+                            }
+
+                            clearErrors("proposalDefenseDate");
                             setSubEvent({
                               ...subEvent,
                               proposal: {
@@ -299,7 +334,7 @@ function AdminNewEvent() {
                     </Popover>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="description">Defense Date</Label>
+                    <Label htmlFor="defense date">Defense Date</Label>
 
                     <Popover>
                       <PopoverTrigger asChild>
@@ -363,10 +398,16 @@ function AdminNewEvent() {
             </CardHeader>
             {subEvent.mid.defense && (
               <CardContent>
-                <div className="grid gap-3 grid-cols-2">
+                <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="description">
-                      Report Submission Deadline
+                    <Label htmlFor="report submission">
+                      {errors.midDefenseDate ? (
+                        <span className="text-red-500">
+                          {errors.midDefenseDate.message}
+                        </span>
+                      ) : (
+                        <span>Report Submission Deadline</span>
+                      )}
                     </Label>
 
                     <Popover>
@@ -392,6 +433,19 @@ function AdminNewEvent() {
                           selected={subEvent.mid.reportDeadline}
                           disabled={midReportMatcher}
                           onSelect={(date) => {
+                            if (
+                              subEvent.mid.defenseDate &&
+                              date > subEvent.mid.defenseDate
+                            ) {
+                              setError("midDefenseDate", {
+                                type: "custom",
+                                message:
+                                  "Report Submission should come before Defense",
+                              });
+                              return;
+                            }
+
+                            clearErrors("midDefenseDate");
                             setSubEvent({
                               ...subEvent,
                               mid: {
@@ -405,7 +459,7 @@ function AdminNewEvent() {
                     </Popover>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="description">Defense Date</Label>
+                    <Label htmlFor="defense date">Defense Date</Label>
 
                     <Popover>
                       <PopoverTrigger asChild>
@@ -469,26 +523,29 @@ function AdminNewEvent() {
             </CardHeader>
             {subEvent.final.defense && (
               <CardContent>
-                <div className="grid gap-3 grid-cols-2">
+                <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="description">
-                      Report Submission Deadline
+                    <Label htmlFor="report submission">
+                      {errors.finalDefenseDate ? (
+                        <span className="text-red-500">
+                          {errors.finalDefenseDate.message}
+                        </span>
+                      ) : (
+                        <span>Report Submission Deadline</span>
+                      )}
                     </Label>
 
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !subEvent.final.reportDeadline && "text-slate-600"
-                          )}
+                          variant="outline"
+                          className="w-full justify-start text-left font-normal"
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {subEvent.final.reportDeadline ? (
                             format(subEvent.final.reportDeadline, "PPP")
                           ) : (
-                            <span className>Pick a date</span>
+                            <span>Pick a date</span>
                           )}
                         </Button>
                       </PopoverTrigger>
@@ -498,6 +555,19 @@ function AdminNewEvent() {
                           selected={subEvent.final.reportDeadline}
                           disabled={finalReportMatcher}
                           onSelect={(date) => {
+                            if (
+                              subEvent.final.defenseDate &&
+                              date > subEvent.final.defenseDate
+                            ) {
+                              setError("finalDefenseDate", {
+                                type: "custom",
+                                message:
+                                  "Report Submission should come before Defense",
+                              });
+                              return;
+                            }
+
+                            clearErrors("finalDefenseDate");
                             setSubEvent({
                               ...subEvent,
                               final: {
@@ -511,7 +581,7 @@ function AdminNewEvent() {
                     </Popover>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="description">Defense Date</Label>
+                    <Label htmlFor="defense date">Defense Date</Label>
 
                     <Popover>
                       <PopoverTrigger asChild>
@@ -552,7 +622,7 @@ function AdminNewEvent() {
               </CardContent>
             )}
           </Card>
-          <div className="flex mt-6 mb-16 items-center justify-end">
+          <div className="flex mt-6 mb-40 items-center justify-end">
             <Button
               ref={submitRef}
               variant="outline"
@@ -590,16 +660,129 @@ function AdminNewEvent() {
                   Next
                 </Button>
               </DialogTrigger>
-              <DialogContent className="">
+              <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Review Form</DialogTitle>
                   <DialogDescription>
                     Carefully review your form before submitting
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4"></div>
-                </div>
+                <Card className="max-h-[60vh] overflow-scroll">
+                  <CardContent className="p-5 text-sm">
+                    <div className="grid gap-2">
+                      <div className="font-semibold">Event Details</div>
+                      <ul className="grid gap-2">
+                        <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Name</span>
+                          <span>{getValues("eventName")}</span>
+                        </li>
+                        <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Year</span>
+                          <span>{new Date().getFullYear()}</span>
+                        </li>
+                      </ul>
+                      <Separator />
+                      <ul className="grid gap-2">
+                        <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Type</span>
+                          <span>{getValues("eventType")}</span>
+                        </li>
+                        <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Target</span>
+                          <span>{getValues("eventTarget")}</span>
+                        </li>
+                        {getValues("description") && (
+                          <li className="flex items-center justify-between">
+                            <span className="text-muted-foreground">
+                              Description
+                            </span>
+                            <span>{getValues("description")}</span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                    <Separator className="my-4" />
+                    <div className="grid gap-2">
+                      <div className="font-semibold">Proposal Defense</div>
+                      <dl className="grid gap-2">
+                        <div className="flex items-center justify-between">
+                          <dt className="text-muted-foreground">
+                            Report Submission
+                          </dt>
+                          <dd>
+                            {subEvent.proposal.reportDeadline &&
+                              format(subEvent.proposal.reportDeadline, "PPP")}
+                          </dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <dt className="text-muted-foreground">
+                            Defense Date
+                          </dt>
+                          <dd>
+                            {" "}
+                            {subEvent.proposal.defenseDate &&
+                              format(subEvent.proposal.defenseDate, "PPP")}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                    {subEvent.mid.defense && (
+                      <>
+                        <Separator className="my-4" />
+                        <div className="grid gap-2">
+                          <div className="font-semibold">Mid Defense</div>
+                          <dl className="grid gap-2">
+                            <div className="flex items-center justify-between">
+                              <dt className="text-muted-foreground">
+                                Report Submission
+                              </dt>
+                              <dd>
+                                {subEvent.mid.reportDeadline &&
+                                  format(subEvent.mid.reportDeadline, "PPP")}
+                              </dd>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <dt className="text-muted-foreground">
+                                Defense Date
+                              </dt>
+                              <dd>
+                                {subEvent.mid.defenseDate &&
+                                  format(subEvent.mid.defenseDate, "PPP")}
+                              </dd>
+                            </div>
+                          </dl>
+                        </div>
+                      </>
+                    )}
+
+                    <Separator className="my-4" />
+                    <div className="grid gap-2">
+                      <div className="font-semibold">Final Defense</div>
+                      <dl className="grid gap-2">
+                        <div className="flex items-center justify-between">
+                          <dt className="text-muted-foreground">
+                            Report Submission
+                          </dt>
+                          <dd>
+                            {" "}
+                            {subEvent.final.reportDeadline &&
+                              format(subEvent.final.reportDeadline, "PPP")}
+                          </dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <dt className="text-muted-foreground">
+                            Defense Date
+                          </dt>
+                          <dd>
+                            {" "}
+                            {subEvent.final.defenseDate &&
+                              format(subEvent.final.defenseDate, "PPP")}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </CardContent>
+                </Card>
                 <DialogFooter>
                   <Button onClick={triggerSubmit}>Submit</Button>
                 </DialogFooter>
