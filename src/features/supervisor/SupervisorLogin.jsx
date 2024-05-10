@@ -18,10 +18,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { ROLES_LIST } from "@/config/roleList";
 import { setCredentials } from "../auth/authSlice";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import SupervisorSignup from "./SupervisorSignup";
+import { useState } from "react";
 
 function SupervisorLogin() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -126,14 +129,28 @@ function SupervisorLogin() {
                         Forgot your password?
                       </a>
                     </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      {...register("password", {
-                        required: "Password is required",
-                      })}
-                      className={errors.password ? "border-red-500" : ""}
-                    />
+                    <div className="relative">
+                      {showPassword ? (
+                        <Eye
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                        />
+                      ) : (
+                        <EyeOff
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                        />
+                      )}
+
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        {...register("password", {
+                          required: "Password is required",
+                        })}
+                        className={errors.password ? "border-red-500" : ""}
+                      />
+                    </div>
                   </div>
                   {isSubmitting || isLoading ? (
                     <Button variant="secondary" disabled>

@@ -10,7 +10,7 @@ import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Search } from "lucide-react";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../auth/authSlice";
@@ -18,8 +18,10 @@ import { setCredentials } from "../auth/authSlice";
 import { useToast } from "@/components/ui/use-toast";
 
 import { ROLES_LIST } from "@/config/roleList";
+import { useState } from "react";
 
 function AdminLogin() {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [login, { isLoading }] = useLoginMutation();
@@ -109,14 +111,28 @@ function AdminLogin() {
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                  className={errors.password ? "border-red-500" : ""}
-                />
+                <div className="relative">
+                  {showPassword ? (
+                    <Eye
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                    />
+                  ) : (
+                    <EyeOff
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                    />
+                  )}
+
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
+                    className={errors.password ? "border-red-500" : ""}
+                  />
+                </div>
               </div>
               {isSubmitting || isLoading ? (
                 <Button variant="secondary" disabled>

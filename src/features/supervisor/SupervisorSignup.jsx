@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../auth/authApiSlice";
 import { ROLES_LIST } from "@/config/roleList";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 function SupervisorSignup() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const [signup, { isLoading }] = useSignupMutation();
   const {
@@ -30,7 +33,7 @@ function SupervisorSignup() {
       });
       if (res.error) {
         if (res.error.originalStatus === 409) {
-          throw new Error("Conflict error occurred");
+          throw new Error("Conflict error");
         }
       }
       if (!res.error) {
@@ -125,24 +128,38 @@ function SupervisorSignup() {
               <span>Password</span>
             )}
           </Label>
-          <Input
-            id="password"
-            type="password"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters long",
-              },
-              pattern: {
-                value:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-                message:
-                  "Password must contain 1 lowercase, 1 uppercase, 1 number, and 1 special character",
-              },
-            })}
-            className={errors.password ? "border-red-500" : ""}
-          />
+          <div className="relative">
+            {showPassword ? (
+              <Eye
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+              />
+            ) : (
+              <EyeOff
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+              />
+            )}
+
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                  message:
+                    "Password must contain 1 lowercase, 1 uppercase, 1 number, and 1 special character",
+                },
+              })}
+              className={errors.password ? "border-red-500" : ""}
+            />
+          </div>
         </div>
         <div className="grid gap-2">
           <Label htmlFor="confirmPassword">
@@ -154,16 +171,30 @@ function SupervisorSignup() {
               <span>Confirm Password</span>
             )}
           </Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            name="confirmPassword"
-            {...register("confirmPassword", {
-              validate: (value) =>
-                value === watch("password") || "The passwords do not match",
-            })}
-            className={errors.confirmPassword ? "border-red-500" : ""}
-          />
+          <div className="relative">
+            {showConfirmPassword ? (
+              <Eye
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+              />
+            ) : (
+              <EyeOff
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+              />
+            )}
+
+            <Input
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              {...register("confirmPassword", {
+                validate: (value) =>
+                  value === watch("password") || "The passwords do not match",
+              })}
+              className={errors.confirmPassword ? "border-red-500" : ""}
+            />
+          </div>
         </div>
         {isSubmitting || isLoading ? (
           <Button variant="secondary" disabled>

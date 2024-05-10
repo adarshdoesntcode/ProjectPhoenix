@@ -227,7 +227,7 @@ function AdminNewEvent() {
                   <Textarea
                     id="description"
                     placeholder="Description [Optional]"
-                    className="min-h-32"
+                    className="min-h-20"
                     {...register("description")}
                   />
                 </div>
