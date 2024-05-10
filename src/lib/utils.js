@@ -25,3 +25,60 @@ export const getInitials = (fullName) => {
   const lastNameInitial = parts[parts.length - 1].charAt(0).toUpperCase();
   return `${firstNameInitial}${lastNameInitial}`;
 };
+
+export function newEventDateMatcher(subEvent) {
+  const proposalReportMatcher = { before: new Date() };
+
+  const proposalreport = subEvent.proposal.reportDeadline
+    ? new Date(subEvent.proposal.reportDeadline)
+    : new Date();
+
+  const propoalDefensetMatcher = {
+    before: proposalreport,
+  };
+
+  // =========================
+
+  const midreport = subEvent.proposal.defenseDate
+    ? new Date(subEvent.proposal.defenseDate)
+    : new Date();
+
+  const middefense = subEvent.mid.reportDeadline
+    ? new Date(subEvent.mid.reportDeadline)
+    : new Date();
+
+  const midReportMatcher = {
+    before: midreport,
+  };
+
+  const midDefenseMatcher = {
+    before: middefense,
+  };
+  // ===========================
+  const finalreport = subEvent.mid.defenseDate
+    ? new Date(subEvent.mid.defenseDate)
+    : subEvent.proposal.defenseDate
+    ? new Date(subEvent.proposal.defenseDate)
+    : new Date();
+
+  const finaldefense = subEvent.final.reportDeadline
+    ? new Date(subEvent.final.reportDeadline)
+    : new Date();
+
+  const finalReportMatcher = {
+    before: finalreport,
+  };
+
+  const finalDefenseMatcher = {
+    before: finaldefense,
+  };
+
+  return {
+    proposalReportMatcher,
+    propoalDefensetMatcher,
+    midReportMatcher,
+    midDefenseMatcher,
+    finalReportMatcher,
+    finalDefenseMatcher,
+  };
+}

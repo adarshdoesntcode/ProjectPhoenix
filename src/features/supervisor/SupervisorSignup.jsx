@@ -22,11 +22,11 @@ function SupervisorSignup() {
   const onSignup = async (data) => {
     try {
       const res = await signup({
-        name: data.name,
+        fullname: data.name,
         email: data.email,
         password: data.password,
-        roles: [ROLES_LIST.supervisor],
-        phone: data.phone,
+        role: ROLES_LIST.supervisor,
+        phoneNumber: data.phone,
       });
       if (res.error) {
         if (res.error.originalStatus === 409) {
@@ -164,9 +164,6 @@ function SupervisorSignup() {
             })}
             className={errors.confirmPassword ? "border-red-500" : ""}
           />
-          {errors.confirmPassword && (
-            <span>{errors.confirmPassword.message}</span>
-          )}
         </div>
         {isSubmitting || isLoading ? (
           <Button variant="secondary" disabled>

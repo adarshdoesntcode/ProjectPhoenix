@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3500",
+  baseUrl: "https://project-phoenix-clz.vercel.app/",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
@@ -24,7 +24,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       await api.dispatch(setCredentials({ ...refreshResult, user, token }));
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logOut());
+      await api.dispatch(logOut());
     }
   }
 

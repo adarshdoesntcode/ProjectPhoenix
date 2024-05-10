@@ -36,7 +36,7 @@ const ProtectedRoute = ({ allowedRole }) => {
 
   return isLoading ? (
     <PersistLoader />
-  ) : user?.roles?.find((role) => allowedRole === role) ? (
+  ) : user?.role?.find((role) => allowedRole === role) ? (
     <Outlet />
   ) : token ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />

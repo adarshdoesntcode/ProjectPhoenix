@@ -31,12 +31,12 @@ function StudentSignup() {
   const onSignup = async (data) => {
     try {
       const res = await signup({
-        name: data.name,
+        fullname: data.name,
         email: data.email,
         password: data.password,
-        roles: [ROLES_LIST.student],
-        phone: data.phone,
-        // program: data.program,
+        role: ROLES_LIST.student,
+        phoneNumber: data.phone,
+        program: data.program,
       });
       if (res.error) {
         if (res.error.originalStatus === 409) {
@@ -137,11 +137,11 @@ function StudentSignup() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="SE">Software Engineering</SelectItem>
-                <SelectItem value="CE">Computer Engineering</SelectItem>
-                <SelectItem value="ELX">Electrical Engineering</SelectItem>
-                <SelectItem value="IT">Information Technology</SelectItem>
-                <SelectItem value="CA">Computer Application</SelectItem>
+                <SelectItem value="BESE">Software Engineering</SelectItem>
+                <SelectItem value="BECE">Computer Engineering</SelectItem>
+                <SelectItem value="BEELX">Electrical Engineering</SelectItem>
+                <SelectItem value="BEIT">Information Technology</SelectItem>
+                <SelectItem value="BCA">Computer Application</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -194,9 +194,6 @@ function StudentSignup() {
             })}
             className={errors.confirmPassword ? "border-red-500" : ""}
           />
-          {errors.confirmPassword && (
-            <span>{errors.confirmPassword.message}</span>
-          )}
         </div>
 
         {isSubmitting || isLoading ? (

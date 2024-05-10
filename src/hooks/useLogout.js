@@ -7,8 +7,12 @@ const useLogout = () => {
 
   const logout = async () => {
     try {
-      dispatch(logOut());
-      await dispatch(authApiSlice.endpoints.logout.initiate());
+      await dispatch(
+        authApiSlice.endpoints.logout.initiate(undefined, {
+          forceRefetch: true,
+        })
+      );
+      await dispatch(logOut());
     } catch (err) {
       console.error(err);
     }

@@ -1,4 +1,4 @@
-import { setCredentials } from "@/features/auth/authSlice";
+import { logOut, setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { authApiSlice } from "@/features/auth/authApiSlice";
 
@@ -8,7 +8,9 @@ const useRefreshToken = () => {
   const refresh = async () => {
     try {
       const { data: refreshData } = await dispatch(
-        authApiSlice.endpoints.refresh.initiate()
+        authApiSlice.endpoints.refresh.initiate(undefined, {
+          forceRefetch: true,
+        })
       );
 
       if (refreshData) dispatch(setCredentials({ data: refreshData }));

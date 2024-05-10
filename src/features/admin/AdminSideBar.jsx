@@ -12,8 +12,8 @@ import { Link, useLocation } from "react-router-dom";
 
 import { ROLES_LIST } from "@/config/roleList";
 import { isTabActive } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import CurrentClock from "../../components/CurrentClock";
+import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 
 function AdminSideBar() {
   const location = useLocation();
@@ -38,7 +38,7 @@ function AdminSideBar() {
           <nav className="grid  text-slate-600 items-start px-2 text-sm font-medium lg:px-4">
             <Link
               to={`/${ROLES_LIST.admin}/dashboard`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "dashboard")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
@@ -50,7 +50,7 @@ function AdminSideBar() {
 
             <Link
               to={`/${ROLES_LIST.admin}/events`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "events")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
@@ -58,33 +58,27 @@ function AdminSideBar() {
             >
               <CalendarDays className="h-4 w-4" />
               Events
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
+              <div className="ml-auto flex shrink-0 items-center justify-center">
                 3
-              </Badge>
+              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/projects`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "projects")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
               } text-primary transition-all hover:pl-4`}
             >
               <FolderGit2 className="h-4 w-4" />
-              Projects{" "}
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
+              Projects
+              <div className="ml-auto flex shrink-0 items-center justify-center">
                 26
-              </Badge>
+              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/students`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "students")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
@@ -92,16 +86,13 @@ function AdminSideBar() {
             >
               <GraduationCap className="h-4 w-4" />
               Students
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
-                1556
-              </Badge>
+              <div className="ml-auto flex shrink-0 items-center justify-center">
+                1156
+              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/supervisors`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "supervisors")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
@@ -109,16 +100,13 @@ function AdminSideBar() {
             >
               <Cctv className="h-4 w-4" />
               Supervisors
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
+              <div className="ml-auto flex shrink-0 items-center justify-center">
                 26
-              </Badge>
+              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/evaluators`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "evaluators")
                   ? "bg-slate-950 text-white"
                   : "hover:text-slate-950"
@@ -126,16 +114,13 @@ function AdminSideBar() {
             >
               <FileCheck className="h-4 w-4" />
               Evaluators
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center rounded-full"
-              >
+              <div className="ml-auto flex shrink-0 items-center justify-center">
                 44
-              </Badge>
+              </div>
             </Link>
             <Link
               to={`/${ROLES_LIST.admin}/notices`}
-              className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
                 isTabActive(currentPath, "notices")
                   ? "bg-slate-950 text-white "
                   : "hover:text-slate-950"

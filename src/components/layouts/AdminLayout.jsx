@@ -18,7 +18,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { CircleUser, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 
 import AdminSideBar from "../../features/admin/AdminSideBar";
 import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
@@ -31,7 +31,13 @@ import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
 
+import { useState } from "react";
+
+import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
+import { toast } from "../ui/use-toast";
+
 function AdminLayout() {
+  const [logoutLoader, setLogoutLoader] = useState(false);
   const location = useLocation();
   const logout = useLogout();
 
@@ -43,56 +49,81 @@ function AdminLayout() {
     }
   });
 
+  const handlelogout = async () => {
+    try {
+      setLogoutLoader(true);
+      await logout();
+      setLogoutLoader(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!!",
+        description: error.message,
+      });
+    }
+  };
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <AdminSideBar />
-      <div className="flex flex-col">
-        <header className="flex sticky top-0 h-14 items-center gap-4  bg-slate-100/50 backdrop-filter backdrop-blur-lg px-4 lg:h-[60px] lg:px-6">
-          <AdminMobileSideBar />
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink>
-                  {user.name ? user.name.split(" ")[0] : "Admin"}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />
-            </BreadcrumbList>
-          </Breadcrumb>
+    <>
+      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+        <AdminSideBar />
+        <div className="flex flex-col">
+          <header className="flex sticky top-0 h-14 items-center gap-4  bg-slate-100/50 backdrop-filter backdrop-blur-lg px-4 lg:h-[60px] lg:px-6">
+            <AdminMobileSideBar />
+            <Breadcrumb className="hidden md:flex">
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink>
+                    {user.fullname ? user.fullname.split(" ")[0] : "Admin"}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />
+              </BreadcrumbList>
+            </Breadcrumb>
 
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4" />
-            <Input
-              type="search"
-              placeholder="Search Projects, Students, .."
-              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-            />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src={user.profilepicture} />
-                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => logout()}>
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
-        <main className="flex flex-1 flex-col  p-4 pt-0 lg:px-6 bg-slate-50">
-          <Outlet />
-        </main>
+            <div className="relative ml-auto flex-1 md:grow-0">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4" />
+              <Input
+                type="search"
+                placeholder="Search Projects, Students, .."
+                className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+              />
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src={user.profilepicture} />
+                  <AvatarFallback className="bg-slate-200">
+                    {getInitials(user.fullname)}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handlelogout}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </header>
+          <main className="flex flex-1 flex-col  p-4 pt-0 lg:px-6 bg-slate-50">
+            <Outlet />
+          </main>
+        </div>
       </div>
-    </div>
+      <AlertDialog open={logoutLoader} onOpenChange={setLogoutLoader}>
+        <AlertDialogContent className="w-[200px]">
+          <div className="flex justify-center items-center text-gray-600">
+            <Loader2 className="h-6 w-6 animate-spin mr-4" />
+            <span>Logging Out</span>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
