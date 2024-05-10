@@ -9,8 +9,8 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Search } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../auth/authSlice";
@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { ROLES_LIST } from "@/config/roleList";
 import { useState } from "react";
+import { getGoogleOAuthURL } from "@/lib/utils";
 
 function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -157,7 +158,15 @@ function AdminLogin() {
               </div>
             </div>
 
-            <Button className="w-full">Login with Google</Button>
+            <Button className="w-full" asChild>
+              <Link
+                to={getGoogleOAuthURL(
+                  "https://project-phoenix-clz.vercel.app/api/oauth/google"
+                )}
+              >
+                Login with Google
+              </Link>
+            </Button>
             <div className="  mx-auto text-center  text-slate-400 text-xs">
               <p>Use the Google Account provided by the college.</p>
             </div>

@@ -82,3 +82,24 @@ export function newEventDateMatcher(subEvent) {
     finalDefenseMatcher,
   };
 }
+
+export function getGoogleOAuthURL(redirect_uri) {
+  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+  const options = {
+    redirect_uri,
+    client_id:
+      "802396137377-5pfhl96kiru3ttesrvt52uqsq0631jma.apps.googleusercontent.com",
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ].join(" "),
+  };
+
+  const qs = new URLSearchParams(options);
+
+  return `${rootUrl}?${qs.toString()}`;
+}

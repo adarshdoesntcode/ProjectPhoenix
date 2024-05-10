@@ -35,23 +35,11 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { cn, newEventDateMatcher } from "@/lib/utils";
 import { format } from "date-fns";
-import {
-  CalendarIcon,
-  ChevronLeft,
-  CreditCard,
-  ShieldAlert,
-} from "lucide-react";
+import { CalendarIcon, ChevronLeft, ShieldAlert } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const initalState = {
   proposal: {
@@ -74,7 +62,7 @@ const checkKeyDown = (e) => {
 function AdminNewEvent() {
   const navigate = useNavigate();
   const [subEvent, setSubEvent] = useState(initalState);
-  const [modal, setModal] = useState(true);
+  const [modal, setModal] = useState(false);
   const submitRef = useRef(null);
 
   const {
@@ -89,10 +77,18 @@ function AdminNewEvent() {
   } = useForm();
 
   const triggerSubmit = () => {
-    setModal(false);
+    if (subEvent.mid.defense) {
+      if (!subEvent.mid.reportDeadline || !subEvent.mid.defenseDate) {
+        setError("noMidDates", {
+          type: "custom",
+          message: "Fill out the dates",
+        });
+      }
+    }
     if (submitRef.current) {
       submitRef.current.click();
     }
+    setModal(false);
   };
 
   const {
@@ -393,7 +389,13 @@ function AdminNewEvent() {
                 </div>
               </CardTitle>
               <CardDescription>
-                Toggle the switch to create this defense
+                {errors.noMidDates ? (
+                  <span className="text-red-500">
+                    {errors.noMidDates.message}
+                  </span>
+                ) : (
+                  "Toggle the switch to create this defense"
+                )}
               </CardDescription>
             </CardHeader>
             {subEvent.mid.defense && (
@@ -445,6 +447,7 @@ function AdminNewEvent() {
                               return;
                             }
 
+                            clearErrors("noMidDates");
                             clearErrors("midDefenseDate");
                             setSubEvent({
                               ...subEvent,
@@ -484,6 +487,8 @@ function AdminNewEvent() {
                           selected={subEvent.mid.defenseDate}
                           disabled={midDefenseMatcher}
                           onSelect={(date) => {
+                            clearErrors("noMidDates");
+                            clearErrors("midDefenseDate");
                             setSubEvent({
                               ...subEvent,
                               mid: {
@@ -637,10 +642,10 @@ function AdminNewEvent() {
             ) : (
               <p className="flex items-center gap-1 mr-4 text-xs text-slate-400">
                 <span>
-                  Complete proposal and final defense details to continue
+                  <ShieldAlert className="w-4 h-4" />
                 </span>
                 <span>
-                  <ShieldAlert className="w-4 h-4" />
+                  Complete proposal and final defense details to continue
                 </span>
               </p>
             )}
