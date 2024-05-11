@@ -37,8 +37,6 @@ export function newEventDateMatcher(subEvent) {
     before: proposalreport,
   };
 
-  // =========================
-
   const midreport = subEvent.proposal.defenseDate
     ? new Date(subEvent.proposal.defenseDate)
     : new Date();
@@ -54,7 +52,7 @@ export function newEventDateMatcher(subEvent) {
   const midDefenseMatcher = {
     before: middefense,
   };
-  // ===========================
+
   const finalreport = subEvent.mid.defenseDate
     ? new Date(subEvent.mid.defenseDate)
     : subEvent.proposal.defenseDate
@@ -102,4 +100,16 @@ export function getGoogleOAuthURL(redirect_uri) {
   const qs = new URLSearchParams(options);
 
   return `${rootUrl}?${qs.toString()}`;
+}
+
+export function daysFromToday(targetDate) {
+  const target = new Date(targetDate);
+
+  const today = new Date();
+
+  const differenceInMs = target.getTime() - today.getTime();
+
+  const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+
+  return differenceInDays;
 }

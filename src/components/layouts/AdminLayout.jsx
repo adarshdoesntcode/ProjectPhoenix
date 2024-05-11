@@ -72,9 +72,7 @@ function AdminLayout() {
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink>
-                    {user.fullname ? user.fullname.split(" ")[0] : "Admin"}
-                  </BreadcrumbLink>
+                  {user.fullname ? user.fullname.split(" ")[0] : "Admin"}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />
@@ -92,7 +90,7 @@ function AdminLayout() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                  <AvatarImage src={user.profilepicture} />
+                  <AvatarImage src={user.photo} />
                   <AvatarFallback className="bg-slate-200">
                     {getInitials(user.fullname)}
                   </AvatarFallback>

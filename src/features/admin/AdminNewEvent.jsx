@@ -33,13 +33,14 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { cn, newEventDateMatcher } from "@/lib/utils";
+import { cn, daysFromToday, newEventDateMatcher } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, ChevronLeft, ShieldAlert } from "lucide-react";
+import { CalendarIcon, ChevronLeft, Loader2, ShieldAlert } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
+import { useCreateEventMutation } from "./adminApiSlice";
 
 const initalState = {
   proposal: {
@@ -62,6 +63,7 @@ const checkKeyDown = (e) => {
 function AdminNewEvent() {
   const navigate = useNavigate();
   const [subEvent, setSubEvent] = useState(initalState);
+  const [createEvent, { isLoading }] = useCreateEventMutation();
   const [modal, setModal] = useState(false);
   const submitRef = useRef(null);
 
@@ -88,7 +90,6 @@ function AdminNewEvent() {
     if (submitRef.current) {
       submitRef.current.click();
     }
-    setModal(false);
   };
 
   const {
@@ -101,12 +102,23 @@ function AdminNewEvent() {
   } = newEventDateMatcher(subEvent);
 
   async function onSubmit(data) {
-    console.log(data);
-    console.log(subEvent);
+    try {
+      const year = new Date().getFullYear();
+      const newEvent = {
+        ...data,
+        ...subEvent,
+        year,
+      };
+
+      await createEvent(newEvent);
+      setModal(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <div className="flex items-center flex-col px-4">
+    <div className="flex items-center flex-col px-4 ">
       <div className="  mx-auto">
         <div className="flex items-center gap-4 mt-4">
           <Button
@@ -175,13 +187,13 @@ function AdminNewEvent() {
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="first">
+                            <SelectItem value="FIRST">
                               First Project (1 credit)
                             </SelectItem>
-                            <SelectItem value="minor">
+                            <SelectItem value="MINOR">
                               Minor Project (2 credit)
                             </SelectItem>
-                            <SelectItem value="major">
+                            <SelectItem value="MAJOR">
                               Major Project (4/5 credit)
                             </SelectItem>
                           </SelectContent>
@@ -287,7 +299,7 @@ function AdminNewEvent() {
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            "text-muted-foreground"
+                            "text-slate-500"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -338,7 +350,7 @@ function AdminNewEvent() {
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            "text-muted-foreground"
+                            "text-slate-500"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -418,7 +430,7 @@ function AdminNewEvent() {
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            "text-muted-foreground"
+                            "text-slate-500"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -470,7 +482,7 @@ function AdminNewEvent() {
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            "text-muted-foreground"
+                            "text-slate-500"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -544,7 +556,7 @@ function AdminNewEvent() {
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full justify-start text-left font-normal"
+                          className="w-full justify-start text-left font-normal text-slate-500"
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {subEvent.final.reportDeadline ? (
@@ -594,7 +606,7 @@ function AdminNewEvent() {
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            "text-muted-foreground"
+                            "text-slate-500"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -678,29 +690,27 @@ function AdminNewEvent() {
                       <div className="font-semibold">Event Details</div>
                       <ul className="grid gap-2">
                         <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Name</span>
+                          <span className="text-slate-500">Name</span>
                           <span>{getValues("eventName")}</span>
                         </li>
                         <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Year</span>
+                          <span className="text-slate-500">Year</span>
                           <span>{new Date().getFullYear()}</span>
                         </li>
                       </ul>
                       <Separator />
                       <ul className="grid gap-2">
                         <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Type</span>
+                          <span className="text-slate-500">Type</span>
                           <span>{getValues("eventType")}</span>
                         </li>
                         <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Target</span>
+                          <span className="text-slate-500">Target</span>
                           <span>{getValues("eventTarget")}</span>
                         </li>
                         {getValues("description") && (
                           <li className="flex items-center justify-between">
-                            <span className="text-muted-foreground">
-                              Description
-                            </span>
+                            <span className="text-slate-500">Description</span>
                             <span>{getValues("description")}</span>
                           </li>
                         )}
@@ -711,22 +721,26 @@ function AdminNewEvent() {
                       <div className="font-semibold">Proposal Defense</div>
                       <dl className="grid gap-2">
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Report Submission
-                          </dt>
+                          <dt className="text-slate-500">Report Submission</dt>
                           <dd>
                             {subEvent.proposal.reportDeadline &&
-                              format(subEvent.proposal.reportDeadline, "PPP")}
+                              format(
+                                subEvent.proposal.reportDeadline,
+                                "PPP"
+                              )}{" "}
+                            (in{" "}
+                            {daysFromToday(subEvent.proposal.reportDeadline)}{" "}
+                            days)
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Defense Date
-                          </dt>
+                          <dt className="text-slate-500">Defense Date</dt>
                           <dd>
                             {" "}
                             {subEvent.proposal.defenseDate &&
-                              format(subEvent.proposal.defenseDate, "PPP")}
+                              format(subEvent.proposal.defenseDate, "PPP")}{" "}
+                            (in {daysFromToday(subEvent.proposal.defenseDate)}{" "}
+                            days)
                           </dd>
                         </div>
                       </dl>
@@ -738,21 +752,26 @@ function AdminNewEvent() {
                           <div className="font-semibold">Mid Defense</div>
                           <dl className="grid gap-2">
                             <div className="flex items-center justify-between">
-                              <dt className="text-muted-foreground">
+                              <dt className="text-slate-500">
                                 Report Submission
                               </dt>
                               <dd>
                                 {subEvent.mid.reportDeadline &&
-                                  format(subEvent.mid.reportDeadline, "PPP")}
+                                  format(
+                                    subEvent.mid.reportDeadline,
+                                    "PPP"
+                                  )}{" "}
+                                (in {daysFromToday(subEvent.mid.reportDeadline)}{" "}
+                                days)
                               </dd>
                             </div>
                             <div className="flex items-center justify-between">
-                              <dt className="text-muted-foreground">
-                                Defense Date
-                              </dt>
+                              <dt className="text-slate-500">Defense Date</dt>
                               <dd>
                                 {subEvent.mid.defenseDate &&
-                                  format(subEvent.mid.defenseDate, "PPP")}
+                                  format(subEvent.mid.defenseDate, "PPP")}{" "}
+                                (in {daysFromToday(subEvent.mid.defenseDate)}{" "}
+                                days)
                               </dd>
                             </div>
                           </dl>
@@ -765,23 +784,22 @@ function AdminNewEvent() {
                       <div className="font-semibold">Final Defense</div>
                       <dl className="grid gap-2">
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Report Submission
-                          </dt>
+                          <dt className="text-slate-500">Report Submission</dt>
                           <dd>
                             {" "}
                             {subEvent.final.reportDeadline &&
-                              format(subEvent.final.reportDeadline, "PPP")}
+                              format(subEvent.final.reportDeadline, "PPP")}{" "}
+                            (in {daysFromToday(subEvent.final.reportDeadline)}{" "}
+                            days)
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Defense Date
-                          </dt>
+                          <dt className="text-slate-500">Defense Date</dt>
                           <dd>
-                            {" "}
                             {subEvent.final.defenseDate &&
-                              format(subEvent.final.defenseDate, "PPP")}
+                              format(subEvent.final.defenseDate, "PPP")}{" "}
+                            (in {daysFromToday(subEvent.final.defenseDate)}{" "}
+                            days)
                           </dd>
                         </div>
                       </dl>
@@ -789,7 +807,14 @@ function AdminNewEvent() {
                   </CardContent>
                 </Card>
                 <DialogFooter>
-                  <Button onClick={triggerSubmit}>Submit</Button>
+                  {isSubmitting ? (
+                    <Button variant="secondary" disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting..
+                    </Button>
+                  ) : (
+                    <Button onClick={triggerSubmit}>Submit</Button>
+                  )}
                 </DialogFooter>
               </DialogContent>
             </Dialog>

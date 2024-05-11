@@ -6,6 +6,7 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function BreadCrumbGenerator({ crumbs, role }) {
   const content = crumbs.map((crumb, index) => {
@@ -23,8 +24,10 @@ function BreadCrumbGenerator({ crumbs, role }) {
     } else if (index === 0) {
       return (
         <BreadcrumbItem key={crumb}>
-          <BreadcrumbLink href={`/${ROLES_LIST[role]}/${crumb}`}>
-            {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+          <BreadcrumbLink asChild>
+            <Link to={`/${ROLES_LIST[role]}/${crumb}`}>
+              {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
       );
@@ -33,12 +36,14 @@ function BreadCrumbGenerator({ crumbs, role }) {
         <React.Fragment key={crumb}>
           <BreadcrumbSeparator />
           <BreadcrumbItem key={crumb}>
-            <BreadcrumbLink
-              href={`/${ROLES_LIST[role]}/${crumbs
-                .slice(0, index + 1)
-                .join("/")}`}
-            >
-              {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+            <BreadcrumbLink asChild>
+              <Link
+                to={`/${ROLES_LIST[role]}/${crumbs
+                  .slice(0, index + 1)
+                  .join("/")}`}
+              >
+                {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </React.Fragment>
