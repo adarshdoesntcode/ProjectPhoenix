@@ -123,6 +123,10 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         setToken("");
         setIsLoading(false);
         setForgotPassword(false);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setOpt("");
         toast({
           title: "Password Changed Successfully",
           description: "Login with the new password",

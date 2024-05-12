@@ -92,7 +92,7 @@ function AdminLogin() {
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value: /^[a-zA-Z]+@ncit.edu.np$/,
+                      value: /^[^\d@]+@ncit\.edu\.np$/,
                       message: "Invalid email address",
                     },
                   })}
@@ -168,7 +168,6 @@ function AdminLogin() {
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between"></div>
 
             <Button className="w-full" asChild>
               <Link
