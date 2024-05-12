@@ -55,14 +55,22 @@ function StudentLogin() {
         password,
         role: ROLES_LIST.student,
       });
-      dispatch(setCredentials({ ...userData }));
-      reset();
-      navigate(from, { replace: true });
-    } catch (err) {
+
+      if (userData.error) {
+        if (userData.error.status === 401)
+          throw new Error("Email or password is incorrect.");
+      }
+
+      if (!userData.error) {
+        dispatch(setCredentials({ ...userData }));
+        reset();
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "Use correct credentials",
+        description: error.message,
       });
     }
   };

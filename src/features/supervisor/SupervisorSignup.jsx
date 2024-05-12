@@ -32,8 +32,8 @@ function SupervisorSignup() {
         phoneNumber: data.phone,
       });
       if (res.error) {
-        if (res.error.originalStatus === 409) {
-          throw new Error("Conflict error");
+        if (res.error.status === 409) {
+          throw new Error("Account with this email already exists.");
         }
       }
       if (!res.error) {
@@ -47,8 +47,8 @@ function SupervisorSignup() {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Uh Oh !!",
-        description: "Account with this email already exists.",
+        title: "Something Went Wrong!!",
+        description: error.message,
       });
     }
   };

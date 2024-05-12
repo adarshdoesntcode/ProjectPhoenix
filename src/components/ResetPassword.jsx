@@ -72,7 +72,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
   };
   const onSendOTP = async (e) => {
     e.preventDefault();
-    if (!otp && !token) return;
+    if (!otp || !token) return;
 
     try {
       setIsLoading(true);
