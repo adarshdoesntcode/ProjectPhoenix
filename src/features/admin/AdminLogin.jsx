@@ -20,9 +20,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { ROLES_LIST } from "@/config/roleList";
 import { useState } from "react";
 import { getGoogleOAuthURL } from "@/lib/utils";
+import { ResetPassword } from "@/components/ResetPassword";
 
 function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [login, { isLoading }] = useLoginMutation();
@@ -108,9 +110,12 @@ function AdminLogin() {
                       <span>Password</span>
                     )}
                   </Label>
-                  <a className="ml-auto font-normal leading-none inline-block py-0 text-sm underline">
+                  <p
+                    onClick={() => setForgotPassword(true)}
+                    className="ml-auto font-normal leading-none cursor-pointer inline-block py-0 text-sm underline"
+                  >
                     Forgot your password?
-                  </a>
+                  </p>
                 </div>
                 <div className="relative">
                   {showPassword ? (
@@ -146,6 +151,13 @@ function AdminLogin() {
                 </Button>
               )}
             </form>
+            {forgotPassword && (
+              <ResetPassword
+                forgotPassword={forgotPassword}
+                setForgotPassword={setForgotPassword}
+                role={ROLES_LIST.admin}
+              />
+            )}
 
             <div className="relative my-1">
               <div className="absolute inset-0 flex items-center">
