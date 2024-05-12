@@ -16,7 +16,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import { setCredentials } from "../auth/authSlice";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import SupervisorSignup from "./SupervisorSignup";

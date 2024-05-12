@@ -10,10 +10,9 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import { isTabActive } from "@/lib/utils";
 import CurrentClock from "../../components/CurrentClock";
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 
 function AdminSideBar() {
   const location = useLocation();

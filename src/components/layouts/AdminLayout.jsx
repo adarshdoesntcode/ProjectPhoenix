@@ -21,7 +21,7 @@ import AdminSideBar from "../../features/admin/AdminSideBar";
 import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
 import useLogout from "@/hooks/useLogout";
 import { Outlet, useLocation } from "react-router-dom";
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import BreadCrumbGenerator from "../BreadCrumbGenerator";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";

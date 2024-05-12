@@ -16,7 +16,7 @@ import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { setCredentials } from "../auth/authSlice";
 import StudentSignup from "./StudentSignup";

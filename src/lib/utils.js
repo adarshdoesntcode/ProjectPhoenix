@@ -1,4 +1,4 @@
-import { ROLES_LIST } from "@/config/roleList";
+import { GOOGLE_CLIENT_ID, ROLES_LIST } from "@/config/config";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -28,7 +28,6 @@ export const getInitials = (fullName) => {
 
 export function newEventDateMatcher(subEvent) {
   const proposalReportMatcher = { before: new Date() };
-
   const proposalreport = subEvent.proposal.reportDeadline
     ? new Date(subEvent.proposal.reportDeadline)
     : new Date();
@@ -36,7 +35,6 @@ export function newEventDateMatcher(subEvent) {
   const propoalDefensetMatcher = {
     before: proposalreport,
   };
-
   const midreport = subEvent.proposal.defenseDate
     ? new Date(subEvent.proposal.defenseDate)
     : new Date();
@@ -86,8 +84,7 @@ export function getGoogleOAuthURL(redirect_uri) {
 
   const options = {
     redirect_uri,
-    client_id:
-      "802396137377-5pfhl96kiru3ttesrvt52uqsq0631jma.apps.googleusercontent.com",
+    client_id: GOOGLE_CLIENT_ID,
     access_type: "offline",
     response_type: "code",
     prompt: "consent",
@@ -104,11 +101,8 @@ export function getGoogleOAuthURL(redirect_uri) {
 
 export function daysFromToday(targetDate) {
   const target = new Date(targetDate);
-
   const today = new Date();
-
   const differenceInMs = target.getTime() - today.getTime();
-
   const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
 
   return differenceInDays;

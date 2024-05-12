@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut } from "../features/auth/authSlice";
+import { API_BASE_URL } from "@/config/config";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://project-phoenix-clz.vercel.app/api/",
+  baseUrl: API_BASE_URL,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;

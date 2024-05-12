@@ -1,4 +1,4 @@
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import AdminLogin from "@/features/admin/AdminLogin";
 import DefenseLogin from "@/features/defense/DefenseLogin";
 import Landing from "@/features/home/Landing";

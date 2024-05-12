@@ -18,6 +18,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "./ui/input-otp";
+import { API_BASE_URL } from "@/config/config";
 
 export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
   const [step, setStep] = useState(1);
@@ -34,16 +35,13 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://project-phoenix-clz.vercel.app/api/forgotPassword/email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, role }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/forgotPassword/email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, role }),
+      });
 
       if (response.ok) {
         const token = await response.json();
@@ -66,17 +64,14 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://project-phoenix-clz.vercel.app/api/forgotPassword/OTP",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ OTP: otp }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/forgotPassword/OTP`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ OTP: otp }),
+      });
 
       if (response.ok) {
         const token = await response.json();
@@ -110,17 +105,14 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        "https://project-phoenix-clz.vercel.app/api/forgotPassword/password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ password }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/forgotPassword/password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ password }),
+      });
 
       if (response.ok) {
         setToken("");

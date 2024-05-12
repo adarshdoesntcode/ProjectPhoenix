@@ -1,4 +1,4 @@
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import {
   BreadcrumbItem,
   BreadcrumbLink,

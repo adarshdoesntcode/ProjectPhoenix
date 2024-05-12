@@ -17,7 +17,7 @@ import { setCredentials } from "../auth/authSlice";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import { useState } from "react";
 import { getGoogleOAuthURL } from "@/lib/utils";
 import { ResetPassword } from "@/components/ResetPassword";

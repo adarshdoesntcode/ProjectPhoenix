@@ -5,7 +5,7 @@ import PublicRoutes from "./routes/PublicRoutes";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { ROLES_LIST } from "./config/roleList";
+import { ROLES_LIST } from "./config/config";
 import NotFound from "./components/NotFound";
 import AdminLayout from "./components/layouts/AdminLayout";
 import AdminRoutes from "./routes/AdminRoutes";

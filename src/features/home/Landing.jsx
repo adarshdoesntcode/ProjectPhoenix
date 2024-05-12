@@ -5,17 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { Button } from "../../components/ui/button";
-import {
-  Cctv,
-  FileCheck,
-  GraduationCap,
-  Origami,
-  ShieldCheck,
-} from "lucide-react";
+import { Cctv, FileCheck, GraduationCap, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import Phoenix from "./Phoenix";
 
 function Landing() {

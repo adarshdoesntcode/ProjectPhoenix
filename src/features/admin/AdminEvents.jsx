@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ROLES_LIST } from "@/config/roleList";
+import { ROLES_LIST } from "@/config/config";
 import { Link } from "react-router-dom";
 
 function AdminEvents() {
