@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ChevronLeftIcon, Loader2 } from "lucide-react";
+import { ChevronLeftIcon, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "./ui/use-toast";
 import {
@@ -19,12 +19,21 @@ import {
   InputOTPSlot,
 } from "./ui/input-otp";
 import { API_BASE_URL } from "@/config/config";
+import { useForm } from "react-hook-form";
 
 export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {
+    handleSubmit,
+    watch,
+    register,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [otp, setOpt] = useState("");
   const [token, setToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -97,42 +106,28 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
     }
   };
 
-  const onSendPassword = async (e) => {
-    e.preventDefault();
-    if (!password && !confirmPassword) return;
-    if (password !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Password and Confirm Password does not match",
-      });
-      return;
-    }
-
+  const onSendPassword = async (data) => {
     try {
-      setIsLoading(true);
       const response = await fetch(`${API_BASE_URL}/forgotPassword/password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password: data.password }),
       });
 
       if (response.status === 200) {
         setToken("");
-        setIsLoading(false);
         setForgotPassword(false);
         setEmail("");
-        setPassword("");
-        setConfirmPassword("");
+        reset();
         setOpt("");
         toast({
           title: "Password Changed Successfully",
           description: "Login with the new password",
         });
       } else {
-        setIsLoading(false);
         throw new Error("Try again");
       }
     } catch (error) {
@@ -141,7 +136,6 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         title: "Something went Wrong",
         description: error.message,
       });
-      setIsLoading(false);
     }
   };
 
@@ -244,29 +238,95 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
               <DialogDescription>Enter your new password</DialogDescription>
             </DialogHeader>
 
-            <form>
+            <form onSubmit={handleSubmit(onSendPassword)}>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="col-span-4"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="confirmPassword" className="col-span-4">
-                    Confirm Password
+                <div className="grid gap-2">
+                  <Label htmlFor="password">
+                    {errors.password ? (
+                      <span className="text-red-500">
+                        {errors.password.message}
+                      </span>
+                    ) : (
+                      <span>Password</span>
+                    )}
                   </Label>
-                  <Input
-                    id="confirmpassword"
-                    type="password"
-                    className="col-span-4"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
+                  <div className="relative">
+                    {showPassword ? (
+                      <Eye
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                      />
+                    ) : (
+                      <EyeOff
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                      />
+                    )}
+
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 8,
+                          message:
+                            "Password must be at least 8 characters long",
+                        },
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                          message:
+                            "Password must contain 1 lowercase, 1 uppercase, 1 number, and 1 special character",
+                        },
+                      })}
+                      className={errors.password ? "border-red-500" : ""}
+                    />
+                  </div>
+                </div>
+                <div className="grid  items-center gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="confirmPassword">
+                      {errors.confirmPassword ? (
+                        <span className="text-red-500">
+                          {errors.confirmPassword.message}
+                        </span>
+                      ) : (
+                        <span>Confirm Password</span>
+                      )}
+                    </Label>
+                    <div className="relative">
+                      {showConfirmPassword ? (
+                        <Eye
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                        />
+                      ) : (
+                        <EyeOff
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                        />
+                      )}
+
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        {...register("confirmPassword", {
+                          validate: (value) =>
+                            value === watch("password") ||
+                            "The passwords do not match",
+                        })}
+                        className={
+                          errors.confirmPassword ? "border-red-500" : ""
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -277,13 +337,13 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                 >
                   <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
-                {isLoading ? (
+                {isSubmitting ? (
                   <Button variant="secondary" disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Changing..
                   </Button>
                 ) : (
-                  <Button onClick={onSendPassword}>Change Password</Button>
+                  <Button type="submit">Change Password</Button>
                 )}
               </div>
             </form>
