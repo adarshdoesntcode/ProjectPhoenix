@@ -200,7 +200,8 @@ function StudentLogin() {
                 <Button className="w-full" asChild>
                   <Link
                     to={getGoogleOAuthURL(
-                      `${GOOGLE_OAUTH_REDIRECT_URL}?role=${ROLES_LIST.student}`
+                      GOOGLE_OAUTH_REDIRECT_URL,
+                      ROLES_LIST.student
                     )}
                   >
                     Login with Google

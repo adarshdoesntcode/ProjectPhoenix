@@ -199,7 +199,8 @@ function SupervisorLogin() {
                 <Button className="w-full" asChild>
                   <Link
                     to={getGoogleOAuthURL(
-                      `${GOOGLE_OAUTH_REDIRECT_URL}?role=${ROLES_LIST.supervisor}`
+                      GOOGLE_OAUTH_REDIRECT_URL,
+                      ROLES_LIST.supervisor
                     )}
                   >
                     Login with Google

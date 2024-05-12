@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { ChevronLeftIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "./ui/use-toast";
 import {
@@ -43,11 +43,14 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         body: JSON.stringify({ email, role }),
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         const token = await response.json();
         setToken(token.accessToken);
         setIsLoading(false);
         setStep(2);
+      } else if (response.status === 404) {
+        setIsLoading(false);
+        throw new Error("The email does not exist");
       }
     } catch (error) {
       toast({
@@ -73,14 +76,16 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         body: JSON.stringify({ OTP: otp }),
       });
 
-      if (response.ok) {
+      console.log(response);
+
+      if (response.status === 200) {
         const token = await response.json();
         setToken(token.accessToken);
         setIsLoading(false);
         setStep(3);
-      } else {
+      } else if (response.status === 401) {
         setIsLoading(false);
-        throw new Error("No response from server, try again");
+        throw new Error("OTP did not match");
       }
     } catch (error) {
       toast({
@@ -114,7 +119,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         body: JSON.stringify({ password }),
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         setToken("");
         setIsLoading(false);
         setForgotPassword(false);
@@ -124,7 +129,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
         });
       } else {
         setIsLoading(false);
-        throw new Error("Something went wrong");
+        throw new Error("Try again");
       }
     } catch (error) {
       toast({
@@ -161,7 +166,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                   />
                 </div>
               </div>
-              <DialogFooter>
+              <div className="flex items-center justify-end">
                 {isLoading ? (
                   <Button variant="secondary" disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -170,7 +175,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                 ) : (
                   <Button onClick={onSendEmail}>Receive OTP</Button>
                 )}
-              </DialogFooter>
+              </div>
             </form>
           </>
         )}
@@ -208,7 +213,14 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                   </div>
                 </div>
               </div>
-              <DialogFooter>
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setStep(1)}
+                >
+                  <ChevronLeftIcon className="h-4 w-4" />
+                </Button>
                 {isLoading ? (
                   <Button variant="secondary" disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -217,7 +229,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                 ) : (
                   <Button onClick={onSendOTP}>Send</Button>
                 )}
-              </DialogFooter>
+              </div>
             </form>
           </>
         )}
@@ -253,16 +265,23 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
                   />
                 </div>
               </div>
-              <DialogFooter>
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setStep(2)}
+                >
+                  <ChevronLeftIcon className="h-4 w-4" />
+                </Button>
                 {isLoading ? (
                   <Button variant="secondary" disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Changing..
                   </Button>
                 ) : (
-                  <Button onClick={onSendPassword}>Change</Button>
+                  <Button onClick={onSendPassword}>Change Password</Button>
                 )}
-              </DialogFooter>
+              </div>
             </form>
           </>
         )}

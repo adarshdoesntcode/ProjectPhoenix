@@ -151,13 +151,12 @@ function AdminLogin() {
                 </Button>
               )}
             </form>
-            {forgotPassword && (
-              <ResetPassword
-                forgotPassword={forgotPassword}
-                setForgotPassword={setForgotPassword}
-                role={ROLES_LIST.admin}
-              />
-            )}
+
+            <ResetPassword
+              forgotPassword={forgotPassword}
+              setForgotPassword={setForgotPassword}
+              role={ROLES_LIST.admin}
+            />
 
             <div className="relative my-1">
               <div className="absolute inset-0 flex items-center">
@@ -169,11 +168,13 @@ function AdminLogin() {
                 </span>
               </div>
             </div>
+            <div className="flex items-center justify-between"></div>
 
             <Button className="w-full" asChild>
               <Link
                 to={getGoogleOAuthURL(
-                  `${GOOGLE_OAUTH_REDIRECT_URL}?role=${ROLES_LIST.admin}`
+                  GOOGLE_OAUTH_REDIRECT_URL,
+                  ROLES_LIST.admin
                 )}
               >
                 Login with Google

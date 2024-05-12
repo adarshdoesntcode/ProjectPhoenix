@@ -79,7 +79,7 @@ export function newEventDateMatcher(subEvent) {
   };
 }
 
-export function getGoogleOAuthURL(redirect_uri) {
+export function getGoogleOAuthURL(redirect_uri, role) {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
   const options = {
@@ -92,6 +92,7 @@ export function getGoogleOAuthURL(redirect_uri) {
       "https://www.googleapis.com/auth/userinfo.profile",
       "https://www.googleapis.com/auth/userinfo.email",
     ].join(" "),
+    state: role,
   };
 
   const qs = new URLSearchParams(options);
