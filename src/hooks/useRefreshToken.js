@@ -1,4 +1,4 @@
-import { logOut, setCredentials } from "@/features/auth/authSlice";
+import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { authApiSlice } from "@/features/auth/authApiSlice";
 
