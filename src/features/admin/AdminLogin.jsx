@@ -17,7 +17,7 @@ import { setCredentials } from "../auth/authSlice";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { ROLES_LIST } from "@/config/config";
+import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/config/config";
 import { useState } from "react";
 import { getGoogleOAuthURL } from "@/lib/utils";
 import { ResetPassword } from "@/components/ResetPassword";
@@ -173,7 +173,7 @@ function AdminLogin() {
             <Button className="w-full" asChild>
               <Link
                 to={getGoogleOAuthURL(
-                  "https://project-phoenix-clz.vercel.app/api/oauth/google"
+                  `${GOOGLE_OAUTH_REDIRECT_URL}?role=${ROLES_LIST.admin}`
                 )}
               >
                 Login with Google

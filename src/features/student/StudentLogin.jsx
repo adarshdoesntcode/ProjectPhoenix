@@ -11,18 +11,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { ROLES_LIST } from "@/config/config";
+import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/config/config";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { setCredentials } from "../auth/authSlice";
 import StudentSignup from "./StudentSignup";
 import { useState } from "react";
+import { ResetPassword } from "@/components/ResetPassword";
+import { getGoogleOAuthURL } from "@/lib/utils";
 
 function StudentLogin() {
+  const [forgotPassword, setForgotPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -126,9 +134,12 @@ function StudentLogin() {
                           <span>Password</span>
                         )}
                       </Label>
-                      <a className="ml-auto font-normal leading-none inline-block py-0 text-sm underline">
+                      <p
+                        onClick={() => setForgotPassword(true)}
+                        className="ml-auto font-normal leading-none cursor-pointer inline-block py-0 text-sm underline"
+                      >
                         Forgot your password?
-                      </a>
+                      </p>
                     </div>
                     <div className="relative">
                       {showPassword ? (
@@ -168,7 +179,13 @@ function StudentLogin() {
                     </Button>
                   )}
                 </form>
-
+                {forgotPassword && (
+                  <ResetPassword
+                    forgotPassword={forgotPassword}
+                    setForgotPassword={setForgotPassword}
+                    role={ROLES_LIST.student}
+                  />
+                )}
                 <div className="relative my-1">
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t"></span>
@@ -180,7 +197,15 @@ function StudentLogin() {
                   </div>
                 </div>
 
-                <Button className="w-full">Login with Google</Button>
+                <Button className="w-full" asChild>
+                  <Link
+                    to={getGoogleOAuthURL(
+                      `${GOOGLE_OAUTH_REDIRECT_URL}?role=${ROLES_LIST.student}`
+                    )}
+                  >
+                    Login with Google
+                  </Link>
+                </Button>
                 <div className="  mx-auto text-center  text-slate-400 text-xs">
                   <p>Use the Google Account provided by the college.</p>
                 </div>

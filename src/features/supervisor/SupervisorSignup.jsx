@@ -197,28 +197,19 @@ function SupervisorSignup() {
           </div>
         </div>
         {isSubmitting || isLoading ? (
-          <Button variant="secondary" disabled>
+          <Button disabled>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Creating Acount
           </Button>
         ) : (
-          <Button variant="secondary" type="submit" className="w-full">
+          <Button type="submit" className="w-full">
             Create an account
           </Button>
         )}
       </form>
-      <div className="relative my-1">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t"></span>
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-2 text-slate-400">Or continue with</span>
-        </div>
-      </div>
 
-      <Button className="w-full">Sign Up with Google</Button>
       <div className="  mx-auto text-center  text-slate-400 text-xs">
-        <p>Use the Google Account provided by the college.</p>
+        <p>Use the Email account provided by the college.</p>
       </div>
     </div>
   );
