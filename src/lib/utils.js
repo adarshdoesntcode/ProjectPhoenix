@@ -108,3 +108,25 @@ export function daysFromToday(targetDate) {
 
   return differenceInDays;
 }
+
+export function numberOfValues(objects, key, status) {
+  const count = objects.reduce((acc, obj) => {
+    if (obj[key] === status) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
+  return count;
+}
+
+export function numberOfDevelopingProjects(objects, key, status) {
+  const count = objects.reduce((acc, obj) => {
+    if (obj[key] === status) {
+      return (acc += obj.projects.length);
+    } else {
+      return acc;
+    }
+  }, 0);
+  return count;
+}

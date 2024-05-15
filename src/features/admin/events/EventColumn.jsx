@@ -17,7 +17,7 @@ import {
 import { format } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 
-export const allEventColumns = [
+export const EventColumns = [
   {
     accessorKey: "eventId",
     header: "Event ID",
@@ -37,8 +37,17 @@ export const allEventColumns = [
     cell: ({ row }) => {
       const eventStatus = row.getValue("eventStatus");
       const formatted = getEventStatusByCode(eventStatus);
+      let variant;
 
-      return <Badge>{formatted}</Badge>;
+      if (formatted === "Archive") {
+        variant = "destructive";
+      } else if (formatted === "Complete") {
+        variant = "secondary";
+      } else {
+        variant = "";
+      }
+
+      return <Badge variant={variant}>{formatted}</Badge>;
     },
   },
   {

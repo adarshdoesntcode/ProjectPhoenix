@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { ROLES_LIST } from "@/lib/config";
+import { EVENT_STATUS, ROLES_LIST } from "@/lib/config";
 import { Link } from "react-router-dom";
 import { useGetAllEventsQuery } from "../adminApiSlice";
-import { allEventColumns } from "./EventColumn";
+import { EventColumns } from "./EventColumn";
 import {
   Activity,
+  CalendarCheck2,
+  CheckCheck,
   CirclePlus,
   CreditCard,
   DollarSign,
+  Hammer,
   Loader2,
   Users,
 } from "lucide-react";
@@ -23,569 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { File } from "lucide-react";
 
 import { DataTable } from "./EventDataTable";
-
-const fakeData = [
-  {
-    eventId: "ET-24001L",
-    eventName: "PROJECT 2 ",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "2",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: true,
-      defenseDate: "2024-08-10T12:00:00.000Z",
-      reportDeadline: "2024-08-05T12:00:00.000Z",
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    projects: [],
-    year: 2024,
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-  {
-    eventId: "ET-24101A",
-
-    eventName: "PROJECT 1",
-    description: "This is a description of the example event.",
-    eventTarget: "72354",
-    eventType: "0",
-    eventStatus: "101",
-    proposal: {
-      defense: true,
-      defenseDate: "2024-05-20T12:00:00.000Z",
-      reportDeadline: "2024-05-15T12:00:00.000Z",
-    },
-    mid: {
-      defense: false,
-      defenseDate: null,
-      reportDeadline: null,
-    },
-    final: {
-      defense: true,
-      defenseDate: "2024-10-10T12:00:00.000Z",
-      reportDeadline: "2024-10-05T12:00:00.000Z",
-    },
-    year: 2024,
-    projects: [],
-    author: {
-      _id: "6641e5e1093be8f942f5832a",
-      email: "nikesh.191624@ncit.edu.np",
-      fullname: "Nikesh Gamal",
-      phoneNumber: "9815523654",
-      __v: 0,
-      photo:
-        "https://lh3.googleusercontent.com/a/ACg8ocIfXPQaBjP6VTLLG3HfrhvLWMlocO6G09-PGOUrKlMAwkF0cDk=s96-c",
-      updatedAt: "2024-05-15T09:56:48.390Z",
-    },
-    _id: "66449b2702335f8d476ea97d",
-    createdAt: "2024-05-15T11:23:19.718Z",
-    updatedAt: "2024-05-15T11:23:19.718Z",
-    __v: 0,
-  },
-];
+import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
 
 function AdminEvents() {
   const {
@@ -596,8 +37,44 @@ function AdminEvents() {
     error,
   } = useGetAllEventsQuery();
 
-  console.log(events);
   let content;
+  let numberOfActiveEvents,
+    numberOfCompleteEvents,
+    noOfDevelopingProjects,
+    activeEvents,
+    completeEvents,
+    archiveEvents;
+
+  if (events) {
+    numberOfActiveEvents = numberOfValues(
+      events?.data,
+      "eventStatus",
+      EVENT_STATUS.Active
+    );
+    numberOfCompleteEvents = numberOfValues(
+      events?.data,
+      "eventStatus",
+      EVENT_STATUS.Complete
+    );
+
+    noOfDevelopingProjects = numberOfDevelopingProjects(
+      events?.data,
+      "eventStatus",
+      EVENT_STATUS.Active
+    );
+  }
+
+  if (events) {
+    activeEvents = events.data.filter(
+      (event) => event.eventStatus === EVENT_STATUS.Active
+    );
+    completeEvents = events.data.filter(
+      (event) => event.eventStatus === EVENT_STATUS.Complete
+    );
+    archiveEvents = events.data.filter(
+      (event) => event.eventStatus === EVENT_STATUS.Archive
+    );
+  }
 
   if (isLoading) {
     content = (
@@ -635,11 +112,13 @@ function AdminEvents() {
                 <CardTitle className="text-sm font-medium">
                   Hosted Events
                 </CardTitle>
-                <DollarSign className="h-4 w-4 text-gray-500" />
+                <CalendarCheck2 className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{events.data.length}</div>
-                <p className="text-xs text-gray-500">events have been hosted</p>
+                <p className="text-xs text-gray-500 text-right">
+                  events have been hosted
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -650,8 +129,10 @@ function AdminEvents() {
                 <Activity className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+573</div>
-                <p className="text-xs text-gray-500">+201 since last year</p>
+                <div className="text-2xl font-bold">{numberOfActiveEvents}</div>
+                <p className="text-xs text-gray-500 text-right">
+                  +201 since last year
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -659,11 +140,15 @@ function AdminEvents() {
                 <CardTitle className="text-sm font-medium">
                   Developing Projects
                 </CardTitle>
-                <CreditCard className="h-4 w-4 text-gray-500" />
+                <Hammer className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+12,234</div>
-                <p className="text-xs text-gray-500">+19% from last year</p>
+                <div className="text-2xl font-bold">
+                  {noOfDevelopingProjects}
+                </div>
+                <p className="text-xs text-gray-500 text-right">
+                  +19% from last year
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -671,11 +156,15 @@ function AdminEvents() {
                 <CardTitle className="text-sm font-medium">
                   Complete Events
                 </CardTitle>
-                <Users className="h-4 w-4 text-gray-500" />
+                <CheckCheck className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+2350</div>
-                <p className="text-xs text-gray-500">+180.1% from last year</p>
+                <div className="text-2xl font-bold">
+                  {numberOfCompleteEvents}
+                </div>
+                <p className="text-xs text-gray-500 text-right">
+                  +180.1% from last year
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -713,7 +202,7 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={allEventColumns} data={events.data} />
+                  <DataTable columns={EventColumns} data={activeEvents} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -726,7 +215,7 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={allEventColumns} data={events.data} />
+                  <DataTable columns={EventColumns} data={completeEvents} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -739,7 +228,7 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={allEventColumns} data={events.data} />
+                  <DataTable columns={EventColumns} data={archiveEvents} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -752,7 +241,7 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={allEventColumns} data={events.data} />
+                  <DataTable columns={EventColumns} data={events.data} />
                 </CardContent>
               </Card>
             </TabsContent>
