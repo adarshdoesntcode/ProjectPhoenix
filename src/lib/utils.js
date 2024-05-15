@@ -1,6 +1,6 @@
-import { GOOGLE_CLIENT_ID, ROLES_LIST } from "@/config/config";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { GOOGLE_CLIENT_ID, ROLES_LIST } from "./config";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));

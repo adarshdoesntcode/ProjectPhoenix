@@ -21,7 +21,7 @@ import AdminSideBar from "../../features/admin/AdminSideBar";
 import AdminMobileSideBar from "../../features/admin/AdminMobileSideBar";
 import useLogout from "@/hooks/useLogout";
 import { Outlet, useLocation } from "react-router-dom";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import BreadCrumbGenerator from "../BreadCrumbGenerator";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
@@ -105,7 +105,7 @@ function AdminLayout() {
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
-          <main className="flex flex-1 flex-col  p-4 pt-0 lg:px-6 bg-slate-50">
+          <main className="flex flex-1 flex-col  p-4  lg:px-6 bg-slate-50">
             <Outlet />
           </main>
         </div>

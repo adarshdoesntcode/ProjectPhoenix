@@ -19,7 +19,7 @@ import { Loader2, Search } from "lucide-react";
 
 import useLogout from "@/hooks/useLogout";
 import { Outlet, useLocation } from "react-router-dom";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import BreadCrumbGenerator from "../BreadCrumbGenerator";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";

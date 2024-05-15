@@ -1,11 +1,12 @@
 import AdminDashboard from "@/features/admin/AdminDashboard";
 import AdminEvaluators from "@/features/admin/AdminEvaluators";
-import AdminEvents from "@/features/admin/AdminEvents";
-import AdminNewEvent from "@/features/admin/AdminNewEvent";
+
 import AdminNotices from "@/features/admin/AdminNotices";
 import AdminProjects from "@/features/admin/AdminProjects";
 import AdminStudents from "@/features/admin/AdminStudents";
 import AdminSupervisors from "@/features/admin/AdminSupervisors";
+import AdminEvents from "@/features/admin/events/AdminEvents";
+import AdminNewEvent from "@/features/admin/events/AdminNewEvent";
 
 import { Navigate } from "react-router-dom";
 

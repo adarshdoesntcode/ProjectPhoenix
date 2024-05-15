@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../auth/authApiSlice";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";

@@ -18,7 +18,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "./ui/input-otp";
-import { API_BASE_URL } from "@/config/config";
+import { API_BASE_URL } from "@/lib/config";
 import { useForm } from "react-hook-form";
 
 export function ResetPassword({ forgotPassword, setForgotPassword, role }) {

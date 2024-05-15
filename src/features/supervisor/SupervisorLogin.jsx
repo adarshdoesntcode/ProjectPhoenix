@@ -21,7 +21,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/config/config";
+import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/lib/config";
 import { setCredentials } from "../auth/authSlice";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import SupervisorSignup from "./SupervisorSignup";

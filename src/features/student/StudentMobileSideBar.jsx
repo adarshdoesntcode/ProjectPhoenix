@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -7,7 +6,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import {
   Boxes,
   CalendarDays,
@@ -22,6 +21,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 function StudentMobileSideBar() {
   const location = useLocation();

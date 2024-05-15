@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -40,7 +39,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
-import { useCreateEventMutation } from "./adminApiSlice";
+import { useCreateEventMutation } from "../adminApiSlice";
+import { EVENT_TYPE, PROGRAM_CODE } from "@/lib/config";
 
 const initalState = {
   proposal: {
@@ -183,17 +183,17 @@ function AdminNewEvent() {
                       rules={{ required: "Event Type is required" }}
                       render={({ field }) => (
                         <Select onValueChange={field.onChange}>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full text-gray-500">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="FIRST">
+                            <SelectItem value={EVENT_TYPE.FIRST}>
                               First Project (1 credit)
                             </SelectItem>
-                            <SelectItem value="MINOR">
+                            <SelectItem value={EVENT_TYPE.MINOR}>
                               Minor Project (2 credit)
                             </SelectItem>
-                            <SelectItem value="MAJOR">
+                            <SelectItem value={EVENT_TYPE.MAJOR}>
                               Major Project (4/5 credit)
                             </SelectItem>
                           </SelectContent>
@@ -220,24 +220,26 @@ function AdminNewEvent() {
                           onValueChange={field.onChange}
                           className={errors.eventName ? "border-red-500" : ""}
                         >
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full  text-gray-500">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            <SelectItem value="BESE">
+                            <SelectItem value={PROGRAM_CODE.ALL}>
+                              All
+                            </SelectItem>
+                            <SelectItem value={PROGRAM_CODE.BESE}>
                               Software Engineering
                             </SelectItem>
-                            <SelectItem value="BECE">
+                            <SelectItem value={PROGRAM_CODE.BECE}>
                               Computer Engineering
                             </SelectItem>
-                            <SelectItem value="BEELX">
+                            <SelectItem value={PROGRAM_CODE.BEELX}>
                               Electrical Engineering
                             </SelectItem>
-                            <SelectItem value="BEIT">
+                            <SelectItem value={PROGRAM_CODE.BEIT}>
                               Information Technology
                             </SelectItem>
-                            <SelectItem value="BCA">
+                            <SelectItem value={PROGRAM_CODE.BCA}>
                               Computer Application
                             </SelectItem>
                           </SelectContent>

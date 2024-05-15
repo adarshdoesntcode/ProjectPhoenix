@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -137,7 +137,7 @@ function StudentSignup() {
             onValueChange={(value) => setValue("program", value)}
             required
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full text-slate-500">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>

@@ -8,7 +8,7 @@ import {
 import { Button } from "../../components/ui/button";
 import { Cctv, FileCheck, GraduationCap, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ROLES_LIST } from "@/config/config";
+import { ROLES_LIST } from "@/lib/config";
 import Phoenix from "./Phoenix";
 
 function Landing() {
