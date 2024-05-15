@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TableCell, TableHead } from "@/components/ui/table";
 import {
   getEventStatusByCode,
   getEventTypeByCode,
@@ -20,20 +21,29 @@ import { MoreHorizontal } from "lucide-react";
 export const EventColumns = [
   {
     accessorKey: "eventId",
-    header: "Event ID",
+    header: () => <TableHead>Event ID</TableHead>,
     cell: ({ row }) => {
       const eventId = row.getValue("eventId");
 
-      return <div className="text-gray-500">{eventId}</div>;
+      return <TableCell>{eventId}</TableCell>;
     },
   },
   {
     accessorKey: "eventName",
-    header: "Name",
+    header: () => <TableHead className="hidden lg:table-cell">Name</TableHead>,
+    cell: ({ row }) => {
+      const eventName = row.getValue("eventName");
+
+      return (
+        <TableCell className="text-gray-500 hidden lg:table-cell">
+          {eventName}
+        </TableCell>
+      );
+    },
   },
   {
     accessorKey: "eventStatus",
-    header: "Status",
+    header: () => <TableHead>Status</TableHead>,
     cell: ({ row }) => {
       const eventStatus = row.getValue("eventStatus");
       const formatted = getEventStatusByCode(eventStatus);
@@ -47,57 +57,85 @@ export const EventColumns = [
         variant = "";
       }
 
-      return <Badge variant={variant}>{formatted}</Badge>;
+      return (
+        <TableCell>
+          <Badge variant={variant}>{formatted}</Badge>
+        </TableCell>
+      );
     },
   },
   {
     accessorKey: "eventType",
-    header: "Type",
+    header: () => <TableHead>Type</TableHead>,
     cell: ({ row }) => {
       const eventType = row.getValue("eventType");
       const formatted = getEventTypeByCode(eventType);
-      return <div className="font-semibold">{formatted}</div>;
+      return <TableCell className="font-semibold">{formatted}</TableCell>;
     },
   },
 
   {
     accessorKey: "eventTarget",
-    header: "Target",
+    header: () => (
+      <TableHead className="hidden lg:table-cell">Target</TableHead>
+    ),
     cell: ({ row }) => {
       const eventTarget = row.getValue("eventTarget");
       const formatted = getProgramByCode(eventTarget);
 
-      return <Badge variant="outline">{formatted}</Badge>;
+      return (
+        <TableCell className="hidden  lg:table-cell">
+          <Badge variant="outline">{formatted}</Badge>
+        </TableCell>
+      );
     },
   },
   {
     accessorKey: "projects",
-    header: "Projects",
+    header: () => (
+      <TableHead className="hidden lg:table-cell">Projects</TableHead>
+    ),
     cell: ({ row }) => {
       const projects = row.getValue("projects");
       const formatted = projects.length;
 
-      return <div className="font-semibold">{formatted}</div>;
+      return (
+        <TableCell className="font-semibold hidden lg:table-cell">
+          {formatted}
+        </TableCell>
+      );
     },
   },
   {
     accessorKey: "createdAt",
-    header: "Created On",
+    header: () => (
+      <TableHead className="hidden xl:table-cell">Created On</TableHead>
+    ),
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt");
       const formatted = format(createdAt, "PPP");
 
-      return <div className="text-gray-500">{formatted}</div>;
+      return (
+        <TableCell className="text-gray-500 hidden xl:table-cell">
+          {formatted}
+        </TableCell>
+      );
     },
   },
   {
     accessorKey: "author",
-    header: "Created By",
+    header: () => (
+      <TableHead className="hidden xl:table-cell">Created By</TableHead>
+    ),
     cell: ({ row }) => {
       const author = row.getValue("author");
       const formatted = author.fullname;
 
-      return <div className="text-gray-500">{formatted}</div>;
+      return (
+        <TableCell className="text-gray-500 hidden xl:table-cell">
+          {formatted}
+        </TableCell>
+      );
     },
   },
 
@@ -107,28 +145,30 @@ export const EventColumns = [
       const event = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={(e) => {
-                e.stopPropagation();
-                navigator.clipboard.writeText(event.eventId);
-              }}
-            >
-              Copy Event ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View Event</DropdownMenuItem>
-            <DropdownMenuItem>Archive</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <TableCell className="hidden md:table-cell">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigator.clipboard.writeText(event.eventId);
+                }}
+              >
+                Copy Event ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View Event</DropdownMenuItem>
+              <DropdownMenuItem>Archive</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
       );
     },
   },

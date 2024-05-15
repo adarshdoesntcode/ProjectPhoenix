@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function DataTable({ columns, data }) {
   const [pagination, setPagination] = useState({
@@ -42,14 +42,14 @@ export function DataTable({ columns, data }) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <React.Fragment key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                    </TableHead>
+                    </React.Fragment>
                   );
                 })}
               </TableRow>
@@ -62,15 +62,16 @@ export function DataTable({ columns, data }) {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
-                  onClick={() => alert("working")}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <React.Fragment key={cell.id}>
+                      {/* <TableCell> */}
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
                       )}
-                    </TableCell>
+                      {/* </TableCell> */}
+                    </React.Fragment>
                   ))}
                 </TableRow>
               ))
