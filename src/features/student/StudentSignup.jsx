@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { ROLES_LIST } from "@/lib/config";
+import { PROGRAM_CODE, ROLES_LIST } from "@/lib/config";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -142,11 +142,21 @@ function StudentSignup() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="BESE">Software Engineering</SelectItem>
-                <SelectItem value="BECE">Computer Engineering</SelectItem>
-                <SelectItem value="BEELX">Electrical Engineering</SelectItem>
-                <SelectItem value="BEIT">Information Technology</SelectItem>
-                <SelectItem value="BCA">Computer Application</SelectItem>
+                <SelectItem value={PROGRAM_CODE.BESE}>
+                  Software Engineering
+                </SelectItem>
+                <SelectItem value={PROGRAM_CODE.BECE}>
+                  Computer Engineering
+                </SelectItem>
+                <SelectItem value={PROGRAM_CODE.BEELX}>
+                  Electrical Engineering
+                </SelectItem>
+                <SelectItem value={PROGRAM_CODE.BEIT}>
+                  Information Technology
+                </SelectItem>
+                <SelectItem value={PROGRAM_CODE.BCA}>
+                  Computer Application
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

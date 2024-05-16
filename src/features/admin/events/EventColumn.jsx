@@ -50,7 +50,7 @@ export const EventColumns = [
       let variant;
 
       if (formatted === "Archive") {
-        variant = "destructive";
+        variant = "outline";
       } else if (formatted === "Complete") {
         variant = "secondary";
       } else {
