@@ -8,11 +8,8 @@ import {
   CalendarCheck2,
   CheckCheck,
   CirclePlus,
-  CreditCard,
-  DollarSign,
   Hammer,
   Loader2,
-  Users,
 } from "lucide-react";
 import {
   Card,
@@ -27,8 +24,10 @@ import { File } from "lucide-react";
 
 import { DataTable } from "./EventDataTable";
 import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
+import { useRef } from "react";
 
 function AdminEvents() {
+  const tableRef = useRef();
   const {
     data: events,
     isLoading,
@@ -181,6 +180,7 @@ function AdminEvents() {
                   size="sm"
                   variant="outline"
                   className="h-10 gap-1 text-sm"
+                  onClick={() => tableRef.current?.exportCSV()}
                 >
                   <File className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only">Export</span>
@@ -202,7 +202,11 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={EventColumns} data={activeEvents} />
+                  <DataTable
+                    ref={tableRef}
+                    columns={EventColumns}
+                    data={activeEvents}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -215,7 +219,11 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={EventColumns} data={completeEvents} />
+                  <DataTable
+                    ref={tableRef}
+                    columns={EventColumns}
+                    data={completeEvents}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -228,7 +236,11 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={EventColumns} data={archiveEvents} />
+                  <DataTable
+                    ref={tableRef}
+                    columns={EventColumns}
+                    data={archiveEvents}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -241,7 +253,11 @@ function AdminEvents() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DataTable columns={EventColumns} data={events.data} />
+                  <DataTable
+                    ref={tableRef}
+                    columns={EventColumns}
+                    data={events.data}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>

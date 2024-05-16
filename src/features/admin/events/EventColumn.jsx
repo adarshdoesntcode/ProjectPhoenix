@@ -25,7 +25,7 @@ export const EventColumns = [
     cell: ({ row }) => {
       const eventId = row.getValue("eventId");
 
-      return <TableCell>{eventId}</TableCell>;
+      return <TableCell className="text-gray-500">{eventId}</TableCell>;
     },
   },
   {

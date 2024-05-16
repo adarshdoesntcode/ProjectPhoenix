@@ -14,9 +14,40 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { download, generateCsv, mkConfig } from "export-to-csv";
+import {
+  getEventStatusByCode,
+  getEventTypeByCode,
+  getProgramByCode,
+} from "@/lib/config";
+import { format } from "date-fns";
 
-export function DataTable({ columns, data }) {
+const csvConfig = mkConfig({
+  fieldSeparator: ",",
+  filename: "Events",
+  decimalSeparator: ".",
+  useKeysAsHeaders: true,
+});
+
+const exportExcel = (rows) => {
+  const rowData = rows.map((row) => {
+    return {
+      EventID: row.original.eventId,
+      Name: row.original.eventName,
+      Status: getEventStatusByCode(row.original.eventStatus),
+      Type: getEventTypeByCode(row.original.eventType),
+      Target: getProgramByCode(row.original.eventTarget),
+      Projects: row.original.projects.length,
+      createdOn: format(row.original.createdAt, "PPP"),
+      createdBy: row.original.author.fullname,
+    };
+  });
+  const csv = generateCsv(csvConfig)(rowData);
+  download(csvConfig)(csv);
+};
+
+export const DataTable = forwardRef(({ columns, data }, ref) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 6,
@@ -31,6 +62,14 @@ export function DataTable({ columns, data }) {
     state: {
       pagination,
     },
+  });
+
+  useImperativeHandle(ref, () => {
+    return {
+      exportCSV: () => {
+        exportExcel(table.getFilteredRowModel().rows);
+      },
+    };
   });
 
   return (
@@ -65,12 +104,10 @@ export function DataTable({ columns, data }) {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>
-                      {/* <TableCell> */}
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
                       )}
-                      {/* </TableCell> */}
                     </React.Fragment>
                   ))}
                 </TableRow>
@@ -108,4 +145,6 @@ export function DataTable({ columns, data }) {
       </div>
     </>
   );
-}
+});
+
+DataTable.displayName = "DataTable";
