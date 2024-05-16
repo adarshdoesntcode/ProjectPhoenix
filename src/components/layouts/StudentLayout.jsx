@@ -88,11 +88,14 @@ function AdminLayout() {
   };
   const onUpdate = async (data) => {
     try {
-      const res = await updateStudent({
+      const creds = {
+        data: {
+          phoneNumber: data.phoneNumber,
+          program: data.program,
+        },
         id: user._id,
-        phoneNumber: data.phoneNumber,
-        program: data.program,
-      });
+      };
+      const res = await updateStudent(creds);
 
       if (!res.error) {
         reset();

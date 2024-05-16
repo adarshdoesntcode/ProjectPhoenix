@@ -6,7 +6,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       query: (credentials) => ({
         url: `/student/students/${credentials.id}`,
         method: "PUT",
-        body: { ...credentials },
+        body: { ...credentials.data },
       }),
     }),
   }),
