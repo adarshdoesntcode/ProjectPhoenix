@@ -34,7 +34,7 @@ function CurrentClock({ dateObject }) {
   const day = date.toLocaleDateString("en-US", { weekday: "long" });
   const minutes = date.getMinutes();
   const meridiem = hours >= 12 ? "PM" : "AM";
-  const displayHours = hours % 12 || 12; // Convert to 12-hour format
+  const displayHours = hours % 12 || 12;
   const formattedTime = `${displayHours}:${minutes
     .toString()
     .padStart(2, "0")} ${meridiem}`;
@@ -60,9 +60,7 @@ function CurrentClock({ dateObject }) {
             {clock.date}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="secondary" className="mt-2 w-full">
-                  View Calander
-                </Button>
+                <Button className="mt-2 w-full">View Calander</Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
                 <Calendar

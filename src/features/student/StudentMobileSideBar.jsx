@@ -8,14 +8,10 @@ import {
 } from "@/components/ui/sheet";
 import { ROLES_LIST } from "@/lib/config";
 import {
-  Boxes,
   CalendarDays,
   Cctv,
-  FileCheck,
   FolderGit2,
-  GraduationCap,
   Home,
-  Megaphone,
   Menu,
   Origami,
 } from "lucide-react";
@@ -95,25 +91,7 @@ function StudentMobileSideBar() {
               </Badge>
             </Link>
           </SheetClose>
-          <SheetClose asChild>
-            <Link
-              to={`/${ROLES_LIST.student}/team`}
-              className={`mx-[-0.65rem]  flex items-center ${
-                isTabActive(currentPath, "team")
-                  ? "bg-slate-950 text-white"
-                  : ""
-              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
-            >
-              <Boxes className="h-5 w-5" />
-              Team
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                3
-              </Badge>
-            </Link>
-          </SheetClose>
+
           <SheetClose asChild>
             <Link
               to={`/${ROLES_LIST.student}/guidelines`}

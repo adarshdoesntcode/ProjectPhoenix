@@ -56,12 +56,6 @@ function StudentSideBar() {
             >
               <CalendarDays className="h-4 w-4" />
               Events
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center"
-              >
-                1
-              </Badge>
             </Link>
             <Link
               to={`/${ROLES_LIST.student}/project`}
@@ -73,30 +67,8 @@ function StudentSideBar() {
             >
               <FolderGit2 className="h-4 w-4" />
               Project
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center"
-              >
-                in progress
-              </Badge>
             </Link>
-            <Link
-              to={`/${ROLES_LIST.student}/team`}
-              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
-                isTabActive(currentPath, "team")
-                  ? "bg-slate-950 text-white"
-                  : "hover:text-slate-950"
-              } text-primary transition-all hover:pl-4 `}
-            >
-              <Boxes className="h-4 w-4" />
-              Team
-              <Badge
-                variant="secondary"
-                className="ml-auto flex shrink-0 items-center justify-center"
-              >
-                3
-              </Badge>
-            </Link>
+
             <Link
               to={`/${ROLES_LIST.student}/guidelines`}
               className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${

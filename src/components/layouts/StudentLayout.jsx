@@ -218,7 +218,7 @@ function AdminLayout() {
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <StudentSideBar />
         <div className="flex flex-col">
-          <header className="flex sticky top-0 h-14 items-center gap-4  bg-slate-100/50 backdrop-filter backdrop-blur-lg px-4 lg:h-[60px] lg:px-6">
+          <header className="flex sticky top-0 h-14 items-center gap-4 z-50 bg-slate-100/50 backdrop-filter backdrop-blur-lg px-4 lg:h-[60px] lg:px-6">
             <StudentMobileSideBar />
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
