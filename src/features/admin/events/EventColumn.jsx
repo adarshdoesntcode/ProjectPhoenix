@@ -20,10 +20,10 @@ import { MoreHorizontal } from "lucide-react";
 
 export const EventColumns = [
   {
-    accessorKey: "eventId",
-    header: () => <TableHead>Event ID</TableHead>,
+    accessorKey: "eventCode",
+    header: () => <TableHead>Event Code</TableHead>,
     cell: ({ row }) => {
-      const eventId = row.getValue("eventId");
+      const eventId = row.getValue("eventCode");
 
       return <TableCell className="text-gray-500">{eventId}</TableCell>;
     },

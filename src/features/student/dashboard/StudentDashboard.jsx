@@ -3,25 +3,18 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import {
-  ArrowUpRight,
-  Boxes,
-  CalendarRange,
-  ChevronRight,
-  GitCommitVertical,
-} from "lucide-react";
+import { ArrowUpRight, Boxes, GitCommitVertical, Loader2 } from "lucide-react";
 import StudentEventsTimeline from "./StudentEventsTimeline";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/utils";
+
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
+import TargetedEvent from "./TargetedEvent";
 
 function StudentDashboard() {
   return (
@@ -37,7 +30,7 @@ function StudentDashboard() {
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto text-xs gap-1">
-                <Link>
+                <Link to={`/${ROLES_LIST.student}/project`}>
                   View
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
@@ -146,29 +139,9 @@ function StudentDashboard() {
             </CardContent>
           </Card>
         </div>
-
-        <Card>
-          <CardHeader className="flex flex-row items-start">
-            <div className="grid gap-2">
-              <CardTitle className="text-xl">Your Event</CardTitle>
-              <CardDescription>
-                Events targeted to you in the college
-              </CardDescription>
-            </div>
-            <Button asChild size="sm" className="ml-auto text-xs gap-1">
-              <Link>
-                View All
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px] border rounded-md flex text-gray-500 items-center justify-center">
-              Any events targeted to you will appear here.
-            </div>
-          </CardContent>
-        </Card>
+        <TargetedEvent />
       </div>
+
       <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
         <Card>
           <CardHeader className="flex flex-row items-start">
@@ -179,7 +152,7 @@ function StudentDashboard() {
               </CardDescription>
             </div>
             <Button size="sm" className="ml-auto text-xs gap-1">
-              View All
+              All
               <ArrowUpRight className="h-4 w-4" />
             </Button>
           </CardHeader>

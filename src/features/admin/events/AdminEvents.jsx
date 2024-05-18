@@ -36,8 +36,6 @@ function AdminEvents() {
     error,
   } = useGetAllEventsQuery();
 
-  console.log(events);
-
   let content;
   let numberOfActiveEvents,
     numberOfCompleteEvents,
@@ -84,7 +82,7 @@ function AdminEvents() {
       </div>
     );
   } else if (isSuccess) {
-    if (events.data.length === 0) {
+    if (events?.data?.length === 0) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">

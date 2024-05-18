@@ -33,14 +33,14 @@ const csvConfig = mkConfig({
 const exportExcel = (rows) => {
   const rowData = rows.map((row) => {
     return {
-      EventID: row.original.eventId,
+      Event_Code: row.original.eventId,
       Name: row.original.eventName,
       Status: getEventStatusByCode(row.original.eventStatus),
       Type: getEventTypeByCode(row.original.eventType),
       Target: getProgramByCode(row.original.eventTarget),
       Projects: row.original.projects.length,
-      createdOn: format(row.original.createdAt, "PPP"),
-      createdBy: row.original.author.fullname,
+      created_On: format(row.original.createdAt, "PPP"),
+      created_By: row.original.author.fullname,
     };
   });
   const csv = generateCsv(csvConfig)(rowData);

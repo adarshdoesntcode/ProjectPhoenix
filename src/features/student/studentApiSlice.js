@@ -2,6 +2,12 @@ import { apiSlice } from "@/api/apiSlice";
 
 export const studentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getTargetedEvent: builder.query({
+      query: () => ({
+        url: "/student/event",
+        method: "GET",
+      }),
+    }),
     getEvents: builder.query({
       query: () => ({
         url: "/student/events",
@@ -18,4 +24,8 @@ export const studentApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useUpdateStudentMutation, useGetEventsQuery } = studentApiSlice;
+export const {
+  useUpdateStudentMutation,
+  useGetEventsQuery,
+  useGetTargetedEventQuery,
+} = studentApiSlice;
