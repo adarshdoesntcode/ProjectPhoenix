@@ -26,21 +26,19 @@ function StudentInfo() {
 
   let projectContent, teamContent;
 
-  console.log(project);
-
   if (!user.isAssociated) {
     projectContent = (
       <div className="flex flex-col items-center justify-center gap-1  rounded-md h-[150px] text-center">
-        <h3 className="text-xl font-bold tracking-tight">No Active Project</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="text-lg font-bold tracking-tight">No Active Project</h3>
+        <p className="text-sm text-slate-500">
           Project details will appear as soon as you create a project
         </p>
       </div>
     );
     teamContent = (
       <div className="flex flex-col items-center justify-center gap-1 rounded-md h-[150px] text-center">
-        <h3 className="text-xl font-bold tracking-tight">No Active Team</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="text-lg font-bold tracking-tight">No Active Team</h3>
+        <p className="text-sm text-slate-500">
           Team members will appear as soon as you create a team
         </p>
       </div>
@@ -94,7 +92,7 @@ function StudentInfo() {
             {getEventStatusByCode(project.data.status)}
           </Badge>
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-1">
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Name</div>
             <div className="text-sm font-medium">
@@ -104,11 +102,9 @@ function StudentInfo() {
 
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Registered on</div>
-            <div className="text-sm font-medium">
-              {project.data.event.eventCode}
-            </div>
+            <div className="text-sm ">{project.data.event.eventCode}</div>
           </div>
-          <Separator />
+          <Separator className="my-2" />
           {project.data.event.proposal.defense && (
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Proposal Defense</div>
@@ -140,21 +136,25 @@ function StudentInfo() {
 
   return (
     <>
-      <Card className="sm:col-span-2">
-        <CardHeader className="flex flex-row bg-slate-50 border border-b py-4 justify-between items-center">
+      <Card className="lg:col-span-2 sm:col-span-4">
+        <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 justify-between items-center">
           <div className="grid gap-2">
             <CardTitle className="text-lg">Your Project</CardTitle>
-            <CardDescription>Details of you current project</CardDescription>
+            {!user.isAssociated && (
+              <CardDescription>Details of you current project</CardDescription>
+            )}
           </div>
           <FolderGit2 className="text-slate-500" />
         </CardHeader>
         <CardContent className="mt-4">{projectContent}</CardContent>
       </Card>
-      <Card className="sm:col-span-2 ">
-        <CardHeader className="flex flex-row bg-slate-50 border border-b py-4 justify-between items-center">
+      <Card className="lg:col-span-2 sm:col-span-4 ">
+        <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 justify-between items-center">
           <div className="grid gap-2">
             <CardTitle className="text-lg">Your Team</CardTitle>
-            <CardDescription>Members of your current project</CardDescription>
+            {!user.isAssociated && (
+              <CardDescription>Members of your current project</CardDescription>
+            )}
           </div>
 
           <Boxes className="text-slate-500" />

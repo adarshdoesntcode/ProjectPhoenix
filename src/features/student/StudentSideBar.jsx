@@ -45,7 +45,6 @@ function StudentSideBar() {
               <Home className="h-4 w-4" />
               Dashboard
             </Link>
-
             <Link
               to={`/${ROLES_LIST.student}/events`}
               className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${

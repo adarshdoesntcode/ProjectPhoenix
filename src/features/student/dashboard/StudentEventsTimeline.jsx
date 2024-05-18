@@ -86,8 +86,8 @@ function StudentEventsTimeline() {
     if (!events) {
       content = (
         <div className="flex flex-col items-center justify-center gap-1 mt-4 rounded-md h-[200px] text-center">
-          <h3 className="text-xl font-bold tracking-tight">No Events</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-lg font-bold tracking-tight">No Events</h3>
+          <p className="text-sm text-slate-500">
             Scheduled events will appear here
           </p>
         </div>
