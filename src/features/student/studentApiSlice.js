@@ -8,6 +8,12 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getProject: builder.query({
+      query: (id) => ({
+        url: `/student/project/${id}`,
+        method: "GET",
+      }),
+    }),
     getEvents: builder.query({
       query: () => ({
         url: "/student/events",
@@ -28,4 +34,5 @@ export const {
   useUpdateStudentMutation,
   useGetEventsQuery,
   useGetTargetedEventQuery,
+  useGetProjectQuery,
 } = studentApiSlice;

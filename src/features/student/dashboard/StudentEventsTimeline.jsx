@@ -38,7 +38,6 @@ function StudentEventsTimeline() {
           },
         ]);
     });
-
     sortedEvents = flattenEvents.sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     );
@@ -49,7 +48,7 @@ function StudentEventsTimeline() {
         label: (
           <div
             className={cn(
-              check >= 0 ? "text-gray-700  text-xs" : "text-gray-300  text-xs"
+              check >= 0 ? "text-slate-700  text-xs" : "text-slate-300  text-xs"
             )}
           >
             {format(event.date, "PPP")} ({daysFromToday(event.date)}d)
@@ -58,7 +57,7 @@ function StudentEventsTimeline() {
         children: (
           <div
             className={cn(
-              check >= 0 ? "text-gray-700 text-xs" : "text-gray-300 text-xs"
+              check >= 0 ? "text-slate-700 text-xs" : "text-slate-300 text-xs"
             )}
           >
             <span className="font-bold">
@@ -72,7 +71,7 @@ function StudentEventsTimeline() {
             {event.dateType}
           </div>
         ),
-        color: check >= 0 ? "black" : "gray",
+        color: check >= 0 ? "black" : "slate",
       };
     });
   }
@@ -84,7 +83,18 @@ function StudentEventsTimeline() {
       </CardContent>
     );
   } else if (isSuccess) {
-    content = <Timeline className="w-[95%]" mode="left" items={render} />;
+    if (!events) {
+      content = (
+        <div className="flex flex-col items-center justify-center gap-1 mt-4 rounded-md h-[200px] text-center">
+          <h3 className="text-xl font-bold tracking-tight">No Events</h3>
+          <p className="text-sm text-muted-foreground">
+            Scheduled events will appear here
+          </p>
+        </div>
+      );
+    } else {
+      content = <Timeline className="w-[95%]" mode="left" items={render} />;
+    }
   }
 
   return content;

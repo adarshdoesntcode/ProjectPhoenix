@@ -149,7 +149,7 @@ function AdminLayout() {
                       onValueChange={field.onChange}
                       className={errors.program ? "border-red-500" : ""}
                     >
-                      <SelectTrigger className="w-full  text-gray-500">
+                      <SelectTrigger className="w-full  text-slate-500">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -266,7 +266,7 @@ function AdminLayout() {
       </div>
       <AlertDialog open={logoutLoader} onOpenChange={setLogoutLoader}>
         <AlertDialogContent className="w-[200px]">
-          <div className="flex justify-center items-center text-gray-600">
+          <div className="flex justify-center items-center text-slate-600">
             <Loader2 className="h-6 w-6 animate-spin mr-4" />
             <span>Logging Out</span>
           </div>
