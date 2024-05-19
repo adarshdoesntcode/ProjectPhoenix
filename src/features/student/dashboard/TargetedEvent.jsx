@@ -87,6 +87,7 @@ function TargetedEvent() {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
   const refresh = useRefreshToken();
@@ -105,6 +106,8 @@ function TargetedEvent() {
       });
 
       if (res.error) {
+        reset();
+        setModal(false);
         throw new Error("Try Again");
       }
       if (!res.error) {
