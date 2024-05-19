@@ -77,9 +77,9 @@ function StudentInfo() {
               </div>
             </div>
           </div>
-          <div className="text-xs border rounded-full px-2 py-1">
-            {user.email === member.email ? "You" : "Member"}
-          </div>
+          <Badge variant="secondary">
+            {user.email === member.email ? "Yourself" : "Member"}
+          </Badge>
         </div>
       );
     });
@@ -88,9 +88,7 @@ function StudentInfo() {
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
-          <Badge variant="secondary">
-            {getEventStatusByCode(project.data.status)}
-          </Badge>
+          <Badge>{getEventStatusByCode(project.data.status)}</Badge>
         </div>
         <Separator className="mb-3" />
 
@@ -103,7 +101,7 @@ function StudentInfo() {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="text-sm text-slate-500">Registered on</div>
+            <div className="text-sm text-slate-500">Registered to</div>
             <div className="text-xs ">{project.data.event.eventCode}</div>
           </div>
           <Separator className="my-2" />
@@ -111,7 +109,7 @@ function StudentInfo() {
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Proposal Defense</div>
               <div className="font-semibold">
-                <Badge variant="outline">Not Graded</Badge>
+                <Badge variant="secondary">Not Graded</Badge>
               </div>
             </div>
           )}
@@ -119,7 +117,7 @@ function StudentInfo() {
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Mid Defense</div>
               <div className="font-semibold">
-                <Badge variant="outline">Not Graded</Badge>
+                <Badge variant="secondary">Not Graded</Badge>
               </div>
             </div>
           )}
@@ -127,7 +125,7 @@ function StudentInfo() {
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Final Defense</div>
               <div className="font-semibold">
-                <Badge variant="outline">Not Graded</Badge>
+                <Badge variant="secondary">Not Graded</Badge>
               </div>
             </div>
           )}
@@ -139,24 +137,26 @@ function StudentInfo() {
   return (
     <>
       <Card className="lg:col-span-2 sm:col-span-4">
-        <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 justify-between items-center">
-          <div className="grid gap-2">
+        <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+          <div>
             <CardTitle className="text-lg">Your Project</CardTitle>
-            {!user.isAssociated && (
-              <CardDescription>Details of you current project</CardDescription>
-            )}
+
+            <CardDescription className="text-xs">
+              Details of you current project
+            </CardDescription>
           </div>
           <FolderGit2 className="text-slate-500" />
         </CardHeader>
         <CardContent className="mt-4">{projectContent}</CardContent>
       </Card>
       <Card className="lg:col-span-2 sm:col-span-4 ">
-        <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 justify-between items-center">
-          <div className="grid gap-2">
+        <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+          <div>
             <CardTitle className="text-lg">Your Team</CardTitle>
-            {!user.isAssociated && (
-              <CardDescription>Members of your current project</CardDescription>
-            )}
+
+            <CardDescription className="text-xs">
+              Members of your current project
+            </CardDescription>
           </div>
 
           <Boxes className="text-slate-500" />

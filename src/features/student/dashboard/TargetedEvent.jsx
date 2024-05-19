@@ -16,9 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import {  } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 
 import {
   Command,
@@ -71,23 +68,24 @@ import { toast } from "@/components/ui/use-toast";
 import useRefreshToken from "@/hooks/useRefreshToken";
 
 const regex = /\((\d+)\)/;
+
 function TargetedEvent() {
   const user = useSelector(selectCurrentUser);
   const [modal, setModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState([{ ...user }]);
   const [newMemberInput, setNewMemberInput] = useState(false);
-  // const [value, setValue] = useState("");
   const {
     data: targetedEvent,
     isLoading,
     isSuccess,
   } = useGetTargetedEventQuery();
-  const { data: selectionStudents } = useGetSelectionStudentsQuery();
+  const { data: selectionStudents } = useGetSelectionStudentsQuery(undefined, {
+    skip: user.isAssociated,
+  });
   const [createProject] = useCreateProjectMutation();
   const {
     handleSubmit,
-
     register,
     formState: { errors, isSubmitting },
   } = useForm();
@@ -99,10 +97,6 @@ function TargetedEvent() {
   async function onSubmit(data) {
     try {
       const teamMembers = selectedMembers.map((member) => member._id);
-
-      console.log(teamMembers);
-      console.log(targetedEvent);
-
       const res = await createProject({
         projectName: data.projectName,
         teamMembers,
@@ -113,8 +107,8 @@ function TargetedEvent() {
       if (res.error) {
         throw new Error("Try Again");
       }
-      await refresh();
       if (!res.error) {
+        await refresh();
         toast({
           title: "Team created successfully!",
           description: "You can now track your progress.",
@@ -157,11 +151,11 @@ function TargetedEvent() {
     if (targetedEvent) {
       targetedEventContent = (
         <Card>
-          <CardHeader className="bg-slate-50">
+          <CardHeader className="bg-slate-100">
             <CardTitle className="flex items-center justify-between gap-4">
               <div className="text-lg sm:text-2xl flex   items-center  gap-4">
                 <span>{targetedEvent.data.eventCode}</span>
-                <Badge variant="outline" className="hidden sm:block">
+                <Badge className="hidden sm:block">
                   {getEventStatusByCode(targetedEvent.data.eventStatus)}
                 </Badge>
               </div>
@@ -245,9 +239,7 @@ function TargetedEvent() {
                                     </div>
                                   </div>
                                   {user.email === member.email ? (
-                                    <div className="text-xs border rounded-full px-2 py-1">
-                                      Yourself
-                                    </div>
+                                    <Badge variant="secondary">Yourself</Badge>
                                   ) : (
                                     <UserX
                                       onClick={() =>
@@ -380,14 +372,14 @@ function TargetedEvent() {
                   </Dialog>
                 )}
 
-                {/* {user.isAssociated && (
+                {user.isAssociated && (
                   <Button asChild>
                     <Link to={`/${ROLES_LIST.student}/project`}>
                       Go to Project
                       <ArrowUpRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
-                )} */}
+                )}
               </div>
             </CardTitle>
           </CardHeader>
@@ -550,14 +542,13 @@ function TargetedEvent() {
   }
   return (
     <Card>
-      <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 justify-between items-center">
-        <div className="grid gap-2">
+      <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+        <div>
           <CardTitle className="text-xl">Your Event</CardTitle>
-          {!targetedEvent && (
-            <CardDescription>
-              Event targated to you in the college
-            </CardDescription>
-          )}
+
+          <CardDescription className="text-xs">
+            Event targated to you in the college
+          </CardDescription>
         </div>
         <CalendarHeart className="text-slate-500" />
       </CardHeader>

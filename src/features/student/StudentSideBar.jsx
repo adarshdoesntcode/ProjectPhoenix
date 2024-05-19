@@ -1,17 +1,9 @@
-import {
-  Boxes,
-  CalendarDays,
-  FolderGit2,
-  Home,
-  Origami,
-  Route,
-} from "lucide-react";
+import { FolderGit2, Home, Origami, Package, Route } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { ROLES_LIST } from "@/lib/config";
 import { isTabActive } from "@/lib/utils";
 import CurrentClock from "../../components/CurrentClock";
-import { Badge } from "@/components/ui/badge";
 
 function StudentSideBar() {
   const location = useLocation();
@@ -45,17 +37,7 @@ function StudentSideBar() {
               <Home className="h-4 w-4" />
               Dashboard
             </Link>
-            <Link
-              to={`/${ROLES_LIST.student}/events`}
-              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
-                isTabActive(currentPath, "events")
-                  ? "bg-slate-950 text-white"
-                  : "hover:text-slate-950"
-              } text-primary transition-all hover:pl-4`}
-            >
-              <CalendarDays className="h-4 w-4" />
-              Events
-            </Link>
+
             <Link
               to={`/${ROLES_LIST.student}/project`}
               className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
@@ -65,9 +47,19 @@ function StudentSideBar() {
               } text-primary transition-all hover:pl-4`}
             >
               <FolderGit2 className="h-4 w-4" />
-              Project
+              My Project
             </Link>
-
+            <Link
+              to={`/${ROLES_LIST.student}/archive`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "archive")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <Package className="h-4 w-4" />
+              Archive
+            </Link>
             <Link
               to={`/${ROLES_LIST.student}/guidelines`}
               className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${

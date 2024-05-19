@@ -7,17 +7,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ROLES_LIST } from "@/lib/config";
-import {
-  CalendarDays,
-  Cctv,
-  FolderGit2,
-  Home,
-  Menu,
-  Origami,
-} from "lucide-react";
+import { Cctv, FolderGit2, Home, Menu, Origami, Package } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 function StudentMobileSideBar() {
   const location = useLocation();
@@ -53,25 +45,7 @@ function StudentMobileSideBar() {
               Dashboard
             </Link>
           </SheetClose>
-          <SheetClose asChild>
-            <Link
-              to={`/${ROLES_LIST.student}/events`}
-              className={`mx-[-0.65rem]  flex items-center ${
-                isTabActive(currentPath, "events")
-                  ? "bg-slate-950 text-white"
-                  : ""
-              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
-            >
-              <CalendarDays className="h-5 w-5" />
-              Events
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                1
-              </Badge>
-            </Link>
-          </SheetClose>
+
           <SheetClose asChild>
             <Link
               to={`/${ROLES_LIST.student}/project`}
@@ -83,15 +57,21 @@ function StudentMobileSideBar() {
             >
               <FolderGit2 className="h-5 w-5" />
               Project
-              <Badge
-                variant="secondary"
-                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
-              >
-                in progress
-              </Badge>
             </Link>
           </SheetClose>
-
+          <SheetClose asChild>
+            <Link
+              to={`/${ROLES_LIST.student}/archive`}
+              className={`mx-[-0.65rem]  flex items-center ${
+                isTabActive(currentPath, "archive")
+                  ? "bg-slate-950 text-white"
+                  : ""
+              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
+            >
+              <Package className="h-5 w-5" />
+              Archive
+            </Link>
+          </SheetClose>
           <SheetClose asChild>
             <Link
               to={`/${ROLES_LIST.student}/guidelines`}

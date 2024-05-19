@@ -35,12 +35,12 @@ function StudentDashboard() {
       </div>
       <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
         <Card>
-          <CardHeader className="flex flex-row bg-slate-50 rounded-t-md border-b py-4 items-center">
-            <div className="grid gap-2">
+          <CardHeader className="flex flex-row bg-slate-100  rounded-t-md border-b py-4 items-center">
+            <div>
               <CardTitle className="text-lg">Notice Board</CardTitle>
-              {/* <CardDescription>
-                Notices published by the administrator
-              </CardDescription> */}
+              <CardDescription className="text-xs">
+                Notices from the administrator
+              </CardDescription>
             </div>
             <Button size="sm" className="ml-auto text-xs">
               All
@@ -87,15 +87,17 @@ function StudentDashboard() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-50 justify-between items-center">
-            <div className="grid gap-2">
+          <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
+            <div>
               <CardTitle className="text-lg">Events Timeline</CardTitle>
-              {/* <CardDescription>Timeline of the ongoing events</CardDescription> */}
+              <CardDescription className="text-xs">
+                Timeline of the ongoing events
+              </CardDescription>
             </div>
 
             <CalendarClock className="text-slate-500" />
           </CardHeader>
-          <CardContent className="text-sm pt-6 max-h-[585px] overflow-x-scroll">
+          <CardContent className="text-sm pt-6 max-h-[624px] overflow-x-scroll">
             <StudentEventsTimeline />
           </CardContent>
         </Card>

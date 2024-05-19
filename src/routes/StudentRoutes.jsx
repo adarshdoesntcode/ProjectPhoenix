@@ -1,5 +1,5 @@
 import StudentDashboard from "@/features/student/dashboard/StudentDashboard";
-import StudentEvents from "@/features/student/StudentEvents";
+import StudentArchive from "@/features/student/StudentArchive";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/StudentProject";
 
@@ -15,14 +15,13 @@ const StudentRoutes = [
     element: <StudentDashboard />,
   },
   {
-    path: "events",
-    element: <StudentEvents />,
-  },
-  {
     path: "project",
     element: <StudentProject />,
   },
-
+  {
+    path: "archive",
+    element: <StudentArchive />,
+  },
   {
     path: "guidelines",
     element: <StudentGuidelines />,
