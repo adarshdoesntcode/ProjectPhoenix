@@ -44,7 +44,6 @@ import {
   CirclePlus,
   Loader2,
   ShieldAlert,
-  Check,
   ChevronsUpDown,
   UserX,
 } from "lucide-react";
@@ -78,7 +77,7 @@ function TargetedEvent() {
   const [open, setOpen] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState([{ ...user }]);
   const [newMemberInput, setNewMemberInput] = useState(false);
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
   const {
     data: targetedEvent,
     isLoading,
@@ -102,15 +101,14 @@ function TargetedEvent() {
       const teamMembers = selectedMembers.map((member) => member._id);
 
       console.log(teamMembers);
+      console.log(targetedEvent);
 
       const res = await createProject({
         projectName: data.projectName,
         teamMembers,
         projectDescription: data.projectDescription,
-        eventId: targetedEvent._id,
+        eventId: targetedEvent.data._id,
       });
-
-      console.log(res.error.error);
 
       if (res.error) {
         throw new Error("Try Again");
@@ -322,14 +320,6 @@ function TargetedEvent() {
                                                     setNewMemberInput(false);
                                                   }}
                                                 >
-                                                  <Check
-                                                    className={cn(
-                                                      "mr-2 h-4 w-4",
-                                                      value === student.value
-                                                        ? "opacity-100"
-                                                        : "opacity-0"
-                                                    )}
-                                                  />
                                                   {student.label}
                                                 </CommandItem>
                                               );
