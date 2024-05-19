@@ -542,17 +542,22 @@ function TargetedEvent() {
   }
   return (
     <Card>
-      <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
-        <div>
-          <CardTitle className="text-xl">Your Event</CardTitle>
+      {!targetedEvent && (
+        <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+          <div>
+            <CardTitle className="text-xl">Your Event</CardTitle>
 
-          <CardDescription className="text-xs">
-            Event targated to you in the college
-          </CardDescription>
-        </div>
-        <CalendarHeart className="text-slate-500" />
-      </CardHeader>
-      <CardContent className="mt-6">{targetedEventContent}</CardContent>
+            <CardDescription className="text-xs">
+              Event targated to you in the college
+            </CardDescription>
+          </div>
+          <CalendarHeart className="text-slate-500" />
+        </CardHeader>
+      )}
+
+      <CardContent className="px-0 sm:px-6 sm:pb-6 pb-0 mt-0 sm:mt-6">
+        {targetedEventContent}
+      </CardContent>
     </Card>
   );
 }
