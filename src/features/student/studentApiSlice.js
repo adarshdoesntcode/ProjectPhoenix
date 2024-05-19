@@ -27,6 +27,19 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials.data },
       }),
     }),
+    getSelectionStudents: builder.query({
+      query: () => ({
+        url: "/student/team/students",
+        method: "GET",
+      }),
+    }),
+    createProject: builder.mutation({
+      query: (credentials) => ({
+        url: `/student/team/create`,
+        method: "POST",
+        body: { ...credentials },
+      }),
+    }),
   }),
 });
 
@@ -35,4 +48,6 @@ export const {
   useGetEventsQuery,
   useGetTargetedEventQuery,
   useGetProjectQuery,
+  useGetSelectionStudentsQuery,
+  useCreateProjectMutation,
 } = studentApiSlice;

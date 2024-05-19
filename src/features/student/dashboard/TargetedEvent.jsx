@@ -8,26 +8,146 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+// import {  } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  ROLES_LIST,
   getEventStatusByCode,
   getEventTypeByCode,
   getProgramByCode,
 } from "@/lib/config";
-import { ArrowUpRight, CalendarHeart, Loader2 } from "lucide-react";
+import {
+  ArrowUpRight,
+  CalendarHeart,
+  CirclePlus,
+  Loader2,
+  ShieldAlert,
+  Check,
+  ChevronsUpDown,
+  UserX,
+} from "lucide-react";
 
-import { useGetTargetedEventQuery } from "../studentApiSlice";
+import {
+  useCreateProjectMutation,
+  useGetSelectionStudentsQuery,
+  useGetTargetedEventQuery,
+} from "../studentApiSlice";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
-import { daysFromToday } from "@/lib/utils";
+import { daysFromToday, getInitials } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/features/auth/authSlice";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "@/components/ui/use-toast";
+import useRefreshToken from "@/hooks/useRefreshToken";
 
+const regex = /\((\d+)\)/;
 function TargetedEvent() {
+  const user = useSelector(selectCurrentUser);
+  const [modal, setModal] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState([{ ...user }]);
+  const [newMemberInput, setNewMemberInput] = useState(false);
+  const [value, setValue] = useState("");
   const {
     data: targetedEvent,
     isLoading,
     isSuccess,
   } = useGetTargetedEventQuery();
+  const { data: selectionStudents } = useGetSelectionStudentsQuery();
+  const [createProject] = useCreateProjectMutation();
+  const {
+    handleSubmit,
+
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+  const refresh = useRefreshToken();
 
   let targetedEventContent;
+  let selectionStudentsList = [];
+
+  async function onSubmit(data) {
+    try {
+      const teamMembers = selectedMembers.map((member) => member._id);
+
+      console.log(teamMembers);
+
+      const res = await createProject({
+        projectName: data.projectName,
+        teamMembers,
+        projectDescription: data.projectDescription,
+        eventId: targetedEvent._id,
+      });
+
+      console.log(res.error.error);
+
+      if (res.error) {
+        throw new Error("Try Again");
+      }
+      await refresh();
+      if (!res.error) {
+        toast({
+          title: "Team created successfully!",
+          description: "You can now track your progress.",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  }
+
+  if (selectionStudents?.data?.length > 0) {
+    selectionStudentsList = selectionStudents.data
+      .filter(
+        (member) =>
+          !selectedMembers.some((selected) => selected.email === member.email)
+      )
+      .map((member) => ({
+        value: member.rollNumber,
+        label: `${member.fullname} (${member.rollNumber})`,
+      }));
+  }
+
+  const handleRemoveMember = (email) => {
+    setSelectedMembers(() =>
+      selectedMembers.filter((member) => member.email != email)
+    );
+  };
 
   if (isLoading) {
     targetedEventContent = (
@@ -48,10 +168,236 @@ function TargetedEvent() {
                 </Badge>
               </div>
               <div>
-                <Button>
-                  Create Project
-                  <ArrowUpRight className="ml-1 h-4 w-4" />
-                </Button>
+                {!user.isAssociated && (
+                  <Dialog open={modal} onOpenChange={setModal}>
+                    <DialogTrigger asChild>
+                      <Button>
+                        Create Project
+                        <ArrowUpRight className="ml-1 h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Create Project</DialogTitle>
+                        <DialogDescription>
+                          Project Description and Team Members cannot be changed
+                          after
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="grid gap-4 p-2 max-h-[70vh] overflow-scroll">
+                          <div className="grid gap-3">
+                            <Label htmlFor="projectName">
+                              {errors.projectName ? (
+                                <span className="text-red-500">
+                                  {errors.projectName.message}
+                                </span>
+                              ) : (
+                                <span>Project Name</span>
+                              )}
+                            </Label>
+                            <Input
+                              id="projectName"
+                              type="text"
+                              {...register("projectName", {
+                                required: "Project Name is required",
+                              })}
+                              className={
+                                errors.projectName ? "border-red-500" : ""
+                              }
+                            />
+                          </div>
+                          <div className="grid gap-3">
+                            <Label htmlFor="projectDescription">
+                              Project Description
+                            </Label>
+                            <Textarea
+                              id="projectDescription"
+                              placeholder="Describe your Project"
+                              className="min-h-12"
+                              {...register("projectDescription")}
+                            />
+                          </div>
+                          <div className="grid gap-3">
+                            <Label htmlFor="projectDescription">
+                              Select Members
+                            </Label>
+                            {selectedMembers.map((member) => {
+                              return (
+                                <div
+                                  key={member._id}
+                                  className="flex items-center justify-between"
+                                >
+                                  <div className="flex">
+                                    <div className="flex flex-row items-center gap-3">
+                                      <Avatar>
+                                        <AvatarImage src={member.photo} />
+                                        <AvatarFallback className="bg-slate-200">
+                                          {getInitials(member.fullname)}
+                                        </AvatarFallback>
+                                      </Avatar>
+                                      <div className="text-sm text-slate-500">
+                                        <div className="text-slate-950 font-medium">
+                                          {member.fullname}
+                                        </div>
+                                        <div className="text-xs">
+                                          {member.email}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {user.email === member.email ? (
+                                    <div className="text-xs border rounded-full px-2 py-1">
+                                      Yourself
+                                    </div>
+                                  ) : (
+                                    <UserX
+                                      onClick={() =>
+                                        handleRemoveMember(member.email)
+                                      }
+                                      className="text-slate-500 hover:text-slate-950 transition-all cursor-pointer w-5 h-5"
+                                    />
+                                  )}
+                                </div>
+                              );
+                            })}
+                            {newMemberInput && (
+                              <div>
+                                <Popover
+                                  modal={true}
+                                  open={open}
+                                  onOpenChange={setOpen}
+                                >
+                                  <PopoverTrigger asChild>
+                                    <div className="flex justify-center">
+                                      <Button
+                                        variant="outline"
+                                        type="button"
+                                        role="combobox"
+                                        aria-expanded={open}
+                                        className="w-full justify-between"
+                                      >
+                                        Search Students...
+                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                      </Button>
+                                    </div>
+                                  </PopoverTrigger>
+                                  <PopoverContent className=" p-0">
+                                    <ScrollArea
+                                      className="flex max-h-[200px] flex-col"
+                                      type="always"
+                                    >
+                                      <Command>
+                                        <CommandInput placeholder="Search Rollno..." />
+                                        <CommandEmpty>
+                                          No Student found.
+                                        </CommandEmpty>
+                                        <CommandGroup>
+                                          {selectionStudentsList.map(
+                                            (student) => {
+                                              return (
+                                                <CommandItem
+                                                  key={student.value}
+                                                  value={student.value}
+                                                  onSelect={(currentValue) => {
+                                                    const match =
+                                                      currentValue.match(regex);
+                                                    const roll = match[1];
+                                                    setSelectedMembers(
+                                                      (prev) => {
+                                                        const find =
+                                                          selectionStudents.data.filter(
+                                                            (student) =>
+                                                              student.rollNumber ==
+                                                              roll
+                                                          );
+
+                                                        return [
+                                                          ...prev,
+                                                          find[0],
+                                                        ];
+                                                      }
+                                                    );
+                                                    setOpen(false);
+                                                    setNewMemberInput(false);
+                                                  }}
+                                                >
+                                                  <Check
+                                                    className={cn(
+                                                      "mr-2 h-4 w-4",
+                                                      value === student.value
+                                                        ? "opacity-100"
+                                                        : "opacity-0"
+                                                    )}
+                                                  />
+                                                  {student.label}
+                                                </CommandItem>
+                                              );
+                                            }
+                                          )}
+                                        </CommandGroup>
+                                      </Command>
+                                    </ScrollArea>
+                                  </PopoverContent>
+                                </Popover>
+                              </div>
+                            )}
+                            <Button
+                              variant="secondary"
+                              type="button"
+                              className="mt-2"
+                              onClick={() => setNewMemberInput(true)}
+                            >
+                              <CirclePlus className="w-4 h-5 mr-2" />
+                              Add Member
+                            </Button>
+                          </div>
+                        </div>
+
+                        <DialogFooter className="mt-4 flex items-center justify-end">
+                          {selectedMembers.length >= 2 &&
+                          selectedMembers.length <= 5 ? (
+                            ""
+                          ) : (
+                            <p className="flex items-center gap-1 mr-2 text-xs text-slate-400">
+                              <span>
+                                <ShieldAlert className="w-4 h-4" />
+                              </span>
+                              <span>
+                                Allowed range of team members is (2-5)
+                              </span>
+                            </p>
+                          )}
+                          {isSubmitting ? (
+                            <Button variant="secondary" disabled>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Creating...
+                            </Button>
+                          ) : (
+                            <Button
+                              disabled={
+                                selectedMembers.length < 2 ||
+                                selectedMembers.length > 5
+                              }
+                              type="submit"
+                            >
+                              Create Project
+                            </Button>
+                          )}
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                )}
+
+                {/* {user.isAssociated && (
+                  <Button asChild>
+                    <Link to={`/${ROLES_LIST.student}/project`}>
+                      Go to Project
+                      <ArrowUpRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </Button>
+                )} */}
               </div>
             </CardTitle>
           </CardHeader>
@@ -89,6 +435,7 @@ function TargetedEvent() {
                 {getProgramByCode(targetedEvent.data.eventTarget)}
               </div>
             </div>
+
             <Separator className="my-2" />
             {targetedEvent.data.proposal.defense && (
               <>
@@ -163,7 +510,7 @@ function TargetedEvent() {
                   <div className="text-xs sm:text-sm text-slate-500">
                     Report Submission
                   </div>
-                  <div className="text-xs sm:text-xs sm:text-sm">
+                  <div className="text-xs sm:text-sm">
                     {`${format(
                       targetedEvent.data.final.reportDeadline,
                       "PPP"

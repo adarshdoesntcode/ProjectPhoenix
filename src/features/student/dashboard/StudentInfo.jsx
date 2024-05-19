@@ -86,13 +86,15 @@ function StudentInfo() {
 
     projectContent = (
       <>
-        <div className=" flex items-center justify-between gap-2 mb-4">
+        <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
           <Badge variant="secondary">
             {getEventStatusByCode(project.data.status)}
           </Badge>
         </div>
-        <div className="grid gap-1">
+        <Separator className="mb-3" />
+
+        <div className="grid gap-2">
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Name</div>
             <div className="text-sm font-medium">
@@ -102,7 +104,7 @@ function StudentInfo() {
 
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Registered on</div>
-            <div className="text-sm ">{project.data.event.eventCode}</div>
+            <div className="text-xs ">{project.data.event.eventCode}</div>
           </div>
           <Separator className="my-2" />
           {project.data.event.proposal.defense && (
@@ -160,7 +162,7 @@ function StudentInfo() {
           <Boxes className="text-slate-500" />
         </CardHeader>
         <CardContent>
-          <div className="grid gap-2 mt-4">{teamContent}</div>
+          <div className="grid gap-3 mt-4">{teamContent}</div>
         </CardContent>
       </Card>
     </>

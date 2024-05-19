@@ -153,12 +153,12 @@ function StudentLogin() {
                       {showPassword ? (
                         <Eye
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                          className="absolute cursor-pointer text-slate-400 right-3 top-2.5 h-5 w-5"
                         />
                       ) : (
                         <EyeOff
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute cursor-pointer text-gray-400 right-3 top-2.5 h-5 w-5"
+                          className="absolute cursor-pointer text-slate-400 right-3 top-2.5 h-5 w-5"
                         />
                       )}
 
