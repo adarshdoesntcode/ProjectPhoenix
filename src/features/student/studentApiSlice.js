@@ -27,6 +27,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials.data },
       }),
     }),
+
     getSelectionStudents: builder.query({
       query: () => ({
         url: "/student/team/students",
@@ -36,6 +37,13 @@ export const studentApiSlice = apiSlice.injectEndpoints({
     createProject: builder.mutation({
       query: (credentials) => ({
         url: `/student/team/create`,
+        method: "POST",
+        body: { ...credentials },
+      }),
+    }),
+    submitReport: builder.mutation({
+      query: (credentials) => ({
+        url: `/student/team/report/${credentials.id}`,
         method: "POST",
         body: { ...credentials },
       }),
@@ -50,4 +58,5 @@ export const {
   useGetProjectQuery,
   useGetSelectionStudentsQuery,
   useCreateProjectMutation,
+  useSubmitReportMutation,
 } = studentApiSlice;

@@ -1,7 +1,7 @@
 import StudentDashboard from "@/features/student/dashboard/StudentDashboard";
 import StudentArchive from "@/features/student/StudentArchive";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
-import StudentProject from "@/features/student/StudentProject";
+import StudentProject from "@/features/student/project/StudentProject";
 
 import { Navigate } from "react-router-dom";
 

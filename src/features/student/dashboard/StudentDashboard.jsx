@@ -7,22 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  ArrowUpRight,
-  Boxes,
-  CalendarClock,
-  GitCommitVertical,
-  Loader2,
-} from "lucide-react";
+import { ArrowUpRight, CalendarClock } from "lucide-react";
 import StudentEventsTimeline from "./StudentEventsTimeline";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { ROLES_LIST } from "@/lib/config";
+
 import TargetedEvent from "./TargetedEvent";
 import StudentInfo from "./StudentInfo";
-import { Separator } from "@/components/ui/separator";
 
 function StudentDashboard() {
   return (

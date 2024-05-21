@@ -167,7 +167,7 @@ function TargetedEvent() {
                   <Dialog open={modal} onOpenChange={setModal}>
                     <DialogTrigger asChild>
                       <Button>
-                        Create Project
+                        Enroll
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Button>
                     </DialogTrigger>
