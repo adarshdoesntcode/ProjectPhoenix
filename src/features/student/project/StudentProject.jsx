@@ -6,7 +6,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Steps } from "antd";
-import { CalendarHeart, FolderGit2, Footprints, Loader2 } from "lucide-react";
+import {
+  CalendarHeart,
+  ExternalLink,
+  FileText,
+  FolderGit2,
+  Footprints,
+  Loader2,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import ProjectInfo from "./ProjectInfo";
@@ -17,6 +24,11 @@ import {
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import UploadReport from "./UploadReport";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
+import { daysFromToday } from "@/lib/utils";
 const description = "This is a description.";
 
 function StudentProject() {
@@ -52,17 +64,154 @@ function StudentProject() {
           <Card>
             <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
               <div>
-                <CardTitle className="text-xl">Submit Report</CardTitle>
+                <CardTitle className="text-xl">Report Submission</CardTitle>
 
                 <CardDescription className="text-xs">
-                  Event targated to you in the college
+                  Submmit your report within deadline
                 </CardDescription>
               </div>
               <CalendarHeart className="text-slate-500" />
             </CardHeader>
 
-            <CardContent className="px-0 sm:px-6 sm:pb-6 pb-0 mt-0 sm:mt-6">
-              <UploadReport />
+            <CardContent className="px-6 pb-6  mt-6">
+              <div>
+                {project.data.event.proposal.defense && (
+                  <div className="grid gap-6 mb-4">
+                    <div className="flex  justify-between items-center">
+                      <div className="text-md font-semibold">
+                        Proposal Report
+                      </div>
+
+                      {project.data.proposal.reportPdf ? (
+                        <Badge variant="secondary">
+                          Submitted on May 22, 2024
+                        </Badge>
+                      ) : (
+                        <div className="text-xs font-semibold">
+                          <Badge variant="secondary">
+                            {`in 
+                          ${daysFromToday(
+                            project.data.event.proposal.reportDeadline
+                          )}d`}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    {project.data.proposal.reportPdf ? (
+                      <div className="w-full flex flex-col gap-2 items-center justify-center">
+                        <Button variant="secondary" asChild>
+                          <a
+                            target="blank"
+                            href={project.data.proposal.reportPdf}
+                          >
+                            <FileText className="w-4 h-4 mr-2" />
+                            Proposal Report
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                          </a>
+                        </Button>
+                        <div className="text-xs text-slate-500">
+                          Submitted By Adarsh Das
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-5">
+                        <UploadReport disabled={false} />
+                      </div>
+                    )}
+                  </div>
+                )}
+                <Separator className="my-6" />
+              </div>
+              <div className="mt-6">
+                {project.data.event.mid.defense && (
+                  <div className="grid gap-6 mb-4">
+                    <div className="flex  justify-between items-center">
+                      <div className="text-md font-semibold">Mid Report</div>
+
+                      {project.data.mid.reportPdf ? (
+                        <Badge variant="secondary">
+                          Submitted on May 22, 2024
+                        </Badge>
+                      ) : (
+                        <div className="text-xs font-semibold">
+                          <Badge variant="secondary">
+                            {`in 
+                          ${daysFromToday(
+                            project.data.event.mid.reportDeadline
+                          )}d`}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    {project.data.mid.reportPdf ? (
+                      <div className="w-full flex flex-col gap-2 items-center justify-center">
+                        <Button variant="secondary" asChild>
+                          <a target="blank" href={project.data.mid.reportPdf}>
+                            <FileText className="w-4 h-4 mr-2" />
+                            Mid Report
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                          </a>
+                        </Button>
+                        <div className="text-xs text-slate-500">
+                          Submitted By Adarsh Das
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-5">
+                        <UploadReport disabled={false} />
+                      </div>
+                    )}
+                  </div>
+                )}
+                <Separator className="my-6" />
+              </div>
+              <div className="my-6">
+                {project.data.event.final.defense && (
+                  <div className="grid gap-6 mb-4">
+                    <div className="flex  justify-between items-center">
+                      <div className="text-md font-semibold">
+                        Proposal Report
+                      </div>
+
+                      {project.data.final.reportPdf ? (
+                        <Badge variant="secondary">
+                          Submitted on May 22, 2024
+                        </Badge>
+                      ) : (
+                        <div className="text-xs font-semibold">
+                          <Badge variant="secondary">
+                            {`in 
+                          ${daysFromToday(
+                            project.data.event.final.reportDeadline
+                          )}d`}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    {project.data.final.reportPdf ? (
+                      <div className="w-full flex flex-col gap-2 items-center justify-center">
+                        <Button variant="secondary" asChild>
+                          <a target="blank" href={project.data.final.reportPdf}>
+                            <FileText className="w-4 h-4 mr-2" />
+                            Final Report
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                          </a>
+                        </Button>
+                        <div className="text-xs text-slate-500">
+                          Submitted By Adarsh Das
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-5">
+                        <UploadReport disabled={false} />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>

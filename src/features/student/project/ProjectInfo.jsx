@@ -6,17 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { selectCurrentUser } from "@/features/auth/authSlice";
 
-import {
-  BookmarkCheck,
-  Boxes,
-  FolderGit2,
-  Loader2,
-  MessageCircleCode,
-} from "lucide-react";
-import { useSelector } from "react-redux";
-import { useGetProjectQuery } from "../studentApiSlice";
+import { BookmarkCheck, Loader2, MessageCircleCode } from "lucide-react";
+
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { getEventStatusByCode } from "@/lib/config";
@@ -94,12 +86,6 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
         <Separator className="mb-3" />
 
         <div className="grid gap-2">
-          {/* <div className="flex items-center justify-between">
-            <div className="text-sm text-slate-500">Name</div>
-            <div className="text-sm font-medium">
-              {project.data.projectName}
-            </div>
-          </div> */}
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Created on</div>
             <div className="text-xs ">
@@ -175,11 +161,11 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-4 md:gap-8">
-            <div className="mt-4 col-span-4 md:col-span-2 ">
+            <div className="mt-4 col-span-4 lg:col-span-2 ">
               {projectContent}
             </div>
 
-            <div className="grid gap-3 mt-4  col-span-4 md:col-span-2">
+            <div className="grid gap-3 mt-4  col-span-4 lg:col-span-2">
               <div className="flex flex-col gap-3">
                 <div className=" flex items-center justify-between gap-2">
                   <div className="font-semibold ">Team Members</div>

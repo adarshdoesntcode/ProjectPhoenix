@@ -13,6 +13,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         url: `/student/project/${id}`,
         method: "GET",
       }),
+      providesTags: ["Project"],
     }),
     getEvents: builder.query({
       query: () => ({
@@ -42,11 +43,20 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     submitReport: builder.mutation({
-      query: (credentials) => ({
-        url: `/student/team/report/${credentials.id}`,
-        method: "POST",
-        body: { ...credentials },
-      }),
+      query: ({ file, userProject, submittedBy, submittedOn }) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        return {
+          url: `/student/team/report/${userProject}`,
+          method: "POST",
+          body: {
+            formData,
+            submittedBy,
+            submittedOn,
+          },
+        };
+      },
+      invalidatesTags: ["Project"],
     }),
   }),
 });
