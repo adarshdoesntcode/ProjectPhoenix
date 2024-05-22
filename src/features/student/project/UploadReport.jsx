@@ -1,18 +1,19 @@
 import { toast } from "@/components/ui/use-toast";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 
-import { Upload } from "antd";
+import { ConfigProvider, Upload } from "antd";
 import { FileUp } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { useSubmitReportMutation } from "../studentApiSlice";
-import useRefreshToken from "@/hooks/useRefreshToken";
+
+import useRefreshUser from "@/hooks/useRefreshUser";
 const { Dragger } = Upload;
 
 function UploadReport({ disabled }) {
   const user = useSelector(selectCurrentUser);
   const [submitReport] = useSubmitReportMutation();
-  const refresh = useRefreshToken();
+  const refreshUser = useRefreshUser();
 
   const props = {
     name: "file",
@@ -53,10 +54,10 @@ function UploadReport({ disabled }) {
         await submitReport({
           file,
           userProject: user.project,
-          SubmittedBy: user.fullname,
-          SubmittedOn: new Date(),
+          submittedBy: user.fullname,
+          submittedOn: new Date(),
         }).unwrap();
-        await refresh();
+        await refreshUser();
         onSuccess("ok");
         toast({
           title: "Report Submitted Successfully",
@@ -96,16 +97,26 @@ function UploadReport({ disabled }) {
   };
 
   return (
-    <Dragger {...props}>
-      <div className="flex flex-col items-center gap-2 justify-center h-[200px]">
-        <FileUp className="w-12 h-12 " />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimaryHover: "gray",
+          colorBgMask: "white",
+          fontFamily: "Inter",
+        },
+      }}
+    >
+      <Dragger {...props}>
+        <div className="flex flex-col items-center gap-2 justify-center h-[200px]">
+          <FileUp className="w-12 h-12 " />
 
-        <p className="text-lg font-semibold">
-          Click or drag Report to this area to upload
-        </p>
-        <p className="text-xs ">Only .pdf files, MAX SIZE : 10MB</p>
-      </div>
-    </Dragger>
+          <p className="text-lg font-semibold">
+            Click or drag Report to this area to upload
+          </p>
+          <p className="text-xs ">Only .pdf files, MAX SIZE : 10MB</p>
+        </div>
+      </Dragger>
+    </ConfigProvider>
   );
 }
 

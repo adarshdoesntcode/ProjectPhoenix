@@ -7,28 +7,28 @@ import {
 } from "@/components/ui/card";
 import { Steps } from "antd";
 import {
+  ArchiveRestore,
   CalendarHeart,
   ExternalLink,
   FileText,
-  FolderGit2,
   Footprints,
   Loader2,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import ProjectInfo from "./ProjectInfo";
-import {
-  useGetProjectQuery,
-  useSubmitReportMutation,
-} from "../studentApiSlice";
+import { useGetProjectQuery } from "../studentApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import UploadReport from "./UploadReport";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
+
 const description = "This is a description.";
 
 function StudentProject() {
@@ -41,6 +41,26 @@ function StudentProject() {
   } = useGetProjectQuery(user.project, { skip: !user.isAssociated });
 
   let content;
+
+  if (user.isAssociated === false) {
+    content = (
+      <div className="flex flex-1 items-center justify-center bg-slate-50 ">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h3 className="text-2xl font-bold tracking-tight">
+            You have no Active Project
+          </h3>
+
+          <p className="text-sm text-gray-500">
+            You can start as soon as you enroll in an event.
+          </p>
+
+          <Button className="mt-4" asChild>
+            <Link to={`/${ROLES_LIST.student}/dashboard`}>Go Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     content = (
@@ -70,7 +90,7 @@ function StudentProject() {
                   Submmit your report within deadline
                 </CardDescription>
               </div>
-              <CalendarHeart className="text-slate-500" />
+              <ArchiveRestore className="text-slate-500" />
             </CardHeader>
 
             <CardContent className="px-6 pb-6  mt-6">
@@ -82,14 +102,18 @@ function StudentProject() {
                         Proposal Report
                       </div>
 
-                      {project.data.proposal.reportPdf ? (
+                      {project.data.proposal.report?.filePath ? (
                         <Badge variant="secondary">
-                          Submitted on May 22, 2024
+                          Submitted on{" "}
+                          {format(
+                            project.data.proposal.report?.submittedOn,
+                            "PPP"
+                          )}
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
                           <Badge variant="secondary">
-                            {`in 
+                            {`Deadline in 
                           ${daysFromToday(
                             project.data.event.proposal.reportDeadline
                           )}d`}
@@ -98,12 +122,12 @@ function StudentProject() {
                       )}
                     </div>
 
-                    {project.data.proposal.reportPdf ? (
+                    {project.data.proposal.report?.filePath ? (
                       <div className="w-full flex flex-col gap-2 items-center justify-center">
                         <Button variant="secondary" asChild>
                           <a
                             target="blank"
-                            href={project.data.proposal.reportPdf}
+                            href={project.data.proposal.report?.filePath}
                           >
                             <FileText className="w-4 h-4 mr-2" />
                             Proposal Report
@@ -111,7 +135,8 @@ function StudentProject() {
                           </a>
                         </Button>
                         <div className="text-xs text-slate-500">
-                          Submitted By Adarsh Das
+                          Submitted By{" "}
+                          {project.data.proposal.report?.submittedBy}
                         </div>
                       </div>
                     ) : (
@@ -129,7 +154,7 @@ function StudentProject() {
                     <div className="flex  justify-between items-center">
                       <div className="text-md font-semibold">Mid Report</div>
 
-                      {project.data.mid.reportPdf ? (
+                      {project.data.mid.report?.filePath ? (
                         <Badge variant="secondary">
                           Submitted on May 22, 2024
                         </Badge>
@@ -145,10 +170,13 @@ function StudentProject() {
                       )}
                     </div>
 
-                    {project.data.mid.reportPdf ? (
+                    {project.data.mid.report?.filePath ? (
                       <div className="w-full flex flex-col gap-2 items-center justify-center">
                         <Button variant="secondary" asChild>
-                          <a target="blank" href={project.data.mid.reportPdf}>
+                          <a
+                            target="blank"
+                            href={project.data.mid.report?.filePath}
+                          >
                             <FileText className="w-4 h-4 mr-2" />
                             Mid Report
                             <ExternalLink className="w-4 h-4 ml-2" />
@@ -175,7 +203,7 @@ function StudentProject() {
                         Proposal Report
                       </div>
 
-                      {project.data.final.reportPdf ? (
+                      {project.data.final.report?.filePath ? (
                         <Badge variant="secondary">
                           Submitted on May 22, 2024
                         </Badge>
@@ -191,10 +219,13 @@ function StudentProject() {
                       )}
                     </div>
 
-                    {project.data.final.reportPdf ? (
+                    {project.data.final.report?.filePath ? (
                       <div className="w-full flex flex-col gap-2 items-center justify-center">
                         <Button variant="secondary" asChild>
-                          <a target="blank" href={project.data.final.reportPdf}>
+                          <a
+                            target="blank"
+                            href={project.data.final.report?.filePath}
+                          >
                             <FileText className="w-4 h-4 mr-2" />
                             Final Report
                             <ExternalLink className="w-4 h-4 ml-2" />
@@ -222,7 +253,7 @@ function StudentProject() {
                 <CardTitle className="text-lg">Project Progress</CardTitle>
 
                 <CardDescription className="text-xs">
-                  Details of you current project
+                  Track the progress your project has made
                 </CardDescription>
               </div>
               <Footprints className="text-slate-500" />
@@ -230,7 +261,6 @@ function StudentProject() {
 
             <CardContent className="text-sm px-10 mt-6">
               <Steps
-                className=""
                 direction="vertical"
                 current={1}
                 items={[

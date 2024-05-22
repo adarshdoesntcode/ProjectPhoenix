@@ -22,6 +22,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    refreshUser: builder.query({
+      query: () => ({
+        url: "/user/account",
+        method: "GET",
+      }),
+    }),
     logout: builder.query({
       query: () => ({
         url: "/logout",

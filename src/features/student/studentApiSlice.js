@@ -46,14 +46,12 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       query: ({ file, userProject, submittedBy, submittedOn }) => {
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("submittedBy", submittedBy);
+        formData.append("submittedOn", submittedOn);
         return {
           url: `/student/team/report/${userProject}`,
           method: "POST",
-          body: {
-            formData,
-            submittedBy,
-            submittedOn,
-          },
+          body: formData,
         };
       },
       invalidatesTags: ["Project"],

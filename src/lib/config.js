@@ -1,11 +1,14 @@
 export const API_BASE_URL = "https://project-phoenix-clz.vercel.app/api";
-// export const API_BASE_URL = "http://localhost:3500";
+// export const API_BASE_URL = "http://localhost:3500/api";
 
 export const GOOGLE_CLIENT_ID =
   "802396137377-5pfhl96kiru3ttesrvt52uqsq0631jma.apps.googleusercontent.com";
 
 export const GOOGLE_OAUTH_REDIRECT_URL =
   "https://project-phoenix-clz.vercel.app/api/oauth/google";
+
+// export const GOOGLE_OAUTH_REDIRECT_URL =
+// "http://localhost:3500/api/oauth/google";
 
 export const ROLES_LIST = {
   admin: 5150,
@@ -46,3 +49,37 @@ export const EVENT_STATUS = {
 export function getEventStatusByCode(value) {
   return Object.keys(EVENT_STATUS).find((key) => EVENT_STATUS[key] === value);
 }
+
+export const PROGRESS_STATUS = () => {
+  return {
+    0: {
+      ELIGIBLE_FOR_TEAM_CREATION: [0, "0000"],
+      ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION: [1, "0001"],
+      ELIGIBLE_FOR_PROPOSAL_DEFENSE: [2, "0002"],
+      ELIGIBLE_FOR_FINAL_REPORT_SUBMISSION: [3, "0010"],
+      ELIGIBLE_FOR_FINAL_DEFENSE: [4, "0011"],
+    },
+    1: {
+      ELIGIBLE_FOR_TEAM_CREATION: [0, "1000"],
+      ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION: [1, "1001"],
+      ELIGIBLE_FOR_PROPOSAL_DEFENSE: [2, "1002"],
+      ELIGIBLE_FOR_SUPERVISOR_APPROVAL_FOR_MID: [3, "1010"],
+      ELIGIBLE_FOR_MID_REPORT_SUBMISSION: [4, "1011"],
+      ELIGIBLE_FOR_MID_DEFENSE: [5, "1012"],
+      ELIGIBLE_FOR_SUPERVISOR_APPROVAL_FOR_FINAL: [6, "1020"],
+      ELIGIBLE_FOR_FINAL_REPORT_SUBMISSION: [7, "1021"],
+      ELIGIBLE_FOR_FINAL_DEFENSE: [8, "1022"],
+    },
+    2: {
+      ELIGIBLE_FOR_TEAM_CREATION: [0, "2000"],
+      ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION: [1, "2001"],
+      ELIGIBLE_FOR_PROPOSAL_DEFENSE: [2, "2002"],
+      ELIGIBLE_FOR_SUPERVISOR_APPROVAL_FOR_MID: [3, "2010"],
+      ELIGIBLE_FOR_MID_REPORT_SUBMISSION: [4, "2011"],
+      ELIGIBLE_FOR_MID_DEFENSE: [5, "2012"],
+      ELIGIBLE_FOR_SUPERVISOR_APPROVAL_FOR_FINAL: [6, "2020"],
+      ELIGIBLE_FOR_FINAL_REPORT_SUBMISSION: [7, "2021"],
+      ELIGIBLE_FOR_FINAL_DEFENSE: [8, "2022"],
+    },
+  };
+};

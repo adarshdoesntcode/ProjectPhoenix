@@ -65,7 +65,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
-import useRefreshToken from "@/hooks/useRefreshToken";
+import useRefreshUser from "@/hooks/useRefreshUser";
 
 const regex = /\((\d+)\)/;
 
@@ -90,7 +90,7 @@ function TargetedEvent() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
-  const refresh = useRefreshToken();
+  const refreshUser = useRefreshUser();
 
   let targetedEventContent;
   let selectionStudentsList = [];
@@ -111,7 +111,7 @@ function TargetedEvent() {
         throw new Error("Try Again");
       }
       if (!res.error) {
-        await refresh();
+        await refreshUser();
         toast({
           title: "Team created successfully!",
           description: "You can now track your progress.",
@@ -520,7 +520,7 @@ function TargetedEvent() {
           </CardContent>
           <CardFooter className="flex items-end border-t py-4 justify-between">
             <div className="text-slate-500 text-xs">
-              Hoasted by {targetedEvent.data.author.fullname}
+              Hosted by {targetedEvent.data.author.fullname}
             </div>
             <div className="hidden sm:block text-xs  text-slate-500">
               <time dateTime="2023-11-23">
