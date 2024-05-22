@@ -5,9 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Steps } from "antd";
+import { ConfigProvider, Steps } from "antd";
 import {
   ArchiveRestore,
+  BookCheck,
+  CalendarClock,
   CalendarHeart,
   ExternalLink,
   FileText,
@@ -27,7 +29,8 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { ROLES_LIST } from "@/lib/config";
+import { PROGRESS_STATUS, ROLES_LIST, getRankbyStatus } from "@/lib/config";
+import StudentEventsTimeline from "../dashboard/StudentEventsTimeline";
 
 const description = "This is a description.";
 
@@ -69,6 +72,8 @@ function StudentProject() {
       </div>
     );
   } else if (isSuccess) {
+    const rank = getRankbyStatus(user.progressStatus);
+
     content = (
       <main className="grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
@@ -141,7 +146,23 @@ function StudentProject() {
                       </div>
                     ) : (
                       <div className="mb-5">
-                        <UploadReport disabled={false} />
+                        <UploadReport
+                          disabled={
+                            PROGRESS_STATUS()[project.data.projectType]
+                              .ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION[1] !==
+                              user.progressStatus ||
+                            daysFromToday(
+                              project.data.event.proposal.reportDeadline
+                            ) < 0
+                          }
+                        />
+                        {PROGRESS_STATUS()[project.data.projectType]
+                          .ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION[1] !==
+                          user.progressStatus && (
+                          <div className="mt-2 text-center text-xs text-slate-500">
+                            Not Eligible
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -156,12 +177,13 @@ function StudentProject() {
 
                       {project.data.mid.report?.filePath ? (
                         <Badge variant="secondary">
-                          Submitted on May 22, 2024
+                          Submitted on{" "}
+                          {format(project.data.mid.report?.submittedOn, "PPP")}
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
                           <Badge variant="secondary">
-                            {`in 
+                            {`Deadline in 
                           ${daysFromToday(
                             project.data.event.mid.reportDeadline
                           )}d`}
@@ -183,12 +205,28 @@ function StudentProject() {
                           </a>
                         </Button>
                         <div className="text-xs text-slate-500">
-                          Submitted By Adarsh Das
+                          Submitted By {project.data.mid.report?.submittedBy}
                         </div>
                       </div>
                     ) : (
                       <div className="mb-5">
-                        <UploadReport disabled={false} />
+                        <UploadReport
+                          disabled={
+                            PROGRESS_STATUS()[project.data.projectType]
+                              .ELIGIBLE_FOR_MID_REPORT_SUBMISSION[1] !==
+                              user.progressStatus ||
+                            daysFromToday(
+                              project.data.event.mid.reportDeadline
+                            ) < 0
+                          }
+                        />
+                        {PROGRESS_STATUS()[project.data.projectType]
+                          .ELIGIBLE_FOR_MID_REPORT_SUBMISSION[1] !==
+                          user.progressStatus && (
+                          <div className="mt-2 text-center text-xs text-slate-500">
+                            Not Eligible
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -199,18 +237,20 @@ function StudentProject() {
                 {project.data.event.final.defense && (
                   <div className="grid gap-6 mb-4">
                     <div className="flex  justify-between items-center">
-                      <div className="text-md font-semibold">
-                        Proposal Report
-                      </div>
+                      <div className="text-md font-semibold">Final Report</div>
 
                       {project.data.final.report?.filePath ? (
                         <Badge variant="secondary">
-                          Submitted on May 22, 2024
+                          Submitted on{" "}
+                          {format(
+                            project.data.final.report?.submittedOn,
+                            "PPP"
+                          )}
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
                           <Badge variant="secondary">
-                            {`in 
+                            {`Deadline in 
                           ${daysFromToday(
                             project.data.event.final.reportDeadline
                           )}d`}
@@ -232,12 +272,28 @@ function StudentProject() {
                           </a>
                         </Button>
                         <div className="text-xs text-slate-500">
-                          Submitted By Adarsh Das
+                          Submitted By {project.data.final.report?.submittedBy}
                         </div>
                       </div>
                     ) : (
                       <div className="mb-5">
-                        <UploadReport disabled={false} />
+                        <UploadReport
+                          disabled={
+                            PROGRESS_STATUS()[project.data.projectType]
+                              .ELIGIBLE_FOR_FINAL_REPORT_SUBMISSION[1] !==
+                              user.progressStatus ||
+                            daysFromToday(
+                              project.data.event.final.reportDeadline
+                            ) < 0
+                          }
+                        />
+                        {PROGRESS_STATUS()[project.data.projectType]
+                          .ELIGIBLE_FOR_FINAL_REPORT_SUBMISSION[1] !==
+                          user.progressStatus && (
+                          <div className="mt-2 text-center text-xs text-slate-500">
+                            Not Eligible
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -259,42 +315,183 @@ function StudentProject() {
               <Footprints className="text-slate-500" />
             </CardHeader>
 
-            <CardContent className="text-sm px-10 mt-6">
-              <Steps
-                direction="vertical"
-                current={1}
-                items={[
-                  {
-                    title: "Create a Team",
-                    description: "Finished",
+            <CardContent className="text-sm px-12 mt-6">
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "black",
                   },
-                  {
-                    title: "In Progress",
-                    description,
+                  components: {
+                    Steps: {
+                      dotSize: 10,
+                      dotCurrentSize: 14,
+                    },
                   },
-                  {
-                    title: "Waiting",
-                    description,
-                  },
-                ]}
-              />
+                }}
+              >
+                {project.data.projectType == 0 && (
+                  <Steps
+                    progressDot
+                    current={rank}
+                    direction="vertical"
+                    items={[
+                      {
+                        title: "Create a Team",
+                        description:
+                          rank === 0
+                            ? "In Progress"
+                            : rank < 0
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                      {
+                        title: "Submit Proposal Report",
+                        description:
+                          rank === 1
+                            ? "In Progress"
+                            : rank < 1
+                            ? "Next Step."
+                            : "Submitted.",
+                      },
+                      {
+                        title: "Proposal Defense",
+                        description:
+                          rank === 2
+                            ? "In Progress"
+                            : rank < 2
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+
+                      {
+                        title: "Submit Final Report",
+                        description:
+                          rank === 3
+                            ? "In Progress"
+                            : rank < 3
+                            ? "Next Step."
+                            : "Submitted.",
+                      },
+                      {
+                        title: "Final Defense",
+                        description:
+                          rank === 4
+                            ? "In Progress"
+                            : rank < 4
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                    ]}
+                  />
+                )}
+                {project.data.projectType > 0 && (
+                  <Steps
+                    progressDot
+                    current={rank}
+                    direction="vertical"
+                    items={[
+                      {
+                        title: "Create a Team",
+                        description:
+                          rank === 0
+                            ? "In Progress"
+                            : rank < 0
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                      {
+                        title: "Submit Proposal Report",
+                        description:
+                          rank === 1
+                            ? "In Progress"
+                            : rank < 1
+                            ? "Next Step."
+                            : "Submitted.",
+                      },
+                      {
+                        title: "Proposal Defense",
+                        description:
+                          rank === 2
+                            ? "In Progress"
+                            : rank < 2
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                      {
+                        title: "Supervisor Approval for Mid",
+                        description:
+                          rank === 3
+                            ? "In Progress"
+                            : rank < 3
+                            ? "Next Step."
+                            : "Approved.",
+                      },
+                      {
+                        title: "Submit Mid Report",
+                        description:
+                          rank === 4
+                            ? "In Progress"
+                            : rank < 4
+                            ? "Next Step."
+                            : "Submitted.",
+                      },
+                      {
+                        title: "Mid Defense",
+                        description:
+                          rank === 5
+                            ? "In Progress"
+                            : rank < 5
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                      {
+                        title: "Supervisor Approval for Final",
+                        description:
+                          rank === 6
+                            ? "In Progress"
+                            : rank < 6
+                            ? "Next Step."
+                            : "Approved.",
+                      },
+                      {
+                        title: "Submit Final Report",
+                        description:
+                          rank === 7
+                            ? "In Progress"
+                            : rank < 7
+                            ? "Next Step."
+                            : "Submitted.",
+                      },
+                      {
+                        title: "Final Defense",
+                        description:
+                          rank === 8
+                            ? "In Progress"
+                            : rank < 8
+                            ? "Next Step."
+                            : "Completed.",
+                      },
+                    ]}
+                  />
+                )}
+              </ConfigProvider>
             </CardContent>
           </Card>
-          {/* <Card>
-          <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
-          <div>
-          <CardTitle className="text-lg">Events Timeline</CardTitle>
-          <CardDescription className="text-xs">
-          Timeline of the ongoing events
-          </CardDescription>
-          </div>
-          
-          <CalendarClock className="text-slate-500" />
-          </CardHeader>
-          <CardContent className="text-sm pt-6 max-h-[548px] overflow-x-scroll">
-          <StudentEventsTimeline />
-          </CardContent>
-        </Card> */}
+          <Card>
+            <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
+              <div>
+                <CardTitle className="text-lg">Defense Feedbaks</CardTitle>
+                <CardDescription className="text-xs">
+                  Feedbacks provided by the evaluators
+                </CardDescription>
+              </div>
+
+              <BookCheck className="text-slate-500" />
+            </CardHeader>
+            <CardContent className="text-sm pt-6 max-h-[548px] overflow-x-scroll">
+              No Feedbacks Available
+            </CardContent>
+          </Card>
         </div>
       </main>
     );

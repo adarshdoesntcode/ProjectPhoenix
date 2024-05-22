@@ -149,10 +149,10 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
             </CardDescription>
           </div>
           <div className="flex gap-4">
-            <Button size="sm" className="text-xs">
+            {/* <Button size="sm" className="text-xs">
               Evaluations
               <MessageCircleCode className="h-4 w-4 ml-1" />
-            </Button>
+            </Button> */}
             <Button size="sm" className="text-xs">
               Log Progress
               <BookmarkCheck className="h-4 w-4 ml-1" />

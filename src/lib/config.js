@@ -83,3 +83,15 @@ export const PROGRESS_STATUS = () => {
     },
   };
 };
+
+export const getRankbyStatus = (rank) => {
+  for (const phase in PROGRESS_STATUS()) {
+    const statuses = PROGRESS_STATUS()[phase];
+    for (const key in statuses) {
+      if (statuses[key][1] === rank) {
+        return statuses[key][0];
+      }
+    }
+  }
+  return null;
+};
