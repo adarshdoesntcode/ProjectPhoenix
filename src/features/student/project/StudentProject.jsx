@@ -9,8 +9,6 @@ import { ConfigProvider, Steps } from "antd";
 import {
   ArchiveRestore,
   BookCheck,
-  CalendarClock,
-  CalendarHeart,
   ExternalLink,
   FileText,
   Footprints,
@@ -30,9 +28,6 @@ import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { PROGRESS_STATUS, ROLES_LIST, getRankbyStatus } from "@/lib/config";
-import StudentEventsTimeline from "../dashboard/StudentEventsTimeline";
-
-const description = "This is a description.";
 
 function StudentProject() {
   const user = useSelector(selectCurrentUser);

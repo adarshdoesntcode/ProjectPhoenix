@@ -8,6 +8,13 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+function modifyString(str) {
+  if (str.length > 15) {
+    return "..." + str.slice(-6);
+  }
+  return str;
+}
+
 function BreadCrumbGenerator({ crumbs, role }) {
   const content = crumbs.map((crumb, index) => {
     if (index == crumbs.length - 1) {
@@ -16,7 +23,7 @@ function BreadCrumbGenerator({ crumbs, role }) {
           {crumbs.length > 1 && <BreadcrumbSeparator />}
           <BreadcrumbItem>
             <BreadcrumbPage>
-              {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+              {modifyString(crumb.charAt(0).toUpperCase() + crumb.slice(1))}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </React.Fragment>
@@ -26,7 +33,7 @@ function BreadCrumbGenerator({ crumbs, role }) {
         <BreadcrumbItem key={crumb}>
           <BreadcrumbLink asChild>
             <Link to={`/${ROLES_LIST[role]}/${crumb}`}>
-              {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+              {modifyString(crumb.charAt(0).toUpperCase() + crumb.slice(1))}
             </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -42,7 +49,7 @@ function BreadCrumbGenerator({ crumbs, role }) {
                   .slice(0, index + 1)
                   .join("/")}`}
               >
-                {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
+                {modifyString(crumb.charAt(0).toUpperCase() + crumb.slice(1))}
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

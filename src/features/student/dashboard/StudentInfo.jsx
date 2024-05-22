@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +14,7 @@ import {
 
 import { selectCurrentUser } from "@/features/auth/authSlice";
 
-import { Boxes, Contact, FolderGit2, Loader2 } from "lucide-react";
+import { Contact, FolderGit2, Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useGetProjectQuery } from "../studentApiSlice";
 import { getInitials } from "@/lib/utils";
@@ -89,7 +88,7 @@ function StudentInfo() {
 
   if (!user.isAssociated) {
     projectContent = (
-      <div className="flex flex-col items-center justify-center gap-1  rounded-md h-[150px] text-center">
+      <div className="flex flex-col items-center justify-center gap-1  rounded-md h-[190px] text-center">
         <h3 className="text-lg font-bold tracking-tight">
           No Enrolled Project
         </h3>
@@ -102,7 +101,7 @@ function StudentInfo() {
 
   if (isLoading) {
     projectContent = (
-      <CardContent className="flex items-center  rounded-md justify-center h-[150px]">
+      <CardContent className="flex items-center  rounded-md justify-center h-[190px]">
         <Loader2 className="h-6 w-6 animate-spin" />
       </CardContent>
     );

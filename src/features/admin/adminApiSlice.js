@@ -8,6 +8,12 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getEvent: builder.query({
+      query: (id) => ({
+        url: `/event/events/${id}`,
+        method: "GET",
+      }),
+    }),
     createEvent: builder.mutation({
       query: (credentials) => ({
         url: "/event/create",
@@ -18,4 +24,8 @@ export const adminApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllEventsQuery, useCreateEventMutation } = adminApiSlice;
+export const {
+  useGetAllEventsQuery,
+  useCreateEventMutation,
+  useGetEventQuery,
+} = adminApiSlice;

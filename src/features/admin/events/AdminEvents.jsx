@@ -82,7 +82,7 @@ function AdminEvents() {
       </div>
     );
   } else if (isSuccess) {
-    if (events?.data?.length === 0) {
+    if (!events) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
@@ -105,7 +105,7 @@ function AdminEvents() {
     } else {
       content = (
         <>
-          <div className="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">

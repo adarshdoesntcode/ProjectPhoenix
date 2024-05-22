@@ -17,11 +17,13 @@ import { Button } from "@/components/ui/button";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { download, generateCsv, mkConfig } from "export-to-csv";
 import {
+  ROLES_LIST,
   getEventStatusByCode,
   getEventTypeByCode,
   getProgramByCode,
 } from "@/lib/config";
 import { format } from "date-fns";
+import { Link, useNavigate } from "react-router-dom";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -33,7 +35,7 @@ const csvConfig = mkConfig({
 const exportExcel = (rows) => {
   const rowData = rows.map((row) => {
     return {
-      Event_Code: row.original.eventId,
+      Event_Code: row.original.eventCode,
       Name: row.original.eventName,
       Status: getEventStatusByCode(row.original.eventStatus),
       Type: getEventTypeByCode(row.original.eventType),
@@ -52,6 +54,8 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     pageIndex: 0,
     pageSize: 6,
   });
+
+  const naviagte = useNavigate();
 
   const table = useReactTable({
     data,
@@ -101,6 +105,9 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
+                  onClick={() =>
+                    naviagte(`/${ROLES_LIST.admin}/events/${row.original._id}`)
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>
