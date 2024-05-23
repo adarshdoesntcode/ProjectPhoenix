@@ -55,7 +55,6 @@ function getTotalNumberOfAssociatedStudents(event) {
   return 0;
 }
 function getTotalTeamMembersWithProgressStatus(event, status) {
-  console.log(status);
   let totalTeamMembers = 0;
   if (event.data && Array.isArray(event.data.projects)) {
     event.data.projects.forEach((project) => {
@@ -102,7 +101,7 @@ function AdminEventDetails() {
     error,
   } = useGetEventQuery(id);
   const navigate = useNavigate();
-  console.log(event);
+
   const tableRef = useRef();
 
   let content;
@@ -373,11 +372,13 @@ function AdminEventDetails() {
           </div>
           <TabsContent value="all">
             <Card>
-              <CardHeader>
-                <CardTitle>All Projects</CardTitle>
-                <CardDescription>
-                  All the projects enrolled in this event
-                </CardDescription>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center justify-between text-xl">
+                  <div>Enrolled Projects</div>
+                  <div className="text-sm font-semibold text-slate-500">
+                    {event.data.projects.length} project(s)
+                  </div>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <DataTable
@@ -390,11 +391,13 @@ function AdminEventDetails() {
           </TabsContent>
           <TabsContent value="proposal">
             <Card>
-              <CardHeader>
-                <CardTitle>Eligible for Proposal</CardTitle>
-                <CardDescription>
-                  All the projects eligible for proposal defense
-                </CardDescription>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center justify-between text-xl">
+                  <div>Eligible for Proposal</div>
+                  <div className="text-sm font-semibold text-slate-500">
+                    {proposalTable.length} project(s)
+                  </div>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <DataTable
@@ -405,30 +408,37 @@ function AdminEventDetails() {
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="mid">
-            <Card>
-              <CardHeader>
-                <CardTitle>Eligible for Mid</CardTitle>
-                <CardDescription>
-                  All the projects eligible for mid defense
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <DataTable
-                  ref={tableRef}
-                  columns={ProjectColumn}
-                  data={midTable}
-                />
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {event.data.eventType != EVENT_TYPE.FIRST && (
+            <TabsContent value="mid">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center justify-between text-xl">
+                    <div>Eligible for Mid</div>
+                    <div className="text-sm font-semibold text-slate-500">
+                      {midTable.length} project(s)
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <DataTable
+                    ref={tableRef}
+                    columns={ProjectColumn}
+                    data={midTable}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
           <TabsContent value="final">
             <Card>
-              <CardHeader>
-                <CardTitle>Eligible for Final</CardTitle>
-                <CardDescription>
-                  All the projects eligible for final defense
-                </CardDescription>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center justify-between text-xl">
+                  <div>Eligible for Final</div>
+                  <div className="text-sm font-semibold text-slate-500">
+                    {finalTable.length} project(s)
+                  </div>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <DataTable

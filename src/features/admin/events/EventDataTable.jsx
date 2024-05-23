@@ -133,6 +133,10 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-slate-500">
+          Showing {table.getPaginationRowModel().rows.length} of{" "}
+          {table.getCoreRowModel().rows.length}
+        </div>
         <Button
           variant="outline"
           size="sm"

@@ -19,14 +19,13 @@ import { useSelector } from "react-redux";
 import { useGetProjectQuery } from "../studentApiSlice";
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getEventStatusByCode, getProgramByCode } from "@/lib/config";
+import { getEventTypeByCode, getProgramByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 
 function StudentInfo() {
   const user = useSelector(selectCurrentUser);
 
-  console.log();
   const {
     data: project,
     isLoading,
@@ -110,7 +109,7 @@ function StudentInfo() {
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
-          <Badge>{getEventStatusByCode(project.data.status)}</Badge>
+          <Badge>{getEventTypeByCode(project.data.projectType)}</Badge>
         </div>
         <Separator className="mb-3" />
 

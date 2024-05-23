@@ -3,27 +3,23 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { download, generateCsv, mkConfig } from "export-to-csv";
-import {
-  ROLES_LIST,
-  getEventStatusByCode,
-  getEventTypeByCode,
-  getProgramByCode,
-} from "@/lib/config";
+import { Input } from "@/components/ui/input";
+import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
 import { format } from "date-fns";
-import { Link, useNavigate } from "react-router-dom";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -53,8 +49,8 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     pageIndex: 0,
     pageSize: 10,
   });
-
-  const naviagte = useNavigate();
+  const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState();
 
   const table = useReactTable({
     data,
@@ -62,9 +58,18 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       pagination,
+      sorting,
+
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "auto",
   });
 
   useImperativeHandle(ref, () => {
@@ -77,6 +82,14 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
 
   return (
     <>
+      <div className="flex items-center mb-4 space-x-2">
+        <Input
+          placeholder="Search name, code..."
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm"
+        />
+      </div>
       <div className="bg-white border rounded-md">
         <Table>
           <TableHeader>
@@ -104,9 +117,6 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
-                  // onClick={() =>
-                  //   naviagte(`/${ROLES_LIST.admin}/events/${row.original._id}`)
-                  // }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>
@@ -132,6 +142,10 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-slate-500">
+          Showing {table.getPaginationRowModel().rows.length} of{" "}
+          {table.getCoreRowModel().rows.length}
+        </div>
         <Button
           variant="outline"
           size="sm"

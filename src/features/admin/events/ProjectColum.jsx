@@ -15,10 +15,9 @@ import {
   PROGRESS_STATUS,
   getEventStatusByCode,
   getEventTypeByCode,
-  getProgramByCode,
 } from "@/lib/config";
 import { format } from "date-fns";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 
 export const ProjectColumn = [
   {
@@ -32,7 +31,17 @@ export const ProjectColumn = [
   },
   {
     accessorKey: "projectName",
-    header: () => <TableHead>Project Name</TableHead>,
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Project Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    ),
     cell: ({ row }) => {
       const projectName = row.getValue("projectName");
       const description = row.original.projectDescription;
@@ -47,6 +56,7 @@ export const ProjectColumn = [
   },
   {
     accessorKey: "status",
+
     header: () => (
       <TableHead className="hidden lg:table-cell"> Status</TableHead>
     ),
@@ -132,26 +142,42 @@ export const ProjectColumn = [
   },
   {
     accessorKey: "supervisor",
-    header: () => (
-      <TableHead className="hidden xl:table-cell">Supervisor</TableHead>
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden xl:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Supervisor
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
     ),
+
     cell: ({ row }) => {
       // const teamMembers = row.original.teamMembers;
 
       // const formatted = teamMembers.length;
 
       return (
-        <TableCell className="font-semibold hidden xl:table-cell">
-          Not assigned
-        </TableCell>
+        <TableCell className="hidden xl:table-cell">Not assigned</TableCell>
       );
     },
   },
   {
     accessorKey: "createdAt",
-    header: () => (
-      <TableHead className="hidden xl:table-cell">Created On</TableHead>
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden xl:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Created On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
     ),
+
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt");
       const formatted = format(createdAt, "PPP");

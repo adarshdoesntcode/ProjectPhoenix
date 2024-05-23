@@ -36,7 +36,6 @@ function AdminEvents() {
     error,
   } = useGetAllEventsQuery();
 
-  console.log(events);
   let content;
   let numberOfActiveEvents,
     numberOfCompleteEvents,
