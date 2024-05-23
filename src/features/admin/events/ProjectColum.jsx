@@ -53,19 +53,10 @@ export const ProjectColumn = [
     cell: ({ row }) => {
       const status = row.getValue("status");
       const formatted = getEventStatusByCode(status);
-      let variant;
-
-      if (formatted === "Archive") {
-        variant = "outline";
-      } else if (formatted === "Complete") {
-        variant = "secondary";
-      } else {
-        variant = "";
-      }
 
       return (
         <TableCell className="hidden lg:table-cell">
-          <Badge variant={variant}>{formatted}</Badge>
+          <Badge variant="secondary">{formatted}</Badge>
         </TableCell>
       );
     },
@@ -76,7 +67,11 @@ export const ProjectColumn = [
     cell: ({ row }) => {
       const projectType = row.getValue("projectType");
       const formatted = getEventTypeByCode(projectType);
-      return <TableCell className="font-semibold">{formatted}</TableCell>;
+      return (
+        <TableCell>
+          <Badge>{formatted}</Badge>
+        </TableCell>
+      );
     },
   },
 
@@ -87,7 +82,7 @@ export const ProjectColumn = [
     ),
     cell: ({ row }) => {
       const progressStatus = row.original.teamMembers[0].progressStatus;
-      let formatted = "Nothing";
+      let formatted = "-";
 
       if (
         progressStatus ===
@@ -101,7 +96,7 @@ export const ProjectColumn = [
           .ELIGIBLE_FOR_FINAL_DEFENSE[1]
       ) {
         formatted = "Final";
-      } else if (row.original.projectType === EVENT_TYPE.FIRST) {
+      } else if (row.original.projectType !== EVENT_TYPE.FIRST) {
         if (
           progressStatus ===
           PROGRESS_STATUS()[row.original.projectType]

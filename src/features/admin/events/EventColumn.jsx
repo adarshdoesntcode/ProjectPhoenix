@@ -47,19 +47,10 @@ export const EventColumns = [
     cell: ({ row }) => {
       const eventStatus = row.getValue("eventStatus");
       const formatted = getEventStatusByCode(eventStatus);
-      let variant;
-
-      if (formatted === "Archive") {
-        variant = "outline";
-      } else if (formatted === "Complete") {
-        variant = "secondary";
-      } else {
-        variant = "";
-      }
 
       return (
         <TableCell>
-          <Badge variant={variant}>{formatted}</Badge>
+          <Badge variant="secondary">{formatted}</Badge>
         </TableCell>
       );
     },
@@ -70,7 +61,11 @@ export const EventColumns = [
     cell: ({ row }) => {
       const eventType = row.getValue("eventType");
       const formatted = getEventTypeByCode(eventType);
-      return <TableCell className="font-semibold">{formatted}</TableCell>;
+      return (
+        <TableCell className="font-semibold">
+          <Badge>{formatted}</Badge>
+        </TableCell>
+      );
     },
   },
 

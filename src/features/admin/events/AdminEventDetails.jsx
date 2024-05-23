@@ -11,6 +11,7 @@ import { useGetEventQuery } from "../adminApiSlice";
 import {
   Cctv,
   ChevronLeft,
+  Clock,
   FileCheck,
   Handshake,
   Loader2,
@@ -184,6 +185,10 @@ function AdminEventDetails() {
             </h1>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <Button size="sm" variant="outline" className=" h-10 gap-1 text-sm">
+              <Clock className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only">Extend</span>
+            </Button>
             <Button size="sm" variant="outline" className=" h-10 gap-1 text-sm">
               <Cctv className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only">Supervisor</span>
