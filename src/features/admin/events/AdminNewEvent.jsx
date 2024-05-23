@@ -40,7 +40,14 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
 import { useCreateEventMutation } from "../adminApiSlice";
-import { EVENT_TYPE, PROGRAM_CODE } from "@/lib/config";
+import {
+  EVENT_TYPE,
+  PROGRAM_CODE,
+  ROLES_LIST,
+  getEventTypeByCode,
+  getProgramByCode,
+} from "@/lib/config";
+import { toast } from "@/components/ui/use-toast";
 
 const initalState = {
   proposal: {
@@ -109,11 +116,26 @@ function AdminNewEvent() {
         ...subEvent,
         year,
       };
+      const res = await createEvent(newEvent);
 
-      await createEvent(newEvent);
-      setModal(false);
+      if (res.error) {
+        setModal(false);
+        throw new Error("Try Again");
+      }
+      if (!res.error) {
+        setModal(false);
+        navigate(`/${ROLES_LIST.admin}/events`);
+        toast({
+          title: "Event created successfully!",
+          description: "Students can now enroll",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
     }
   }
 
@@ -704,11 +726,15 @@ function AdminNewEvent() {
                       <ul className="grid gap-2">
                         <li className="flex items-center justify-between">
                           <span className="text-slate-500">Type</span>
-                          <span>{getValues("eventType")}</span>
+                          <span>
+                            {getEventTypeByCode(getValues("eventType"))}
+                          </span>
                         </li>
                         <li className="flex items-center justify-between">
                           <span className="text-slate-500">Target</span>
-                          <span>{getValues("eventTarget")}</span>
+                          <span>
+                            {getProgramByCode(getValues("eventTarget"))}
+                          </span>
                         </li>
                         {getValues("description") && (
                           <li className="flex items-center justify-between">

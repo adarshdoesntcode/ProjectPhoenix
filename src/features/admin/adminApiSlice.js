@@ -7,12 +7,14 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: "/event/events",
         method: "GET",
       }),
+      providesTags: ["Events"],
     }),
     getEvent: builder.query({
       query: (id) => ({
         url: `/event/events/${id}`,
         method: "GET",
       }),
+      providesTags: ["Event"],
     }),
     createEvent: builder.mutation({
       query: (credentials) => ({
@@ -20,6 +22,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      invalidatesTags: ["Events"],
     }),
   }),
 });
