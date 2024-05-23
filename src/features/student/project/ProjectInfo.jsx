@@ -11,7 +11,7 @@ import { BookmarkCheck, Loader2 } from "lucide-react";
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getEventStatusByCode } from "@/lib/config";
+import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -81,7 +81,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
-          <Badge>{getEventStatusByCode(project.data.status)}</Badge>
+          <Badge>{getEventTypeByCode(project.data.projectType)}</Badge>
         </div>
         <Separator className="mb-3" />
 
