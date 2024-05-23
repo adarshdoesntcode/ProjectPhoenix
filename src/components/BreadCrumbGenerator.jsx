@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 function modifyString(str) {
   if (str.length > 15) {
-    return "..." + str.slice(-6);
+    return ".." + str.slice(-6).toUpperCase();
   }
   return str;
 }

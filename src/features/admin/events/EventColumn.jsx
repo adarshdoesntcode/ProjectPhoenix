@@ -25,7 +25,7 @@ export const EventColumns = [
     cell: ({ row }) => {
       const eventId = row.getValue("eventCode");
 
-      return <TableCell className="text-gray-500">{eventId}</TableCell>;
+      return <TableCell className="text-gray-700">{eventId}</TableCell>;
     },
   },
   {
@@ -35,7 +35,7 @@ export const EventColumns = [
       const eventName = row.getValue("eventName");
 
       return (
-        <TableCell className="text-gray-500 hidden lg:table-cell">
+        <TableCell className="text-gray-700 hidden lg:table-cell">
           {eventName}
         </TableCell>
       );
@@ -158,14 +158,26 @@ export const EventColumns = [
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigator.clipboard.writeText(event.eventId);
+                  navigator.clipboard.writeText(event.eventCode);
                 }}
               >
                 Copy Event ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View Event</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                View Event
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                Archive
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </TableCell>

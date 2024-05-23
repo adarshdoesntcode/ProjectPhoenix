@@ -27,7 +27,12 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { PROGRESS_STATUS, ROLES_LIST, getRankbyStatus } from "@/lib/config";
+import {
+  EVENT_TYPE,
+  PROGRESS_STATUS,
+  ROLES_LIST,
+  getRankbyStatus,
+} from "@/lib/config";
 
 function StudentProject() {
   const user = useSelector(selectCurrentUser);
@@ -324,7 +329,7 @@ function StudentProject() {
                   },
                 }}
               >
-                {project.data.projectType == 0 && (
+                {project.data.projectType == EVENT_TYPE.FIRST && (
                   <Steps
                     progressDot
                     current={rank}
@@ -379,7 +384,7 @@ function StudentProject() {
                     ]}
                   />
                 )}
-                {project.data.projectType > 0 && (
+                {project.data.projectType > EVENT_TYPE.FIRST && (
                   <Steps
                     progressDot
                     current={rank}
