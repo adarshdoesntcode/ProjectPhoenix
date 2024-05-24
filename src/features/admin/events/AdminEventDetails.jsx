@@ -39,7 +39,7 @@ import { File } from "lucide-react";
 import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DataTable } from "./ProjectDataColumn";
+import { DataTable } from "./ProjectDataTable";
 import { ProjectColumn } from "./ProjectColum";
 
 function getTotalNumberOfAssociatedStudents(event) {
@@ -362,7 +362,7 @@ function AdminEventDetails() {
               <Button
                 size="sm"
                 variant="outline"
-                className="hidden sm:inline-flex h-10 gap-1 text-sm"
+                className=" h-10 gap-1 text-sm"
                 onClick={() => tableRef.current?.exportCSV()}
               >
                 <File className="h-3.5 w-3.5" />

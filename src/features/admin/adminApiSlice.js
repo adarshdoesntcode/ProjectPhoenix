@@ -24,6 +24,21 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Events"],
     }),
+    createEvaluator: builder.mutation({
+      query: (credentials) => ({
+        url: "/event/evaluator/create",
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["Evaluators"],
+    }),
+    getAllEvaluator: builder.query({
+      query: () => ({
+        url: "/event/evaluators",
+        method: "GET",
+      }),
+      providesTags: ["Evaluators"],
+    }),
   }),
 });
 
@@ -31,4 +46,6 @@ export const {
   useGetAllEventsQuery,
   useCreateEventMutation,
   useGetEventQuery,
+  useCreateEvaluatorMutation,
+  useGetAllEvaluatorQuery,
 } = adminApiSlice;

@@ -179,7 +179,7 @@ function AdminEvents() {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="hidden sm:inline-flex h-10 gap-1 text-sm"
+                  className=" h-10 gap-1 text-sm"
                   onClick={() => tableRef.current?.exportCSV()}
                 >
                   <File className="h-3.5 w-3.5" />

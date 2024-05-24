@@ -36,6 +36,17 @@ export const EVENT_TYPE = {
   MAJOR: "2",
 };
 
+export const EVALUATOR_TYPE = {
+  INTERNAL: "88",
+  EXTERNAL: "99",
+};
+
+export function getEvaluatorTypeByCode(value) {
+  return Object.keys(EVALUATOR_TYPE).find(
+    (key) => EVALUATOR_TYPE[key] === value
+  );
+}
+
 export function getEventTypeByCode(value) {
   return Object.keys(EVENT_TYPE).find((key) => EVENT_TYPE[key] === value);
 }
