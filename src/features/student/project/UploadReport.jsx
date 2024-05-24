@@ -1,19 +1,32 @@
+import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { selectCurrentUser } from "@/features/auth/authSlice";
-
 import { ConfigProvider, Upload } from "antd";
 import { FileUp } from "lucide-react";
 import { useSelector } from "react-redux";
-
 import { useSubmitReportMutation } from "../studentApiSlice";
-
 import useRefreshUser from "@/hooks/useRefreshUser";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+
 const { Dragger } = Upload;
 
 function UploadReport({ disabled }) {
   const user = useSelector(selectCurrentUser);
   const [submitReport] = useSubmitReportMutation();
   const refreshUser = useRefreshUser();
+  const [fileToUpload, setFileToUpload] = useState(null);
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
 
   const props = {
     name: "file",
@@ -46,7 +59,9 @@ function UploadReport({ disabled }) {
         });
         return Upload.LIST_IGNORE;
       }
-      return isPdf && isLt10M;
+      setFileToUpload(file);
+      setIsDialogVisible(true);
+      return false; // Prevent the default upload
     },
 
     customRequest: async ({ file, onSuccess, onError }) => {
@@ -96,27 +111,64 @@ function UploadReport({ disabled }) {
     },
   };
 
-  return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimaryHover: "gray",
-          colorBgMask: "white",
-          fontFamily: "Inter",
-        },
-      }}
-    >
-      <Dragger {...props}>
-        <div className="flex flex-col items-center gap-2 justify-center h-[200px]">
-          <FileUp className="w-12 h-12 " />
+  const handleConfirmUpload = () => {
+    if (fileToUpload) {
+      const { customRequest } = props;
+      customRequest({ file: fileToUpload });
+    }
+    setIsDialogVisible(false);
+  };
 
-          <p className="text-lg font-semibold">
-            Click or drag Report to this area to upload
-          </p>
-          <p className="text-xs ">Only .pdf files, MAX SIZE : 10MB</p>
-        </div>
-      </Dragger>
-    </ConfigProvider>
+  const handleCancelUpload = () => {
+    setFileToUpload(null);
+    setIsDialogVisible(false);
+  };
+
+  return (
+    <>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimaryHover: "gray",
+            colorBgMask: "white",
+            fontFamily: "Inter",
+          },
+        }}
+      >
+        <Dragger {...props}>
+          <div className="flex flex-col items-center gap-2 justify-center h-[200px]">
+            <FileUp className="w-12 h-12 " />
+            <p className="text-lg font-semibold">
+              Click or drag Report to this area to upload
+            </p>
+            <p className="text-xs ">Only .pdf files, MAX SIZE : 10MB</p>
+          </div>
+        </Dragger>
+      </ConfigProvider>
+
+      <AlertDialog open={isDialogVisible}>
+        <AlertDialogTrigger asChild>
+          <div></div>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Upload</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to upload this report? This action cannot be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCancelUpload}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmUpload}>
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 

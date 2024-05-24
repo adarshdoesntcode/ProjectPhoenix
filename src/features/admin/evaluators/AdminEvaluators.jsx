@@ -1,60 +1,98 @@
+import { useState, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { EVALUATOR_TYPE, EVENT_STATUS, ROLES_LIST } from "@/lib/config";
+import { EVALUATOR_TYPE, ROLES_LIST } from "@/lib/config";
 import { Link } from "react-router-dom";
-import { useGetAllEvaluatorQuery } from "../adminApiSlice";
+import {
+  useCreateEvaluatorMutation,
+  useGetAllEvaluatorQuery,
+} from "../adminApiSlice";
 import { EvaluatorColumn } from "./EvaluatorColumn";
 import {
-  Activity,
   ArrowBigDown,
   ArrowBigUp,
   BookCheck,
-  CalendarCheck2,
-  CheckCheck,
   CirclePlus,
-  Hammer,
   Handshake,
   Loader2,
-  TestTubeDiagonalIcon,
+  File,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { File } from "lucide-react";
-
 import { DataTable } from "./EvaluatorDataTable";
-import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
-import { useRef } from "react";
+import { numberOfValues } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; // Make sure you have this component
+import { SelectContent } from "@radix-ui/react-select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 function AdminEvaluators() {
   const tableRef = useRef();
+  const [createEvaluator] = useCreateEvaluatorMutation();
   const {
     data: evaluators,
     isLoading,
     isSuccess,
+
     isError,
     error,
   } = useGetAllEvaluatorQuery();
-
-  console.log(evaluators);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
   let content;
-  let numberOfActiveEvents,
-    internalEvaluators,
-    numberOfCompleteEvents,
-    noOfDevelopingProjects,
-    activeEvents,
+  let internalEvaluators,
     externalEvaluators,
-    completeEvents,
     numberOfAssociatedEvaluators,
     numberOfInternalEvaluators,
-    numberOfExternalEvaluators,
-    archiveEvents;
+    numberOfExternalEvaluators;
+
+  const handleCreateEvaluator = async (data) => {
+    try {
+      const res = await createEvaluator(data);
+
+      if (res.error) {
+        throw new Error("Try Again");
+      }
+      if (!res.error) {
+        setIsDialogOpen(false);
+        reset();
+
+        toast({
+          title: "Event created successfully!",
+          description: "Students can now enroll",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  };
 
   if (evaluators) {
     numberOfAssociatedEvaluators = numberOfValues(
@@ -62,13 +100,11 @@ function AdminEvaluators() {
       "isAssociated",
       true
     );
-
     numberOfInternalEvaluators = numberOfValues(
       evaluators?.data,
       "evaluatorType",
       EVALUATOR_TYPE.INTERNAL
     );
-
     numberOfExternalEvaluators = numberOfValues(
       evaluators?.data,
       "evaluatorType",
@@ -83,8 +119,6 @@ function AdminEvaluators() {
     externalEvaluators = evaluators.data.filter(
       (evaluator) => evaluator.evaluatorType == EVALUATOR_TYPE.EXTERNAL
     );
-
-    console.log(internalEvaluators, externalEvaluators);
   }
 
   if (isLoading) {
@@ -101,15 +135,11 @@ function AdminEvaluators() {
             <h3 className="text-2xl font-bold tracking-tight">
               You have no Evaluators
             </h3>
-
             <p className="text-sm text-gray-500">
               You can start as soon as you add an evaluator.
             </p>
-
-            <Button className="mt-4">
-              {/* <Link to={`/${ROLES_LIST.admin}/events/new`}> */}
-              Create an Event
-              {/* </Link> */}
+            <Button className="mt-4" asChild>
+              <Link to={`/${ROLES_LIST.admin}`}>Go Home</Link>
             </Button>
           </div>
         </div>
@@ -141,7 +171,7 @@ function AdminEvaluators() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  <span>{numberOfAssociatedEvaluators}</span> /
+                  <span>{numberOfAssociatedEvaluators}</span> /{" "}
                   <span className="text-sm font-normal">
                     {evaluators.data.length}
                   </span>
@@ -160,7 +190,7 @@ function AdminEvaluators() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  <span>{numberOfInternalEvaluators}</span> /
+                  <span>{numberOfInternalEvaluators}</span> /{" "}
                   <span className="text-sm font-normal">
                     {evaluators.data.length}
                   </span>
@@ -179,7 +209,7 @@ function AdminEvaluators() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  <span>{numberOfExternalEvaluators}</span> /
+                  <span>{numberOfExternalEvaluators}</span> /{" "}
                   <span className="text-sm font-normal">
                     {evaluators.data.length}
                   </span>
@@ -207,14 +237,152 @@ function AdminEvaluators() {
                   <File className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only">Export</span>
                 </Button>
-                <Button size="sm" className="h-10 gap-1 text-sm" asChild>
-                  <Link to="new">
-                    <CirclePlus className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">
-                      New Evaluator
-                    </span>
-                  </Link>
-                </Button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button size="sm" className="h-10 gap-1 text-sm">
+                      <CirclePlus className="h-3.5 w-3.5" />
+                      <span className="sr-only sm:not-sr-only">
+                        New Evaluator
+                      </span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Create New Evaluator</DialogTitle>
+                      <DialogDescription>
+                        Fill in the details to create a new evaluator.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSubmit(handleCreateEvaluator)}>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="fullname"
+                            {...register("fullname", {
+                              required: "Name is required",
+                            })}
+                            className="col-span-3"
+                          />
+                          {errors.fullname && (
+                            <p className="text-red-500 text-xs col-span-4">
+                              {errors.fullname.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="email" className="text-right">
+                            Email
+                          </Label>
+                          <Input
+                            id="email"
+                            {...register("email", {
+                              required: "Email is required",
+                              pattern: {
+                                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                                message: "Email is not valid",
+                              },
+                            })}
+                            className="col-span-3"
+                          />
+                          {errors.email && (
+                            <p className="text-red-500 text-xs col-span-4">
+                              {errors.email.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="contact" className="text-right">
+                            Contact
+                          </Label>
+                          <Input
+                            id="contact"
+                            {...register("contact", {
+                              required: "Contact is required",
+                            })}
+                            className="col-span-3"
+                          />
+                          {errors.contact && (
+                            <p className="text-red-500 text-xs col-span-4">
+                              {errors.contact.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="designation" className="text-right">
+                            Designation
+                          </Label>
+                          <Input
+                            id="designation"
+                            {...register("designation")}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="institution" className="text-right">
+                            Institution
+                          </Label>
+                          <Input
+                            id="institution"
+                            {...register("institution")}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="evaluatorType" className="text-right">
+                            Type
+                          </Label>
+                          <Controller
+                            name="evaluatorType"
+                            control={control}
+                            defaultValue={EVALUATOR_TYPE.INTERNAL} // Set the default value as needed
+                            rules={{ required: "Type is required" }} // Add validation rules if required
+                            render={({ field }) => (
+                              <RadioGroup
+                                className="flex gap-4"
+                                id="evaluatorType"
+                                value={field.value}
+                                onValueChange={field.onChange}
+                              >
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem
+                                    value={EVALUATOR_TYPE.INTERNAL}
+                                    id="internal"
+                                  />
+                                  <Label htmlFor="internal">Internal</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem
+                                    value={EVALUATOR_TYPE.EXTERNAL}
+                                    id="external"
+                                  />
+                                  <Label htmlFor="external">External</Label>
+                                </div>
+                              </RadioGroup>
+                            )}
+                          />
+                          {errors.type && (
+                            <p className="text-red-500 text-xs col-span-4">
+                              {errors.type.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        {isSubmitting ? (
+                          <Button variant="secondary" disabled>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Ctreating..
+                          </Button>
+                        ) : (
+                          <Button type="submit">Create</Button>
+                        )}
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
             <TabsContent value="all">
