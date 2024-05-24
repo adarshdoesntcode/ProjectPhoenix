@@ -18,8 +18,13 @@ import { Button } from "@/components/ui/button";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { download, generateCsv, mkConfig } from "export-to-csv";
 import { Input } from "@/components/ui/input";
-import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
+import {
+  ROLES_LIST,
+  getEventStatusByCode,
+  getEventTypeByCode,
+} from "@/lib/config";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -51,6 +56,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
   });
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState();
+  const navigate = useNavigate();
 
   const table = useReactTable({
     data,
@@ -60,12 +66,10 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       pagination,
       sorting,
-
       globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
@@ -117,6 +121,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
+                  onClick={() => navigate(`${row.original._id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>

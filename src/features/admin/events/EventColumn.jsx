@@ -11,26 +11,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableHead } from "@/components/ui/table";
 import {
+  ROLES_LIST,
   getEventStatusByCode,
   getEventTypeByCode,
   getProgramByCode,
 } from "@/lib/config";
 import { format } from "date-fns";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const EventColumns = [
   {
     accessorKey: "eventCode",
     header: () => <TableHead>Event Code</TableHead>,
     cell: ({ row }) => {
-      const eventId = row.getValue("eventCode");
+      const eventCode = row.getValue("eventCode");
 
-      return <TableCell className="text-gray-700">{eventId}</TableCell>;
+      return <TableCell className="text-gray-700">{eventCode}</TableCell>;
     },
   },
   {
     accessorKey: "eventName",
-    header: () => <TableHead className="hidden lg:table-cell">Name</TableHead>,
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden lg:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    ),
+
     cell: ({ row }) => {
       const eventName = row.getValue("eventName");
 
@@ -103,8 +116,16 @@ export const EventColumns = [
   },
   {
     accessorKey: "createdAt",
-    header: () => (
-      <TableHead className="hidden xl:table-cell">Created On</TableHead>
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden xl:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Created On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
     ),
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt");
@@ -164,7 +185,9 @@ export const EventColumns = [
                   e.stopPropagation();
                 }}
               >
-                View Event
+                <Link to={`/${ROLES_LIST.admin}/events/${row.original._id}`}>
+                  View Event
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {

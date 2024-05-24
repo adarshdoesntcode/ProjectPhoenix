@@ -18,6 +18,7 @@ import {
 } from "@/lib/config";
 import { format } from "date-fns";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const ProjectColumn = [
   {
@@ -189,22 +190,6 @@ export const ProjectColumn = [
       );
     },
   },
-  // {
-  //   accessorKey: "author",
-  //   header: () => (
-  //     <TableHead className="hidden xl:table-cell">Created By</TableHead>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const author = row.getValue("author");
-  //     const formatted = author.fullname;
-
-  //     return (
-  //       <TableCell className="text-gray-500 hidden xl:table-cell">
-  //         {formatted}
-  //       </TableCell>
-  //     );
-  //   },
-  // },
 
   {
     id: "actions",
@@ -236,7 +221,7 @@ export const ProjectColumn = [
                   e.stopPropagation();
                 }}
               >
-                View Project
+                <Link to={`${row.original._id}`}>View Project</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {

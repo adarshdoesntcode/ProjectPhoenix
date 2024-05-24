@@ -130,7 +130,7 @@ function AdminEvents() {
               <CardContent>
                 <div className="text-2xl font-bold">{numberOfActiveEvents}</div>
                 <p className="text-xs text-gray-500 text-right">
-                  +201 since last year
+                  since last year
                 </p>
               </CardContent>
             </Card>
@@ -146,7 +146,7 @@ function AdminEvents() {
                   {noOfDevelopingProjects}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  +19% from last year
+                  from last year
                 </p>
               </CardContent>
             </Card>
@@ -162,7 +162,7 @@ function AdminEvents() {
                   {numberOfCompleteEvents}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  +180.1% from last year
+                  from last year
                 </p>
               </CardContent>
             </Card>

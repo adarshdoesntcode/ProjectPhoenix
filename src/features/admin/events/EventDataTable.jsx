@@ -3,6 +3,8 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -54,6 +56,8 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     pageIndex: 0,
     pageSize: 6,
   });
+  const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState();
 
   const naviagte = useNavigate();
 
@@ -63,9 +67,16 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       pagination,
+      sorting,
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "auto",
   });
 
   useImperativeHandle(ref, () => {

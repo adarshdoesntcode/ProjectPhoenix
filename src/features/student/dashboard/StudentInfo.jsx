@@ -51,9 +51,6 @@ function StudentInfo() {
             </div>
           </div>
         </div>
-        {/* <Badge variant="secondary" className="hidden lg:block">
-          Student
-        </Badge> */}
       </div>
       <Separator className="my-3" />
       <div className="grid gap-1">

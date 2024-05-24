@@ -1,5 +1,5 @@
 import AdminDashboard from "@/features/admin/AdminDashboard";
-import AdminEvaluators from "@/features/admin/AdminEvaluators";
+import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
 
 import AdminNotices from "@/features/admin/AdminNotices";
 import AdminProjects from "@/features/admin/AdminProjects";
