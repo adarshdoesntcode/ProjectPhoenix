@@ -17,6 +17,7 @@ import {
   Megaphone,
   Menu,
   Origami,
+  ShieldCheck,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { isTabActive } from "@/lib/utils";
@@ -67,6 +68,25 @@ function AdminMobileSideBar() {
             >
               <CalendarDays className="h-5 w-5" />
               Events
+              <Badge
+                variant="secondary"
+                className="ml-auto flex  shrink-0 items-center justify-center rounded-full"
+              >
+                3
+              </Badge>
+            </Link>
+          </SheetClose>
+          <SheetClose>
+            <Link
+              to={`/${ROLES_LIST.admin}/defense`}
+              className={`mx-[-0.65rem]  flex items-center ${
+                isTabActive(currentPath, "defense")
+                  ? "bg-slate-950 text-white"
+                  : ""
+              }  gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
+            >
+              <ShieldCheck className="h-5 w-5" />
+              Defense
               <Badge
                 variant="secondary"
                 className="ml-auto flex  shrink-0 items-center justify-center rounded-full"

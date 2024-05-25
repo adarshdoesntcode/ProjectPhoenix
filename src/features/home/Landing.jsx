@@ -6,7 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Cctv, FileCheck, GraduationCap, ShieldCheck } from "lucide-react";
+import {
+  Cctv,
+  FileCheck,
+  GraduationCap,
+  ShieldCheck,
+  ShieldHalf,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import Phoenix from "./Phoenix";
@@ -48,13 +54,13 @@ function Landing() {
 
           <Link to={`${ROLES_LIST.defense}/login`}>
             <Button className="w-full mt-4 " variant="secondary">
-              <FileCheck className="mr-2 h-4 w-4" /> Defense
+              <ShieldCheck className="mr-2 h-4 w-4" /> Defense
             </Button>
           </Link>
 
           <Link to={`${ROLES_LIST.admin}/login`}>
             <Button className="w-full mt-4" variant="secondary">
-              <ShieldCheck className="mr-2 h-4 w-4" />
+              <ShieldHalf className="mr-2 h-4 w-4" />
               Administrator
             </Button>
           </Link>

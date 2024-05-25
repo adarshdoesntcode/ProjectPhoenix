@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { EVENT_STATUS, ROLES_LIST } from "@/lib/config";
 import { Link } from "react-router-dom";
-import { useGetAllEventsQuery } from "../adminApiSlice";
-import { EventColumns } from "./EventColumn";
+import { useGetAllDefensesQuery } from "../adminApiSlice";
+import { DefenseColumn } from "./DefenseColumn";
 import {
   Activity,
   CalendarCheck2,
@@ -22,56 +22,57 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { File } from "lucide-react";
 
-import { DataTable } from "./EventDataTable";
+import { DataTable } from "./DefenseDataTable";
 import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
 import { useRef } from "react";
 
-function AdminEvents() {
+function AdminDefense() {
   const tableRef = useRef();
   const {
-    data: events,
+    data: defenses,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetAllEventsQuery();
+  } = useGetAllDefensesQuery();
 
+  console.log(defenses);
   let content;
-  let numberOfActiveEvents,
-    numberOfCompleteEvents,
+  let numberOfActivedefenses,
+    numberOfCompletedefenses,
     noOfDevelopingProjects,
-    activeEvents,
-    completeEvents,
-    archiveEvents;
+    activedefenses,
+    completedefenses,
+    archivedefenses;
 
-  if (events) {
-    numberOfActiveEvents = numberOfValues(
-      events?.data,
-      "eventStatus",
+  if (defenses) {
+    numberOfActivedefenses = numberOfValues(
+      defenses?.data,
+      "defensestatus",
       EVENT_STATUS.Active
     );
-    numberOfCompleteEvents = numberOfValues(
-      events?.data,
-      "eventStatus",
+    numberOfCompletedefenses = numberOfValues(
+      defenses?.data,
+      "defensestatus",
       EVENT_STATUS.Complete
     );
 
     noOfDevelopingProjects = numberOfDevelopingProjects(
-      events?.data,
-      "eventStatus",
+      defenses?.data,
+      "defensestatus",
       EVENT_STATUS.Active
     );
   }
 
-  if (events) {
-    activeEvents = events.data.filter(
-      (event) => event.eventStatus === EVENT_STATUS.Active
+  if (defenses) {
+    activedefenses = defenses.data.filter(
+      (event) => event.defensestatus === EVENT_STATUS.Active
     );
-    completeEvents = events.data.filter(
-      (event) => event.eventStatus === EVENT_STATUS.Complete
+    completedefenses = defenses.data.filter(
+      (event) => event.defensestatus === EVENT_STATUS.Complete
     );
-    archiveEvents = events.data.filter(
-      (event) => event.eventStatus === EVENT_STATUS.Archive
+    archivedefenses = defenses.data.filter(
+      (event) => event.defensestatus === EVENT_STATUS.Archive
     );
   }
 
@@ -82,21 +83,21 @@ function AdminEvents() {
       </div>
     );
   } else if (isSuccess) {
-    if (!events) {
+    if (!defenses) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
             <h3 className="text-2xl font-bold tracking-tight">
-              You have no Events
+              You have no Defenses
             </h3>
 
             <p className="text-sm text-gray-500">
-              You can start as soon as you add an event.
+              You can start as soon as you create a Defense.
             </p>
 
             <Button className="mt-4" asChild>
-              <Link to={`/${ROLES_LIST.admin}/events/new`}>
-                Create an Event
+              <Link to={`/${ROLES_LIST.admin}/defense/new`}>
+                Create an Defense
               </Link>
             </Button>
           </div>
@@ -109,26 +110,28 @@ function AdminEvents() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Hosted Events
+                  Hosted defenses
                 </CardTitle>
                 <CalendarCheck2 className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{events.data.length}</div>
+                <div className="text-2xl font-bold">{defenses.data.length}</div>
                 <p className="text-xs text-gray-500 text-right">
-                  events have been hosted
+                  defenses have been hosted
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Active Events
+                  Active defenses
                 </CardTitle>
                 <Activity className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{numberOfActiveEvents}</div>
+                <div className="text-2xl font-bold">
+                  {numberOfActivedefenses}
+                </div>
                 <p className="text-xs text-gray-500 text-right">
                   since last year
                 </p>
@@ -153,13 +156,13 @@ function AdminEvents() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Complete Events
+                  Complete defenses
                 </CardTitle>
                 <CheckCheck className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {numberOfCompleteEvents}
+                  {numberOfCompletedefenses}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
                   from last year
@@ -200,16 +203,16 @@ function AdminEvents() {
             <TabsContent value="active">
               <Card>
                 <CardHeader>
-                  <CardTitle>Active Events</CardTitle>
+                  <CardTitle>Active defenses</CardTitle>
                   <CardDescription>
-                    Currently active events on the system
+                    Currently active defenses on the system
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={EventColumns}
-                    data={activeEvents}
+                    columns={DefenseColumn}
+                    data={activedefenses}
                   />
                 </CardContent>
               </Card>
@@ -217,16 +220,16 @@ function AdminEvents() {
             <TabsContent value="complete">
               <Card>
                 <CardHeader>
-                  <CardTitle>Complete Events</CardTitle>
+                  <CardTitle>Complete defenses</CardTitle>
                   <CardDescription>
-                    All the completed events on the system
+                    All the completed defenses on the system
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={EventColumns}
-                    data={completeEvents}
+                    columns={DefenseColumn}
+                    data={completedefenses}
                   />
                 </CardContent>
               </Card>
@@ -234,16 +237,16 @@ function AdminEvents() {
             <TabsContent value="archive">
               <Card>
                 <CardHeader>
-                  <CardTitle>Archived Events</CardTitle>
+                  <CardTitle>Archived defenses</CardTitle>
                   <CardDescription>
-                    All the achived events on the system
+                    All the achived defenses on the system
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={EventColumns}
-                    data={archiveEvents}
+                    columns={DefenseColumn}
+                    data={archivedefenses}
                   />
                 </CardContent>
               </Card>
@@ -251,16 +254,16 @@ function AdminEvents() {
             <TabsContent value="all">
               <Card>
                 <CardHeader>
-                  <CardTitle>All Events</CardTitle>
+                  <CardTitle>All defenses</CardTitle>
                   <CardDescription>
-                    All the events on the system
+                    All the defenses on the system
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={EventColumns}
-                    data={events.data}
+                    columns={DefenseColumn}
+                    data={defenses.data}
                   />
                 </CardContent>
               </Card>
@@ -274,4 +277,4 @@ function AdminEvents() {
   return content;
 }
 
-export default AdminEvents;
+export default AdminDefense;

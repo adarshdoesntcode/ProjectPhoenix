@@ -20,7 +20,7 @@ import { format } from "date-fns";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const ProjectColumn = [
+export const DefenseColumn = [
   {
     accessorKey: "projectCode",
     header: () => <TableHead>Project Code</TableHead>,

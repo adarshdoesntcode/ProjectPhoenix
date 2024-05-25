@@ -7,6 +7,7 @@ import {
   Home,
   Megaphone,
   Origami,
+  ShieldCheck,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -57,6 +58,20 @@ function AdminSideBar() {
             >
               <CalendarDays className="h-4 w-4" />
               Events
+              <div className="ml-auto flex shrink-0 items-center justify-center">
+                3
+              </div>
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.admin}/defense`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "defense")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <ShieldCheck className="h-4 w-4" />
+              Defense
               <div className="ml-auto flex shrink-0 items-center justify-center">
                 3
               </div>

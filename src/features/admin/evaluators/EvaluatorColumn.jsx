@@ -1,4 +1,3 @@
-// import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,28 +9,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableHead } from "@/components/ui/table";
-import {
-  EVENT_TYPE,
-  PROGRESS_STATUS,
-  getEvaluatorTypeByCode,
-  getEventStatusByCode,
-  getEventTypeByCode,
-} from "@/lib/config";
-import { format } from "date-fns";
+import { getEvaluatorTypeByCode } from "@/lib/config";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const EvaluatorColumn = [
   {
     accessorKey: "sn",
-    header: ({ column }) => (
-      <TableHead className="hidden md:table-cell">SN</TableHead>
-    ),
+    header: ({ column }) => <TableHead className="">SN</TableHead>,
     cell: ({ row }) => {
       return (
-        <TableCell className="text-gray-950 hidden md:table-cell">
-          {Number(row.id) + 1}
-        </TableCell>
+        <TableCell className="text-gray-950 ">{Number(row.id) + 1}</TableCell>
       );
     },
   },
@@ -49,26 +37,36 @@ export const EvaluatorColumn = [
       </TableHead>
     ),
     cell: ({ row }) => {
-      const fullname = row.getValue("fullname");
+      const fullname = row.original.fullname;
       const designation = row.original.designation;
+      const email = row.original.email;
+      const contact = row.original.contact;
 
       return (
         <TableCell className="text-gray-950">
           <div>{fullname}</div>
-          <div className="text-xs text-slate-500">{designation}</div>
+          <div className=" text-sm text-slate-500 lg:hidden block">{email}</div>
+          <div className="text-xs text-slate-500 lg:hidden block">
+            {contact}
+          </div>
+          <div className="text-xs text-slate-500 hidden lg:block">
+            {designation}
+          </div>
         </TableCell>
       );
     },
   },
   {
     accessorKey: "contact",
-    header: ({ column }) => <TableHead>Contact</TableHead>,
+    header: ({ column }) => (
+      <TableHead className="hidden lg:block">Contact</TableHead>
+    ),
     cell: ({ row }) => {
       const email = row.original.email;
       const contact = row.original.contact;
 
       return (
-        <TableCell className="text-gray-500">
+        <TableCell className="text-gray-500 hidden lg:block">
           <div>{email}</div>
           <div>{contact}</div>
         </TableCell>
@@ -125,8 +123,6 @@ export const EvaluatorColumn = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const project = row.original;
-
       return (
         <TableCell className="hidden md:table-cell">
           <DropdownMenu>

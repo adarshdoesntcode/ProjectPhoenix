@@ -20,15 +20,11 @@ import {
   Tally3,
   Target,
 } from "lucide-react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 import {
   Card,
   CardContent,
-  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -41,6 +37,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DataTable } from "./ProjectDataTable";
 import { ProjectColumn } from "./ProjectColum";
+import { format } from "date-fns";
+import { daysFromToday } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 function getTotalNumberOfAssociatedStudents(event) {
   if (event.data && Array.isArray(event.data.projects)) {
@@ -160,46 +159,160 @@ function AdminEventDetails() {
   } else if (isSuccess) {
     content = (
       <>
-        <div className="flex justify-between items-center gap-4 mb-4">
-          <div className="flex items-center">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-10 w-10"
-              onClick={() => navigate(`/${ROLES_LIST.admin}/events`)}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <h1 className="flex items-center whitespace-nowrap text-xl sm:grow-0">
-              <span className="font-semibold ml-2">{event.data.eventCode}</span>
-              <Badge className="ml-4">
-                {getEventTypeByCode(event.data.eventType)}
-              </Badge>
-              {/* <HoverCard>
-                <HoverCardTrigger asChild>
-                  <Info className="text-slate-500 ml-4 w-5 h-5 cursor-pointer hidden sm:block hover:text-slate-950" />
-                </HoverCardTrigger>
-                <HoverCardContent></HoverCardContent>
-              </HoverCard> */}
-            </h1>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <Button size="sm" variant="outline" className=" h-10 gap-1 text-sm">
-              <Clock className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only">Extend</span>
-            </Button>
-            <Button size="sm" variant="outline" className=" h-10 gap-1 text-sm">
-              <Cctv className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only">Supervisor</span>
-            </Button>
-            <Button size="sm" className="h-10 gap-1 text-sm" asChild>
-              <Link>
-                <FileCheck className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only">Defense</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
+        <Card className="mb-6">
+          <CardHeader className="bg-slate-100 p-4">
+            <CardTitle className="flex items-center justify-between gap-4">
+              <div className="flex items-center">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10"
+                  onClick={() => navigate(`/${ROLES_LIST.admin}/events`)}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <h1 className="flex items-center whitespace-nowrap text-base md:text-xl sm:grow-0">
+                  <span className="font-semibold ml-4">
+                    {event.data.eventCode}
+                  </span>
+                  <Badge className="ml-4 ">
+                    {getEventTypeByCode(event.data.eventType)}
+                  </Badge>
+                </h1>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className=" h-10 gap-1 text-sm"
+                >
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Extend</span>
+                </Button>
+                {event.data.eventType > EVENT_TYPE.FIRST && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className=" h-10 gap-1 text-sm"
+                  >
+                    <Cctv className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only">Supervisor</span>
+                  </Button>
+                )}
+
+                <Button size="sm" className="h-10 gap-1 text-sm" asChild>
+                  <Link to="defense">
+                    <FileCheck className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only">Defense</span>
+                  </Link>
+                </Button>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="grid grid-cols-3 gap-4 xl:gap-10  mt-4">
+            {event.data.proposal.defense && (
+              <div className="col-span-3 xl:col-span-1">
+                <div className="font-medium">
+                  Proposal (Phase {event.data.proposal.phase})
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Report Submission
+                  </div>
+                  <div className="text-xs sm:text-sm">
+                    {`${format(
+                      event.data.proposal.reportDeadline,
+                      "PPP"
+                    )} (${daysFromToday(event.data.proposal.reportDeadline)}d)`}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Defense Deadline
+                  </div>
+                  <div className="text-xs sm:text-sm">{`${format(
+                    event.data.proposal.defenseDate,
+                    "PPP"
+                  )} (${daysFromToday(
+                    event.data.proposal.defenseDate
+                  )}d)`}</div>
+                </div>
+              </div>
+            )}
+
+            {event.data.mid.defense && (
+              <div className="col-span-3 xl:col-span-1">
+                <div className="font-medium">
+                  Mid Term (Phase {event.data.mid.phase})
+                </div>
+                <Separator className="my-2" />
+
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Report Submission
+                  </div>
+                  <div className="text-xs sm:text-sm">
+                    {`${format(
+                      event.data.mid.reportDeadline,
+                      "PPP"
+                    )} (${daysFromToday(event.data.mid.reportDeadline)}d)`}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Defense Deadline
+                  </div>
+                  <div className="text-xs sm:text-sm">{`${format(
+                    event.data.mid.defenseDate,
+                    "PPP"
+                  )} (${daysFromToday(event.data.mid.defenseDate)}d)`}</div>
+                </div>
+              </div>
+            )}
+            {event.data.final.defense && (
+              <div className="col-span-3 xl:col-span-1">
+                <div className="font-medium">
+                  Final (Phase {event.data.final.phase})
+                </div>
+                <Separator className="my-2" />
+
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Report Submission
+                  </div>
+                  <div className="text-xs sm:text-sm">
+                    {`${format(
+                      event.data.final.reportDeadline,
+                      "PPP"
+                    )} (${daysFromToday(event.data.final.reportDeadline)}d)`}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="text-xs sm:text-sm text-slate-500">
+                    Defense Deadline
+                  </div>
+                  <div className="text-xs sm:text-sm">{`${format(
+                    event.data.final.defenseDate,
+                    "PPP"
+                  )} (${daysFromToday(event.data.final.defenseDate)}d)`}</div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+          <CardFooter className="flex items-end border-t py-4 justify-between">
+            <div className="text-slate-500 text-xs">
+              Hosted by {event.data.author.fullname}
+            </div>
+            <div className="hidden sm:block text-xs  text-slate-500">
+              <time dateTime="2023-11-23">
+                Created on {format(event.data.createdAt, "PPP")}
+              </time>
+            </div>
+          </CardFooter>
+        </Card>
+
         <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
           {event.data.eventType > EVENT_TYPE.FIRST && (
             <Card>
@@ -229,7 +342,7 @@ function AdminEventDetails() {
             </Card>
           )}
 
-          {event.data.eventType === "0" && (
+          {event.data.eventType === EVENT_TYPE.FIRST && (
             <>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -302,7 +415,7 @@ function AdminEventDetails() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Mid Eligible
+                  Mid Term Eligible
                 </CardTitle>
                 <Tally2 className="h-4 w-4 text-gray-500" />
               </CardHeader>
