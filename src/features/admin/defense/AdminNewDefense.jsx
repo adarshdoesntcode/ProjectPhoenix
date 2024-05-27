@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,6 +16,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  ArrowBigDown,
+  ChevronsUpDown,
+  PlusCircle,
+  Trash,
+  UserX,
+} from "lucide-react";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+// import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
 import {
   Select,
   SelectContent,
@@ -33,7 +52,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, ChevronLeft, Loader2, ShieldAlert } from "lucide-react";
 
@@ -46,11 +65,22 @@ import {
   PROGRAM_CODE,
   PROGRESS_STATUS,
   ROLES_LIST,
+  getEvaluatorTypeByCode,
   getEventTypeByCode,
   getProgramByCode,
 } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const populateProjects = (
   activeEvents,
@@ -84,9 +114,20 @@ const populateProjects = (
   }
 };
 
+const newRoomInitialState = {
+  block: "",
+  roomNumber: "",
+  evaluators: [],
+  projects: [],
+};
+
 function AdminNewDefense() {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
+  const [newEvaluatorInput, setNewEvaluatorInput] = useState(false);
+  const [newRoom, setNewRoom] = useState(newRoomInitialState);
+  const [open, setOpen] = useState(false);
+
   const { data: response, isLoading, isSuccess } = useCreateDefenseDataQuery();
   const {
     handleSubmit,
@@ -98,11 +139,36 @@ function AdminNewDefense() {
   } = useForm();
 
   const activeEvents = response?.data?.events || [];
-  const evaluators = response?.data?.evaluators || [];
+  let evaluators = response?.data?.evaluators || [];
+
+  if (response?.data?.evaluators?.length > 0) {
+    evaluators = response.data.evaluators
+      .filter(
+        (evaluator) =>
+          !rooms.some((room) =>
+            room.evaluators.some(
+              (selectedEval) => selectedEval._id === evaluator._id
+            )
+          )
+      )
+      .filter(
+        (evaluator) =>
+          !newRoom.evaluators.some(
+            (selectedEval) => selectedEval._id === evaluator._id
+          )
+      )
+
+      .map((evaluator) => ({
+        value: evaluator,
+        label: evaluator.fullname,
+      }));
+  }
+
   let eligibaleProjects = [];
 
   const selectedDefenseType = watch("defenseType", "");
   const selectedEventId = watch("event", "");
+
   const selectedEvent = activeEvents.find(
     (event) => event._id == selectedEventId
   );
@@ -110,7 +176,6 @@ function AdminNewDefense() {
   let selectedEventDefenseDate = "";
 
   if (selectedEvent && selectedDefenseType) {
-    console.log(selectedEvent);
     selectedEventDefenseDate =
       selectedEvent[selectedDefenseType].defenseDate || null;
   }
@@ -121,9 +186,57 @@ function AdminNewDefense() {
     selectedEventId
   );
 
-  console.log(eligibaleProjects);
-
   let content;
+
+  const handleRemoveEvaluator = (id) => {
+    if (!id) return;
+    setNewRoom((prev) => {
+      return {
+        ...prev,
+        evaluators: prev.evaluators.filter((evaluator) => evaluator._id !== id),
+      };
+    });
+  };
+
+  const handleRemoveRoom = (room) => {
+    if (!room) return;
+    setRooms((prev) => prev.filter((r) => r.room !== room));
+  };
+
+  const handleAddNewRoom = () => {
+    if (
+      !newRoom.block ||
+      !newRoom.roomNumber ||
+      !newRoom.evaluators.length === 0
+    ) {
+      return toast({
+        variant: "destructive",
+        title: "Field(s) Empty",
+        description: "Fill all the fields before adding room",
+      });
+    }
+    const BlockandRoom = newRoom.block + newRoom.roomNumber;
+    if (rooms.some((room) => room.room === BlockandRoom)) {
+      return toast({
+        variant: "destructive",
+        title: "Room Already Exists",
+        description: "Change room number or block",
+      });
+    }
+
+    setRooms((prev) => {
+      return [
+        ...prev,
+        {
+          room: BlockandRoom,
+          evaluators: newRoom.evaluators,
+          projects: [],
+        },
+      ];
+    });
+    setNewRoom(newRoomInitialState);
+    setNewEvaluatorInput(false);
+  };
 
   async function onSubmit(data) {
     console.log(data);
@@ -158,7 +271,7 @@ function AdminNewDefense() {
   }
   if (isLoading) {
     content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
+      <div className="flex flex-1 items-center justify-center text-gray-600 bg-slate-50 ">
         <Loader2 className="h-6 w-6 animate-spin mr-4" />
       </div>
     );
@@ -180,10 +293,10 @@ function AdminNewDefense() {
             </h1>
           </div>
           <form
-            className="w-full md:w-[490px]  lg:w-[700px]"
+            className="w-full md:w-[490px]  lg:w-[700px] mb-60"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Card className=" mt-6">
+            <Card className="my-4">
               <CardHeader>
                 <CardTitle>Defense Details</CardTitle>
                 <CardDescription>
@@ -200,7 +313,7 @@ function AdminNewDefense() {
                             {errors.eventType.message}
                           </span>
                         ) : (
-                          <span>Event</span>
+                          <span>For Event</span>
                         )}
                       </Label>
 
@@ -215,7 +328,7 @@ function AdminNewDefense() {
                           >
                             <SelectTrigger
                               className={cn(
-                                "w-full ",
+                                "w-full",
                                 !field.value && "text-slate-500"
                               )}
                             >
@@ -255,7 +368,7 @@ function AdminNewDefense() {
                           >
                             <SelectTrigger
                               className={cn(
-                                "w-full ",
+                                "w-full",
                                 !field.value && "text-slate-500"
                               )}
                             >
@@ -313,12 +426,10 @@ function AdminNewDefense() {
                             theme={{
                               components: {
                                 DatePicker: {
-                                  /* activeBorderColorhere is your component tokens */
                                   activeBorderColor: "gray",
                                   hoverBorderColor: "gray",
                                 },
                               },
-
                               token: {
                                 colorPrimary: "gray",
                               },
@@ -335,7 +446,241 @@ function AdminNewDefense() {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="justify-center gap-6 border-t p-4">
+                <div className="text-slate-500 font-medium text-sm">
+                  Eligible Projects
+                </div>
+                <div className="text-slate-500 ">
+                  <Badge variant="outline">{eligibaleProjects.length} </Badge>
+                </div>
+              </CardFooter>
             </Card>
+            {eligibaleProjects.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Defense Rooms</CardTitle>
+                  <CardDescription>
+                    Allocate rooms with their evaluators to populate projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Rooms</TableHead>
+                        <TableHead>Evaluators</TableHead>
+                        <TableHead></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {rooms.map((room, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <TableCell className="font-semibold">
+                              {room.room}
+                            </TableCell>
+                            <TableCell>
+                              {room.evaluators
+                                .map((evaluator) => evaluator.fullname)
+                                .join(", ")}
+                            </TableCell>
+                            <TableCell>
+                              <Trash
+                                onClick={() => handleRemoveRoom(room.room)}
+                                className="w-4 h-4 text-slate-500 cursor-pointer hover:text-slate-950 ml-auto"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                {newEvaluatorInput && (
+                  <Card className=" m-4 mt-0">
+                    <CardHeader className="py-4 mb-6 bg-slate-50 border-b">
+                      <CardTitle className="text-lg">New Room</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid gap-4 sm:px-8">
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="grid gap-3">
+                          <Label htmlFor="block">Block</Label>
+                          <Input
+                            value={newRoom.block}
+                            onChange={(e) =>
+                              setNewRoom((prev) => {
+                                return {
+                                  ...prev,
+                                  block: e.target.value,
+                                };
+                              })
+                            }
+                            id="block"
+                            type="text"
+                            placeholder="A, B, C.."
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <Label htmlFor="roomNumber">Room Number</Label>
+                          <Input
+                            value={newRoom.roomNumber}
+                            onChange={(e) =>
+                              setNewRoom((prev) => {
+                                return {
+                                  ...prev,
+                                  roomNumber: e.target.value,
+                                };
+                              })
+                            }
+                            id="roomNumber"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div className="text-sm font-medium">Evaluators </div>
+                      {newRoom.evaluators.map((evaluator) => {
+                        return (
+                          <div
+                            key={evaluator._id}
+                            className="flex items-center justify-between"
+                          >
+                            <div className="flex">
+                              <div className="flex flex-row items-center gap-3">
+                                <Avatar>
+                                  <AvatarImage src={evaluator.photo} />
+                                  <AvatarFallback className="bg-slate-200">
+                                    {getInitials(evaluator.fullname)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="text-sm text-slate-500">
+                                  <div className="text-slate-950 flex items-center font-medium ">
+                                    <span>{evaluator.fullname} </span>
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs font-normal tracking-wide px-2 ml-3"
+                                    >
+                                      {getEvaluatorTypeByCode(
+                                        evaluator.evaluatorType
+                                      )}
+                                    </Badge>
+                                  </div>
+                                  <div className="text-xs">
+                                    {evaluator.email}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <UserX
+                              onClick={() =>
+                                handleRemoveEvaluator(evaluator._id)
+                              }
+                              className="text-slate-500 hover:text-slate-950 transition-all cursor-pointer w-5 h-5"
+                            />
+                          </div>
+                        );
+                      })}
+
+                      <div>
+                        <Popover
+                          modal={true}
+                          open={open}
+                          onOpenChange={setOpen}
+                        >
+                          <PopoverTrigger asChild>
+                            <div className="flex justify-center">
+                              <Button
+                                variant="outline"
+                                type="button"
+                                role="combobox"
+                                aria-expanded={open}
+                                className="w-full justify-between"
+                              >
+                                Search Evaluators...
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </div>
+                          </PopoverTrigger>
+                          <PopoverContent className=" p-0">
+                            <ScrollArea
+                              className="flex max-h-[200px] flex-col"
+                              type="always"
+                            >
+                              <Command>
+                                <CommandInput placeholder="Search Name..." />
+                                <CommandEmpty>
+                                  No Evaluators found.
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {evaluators.map((evaluator) => {
+                                    return (
+                                      <CommandItem
+                                        key={evaluator.value._id}
+                                        value={evaluator.label}
+                                        onSelect={() => {
+                                          setNewRoom((prev) => {
+                                            return {
+                                              ...prev,
+                                              evaluators: [
+                                                ...prev.evaluators,
+                                                evaluator.value,
+                                              ],
+                                            };
+                                          });
+                                          setOpen(false);
+                                        }}
+                                      >
+                                        {evaluator.label}
+                                      </CommandItem>
+                                    );
+                                  })}
+                                </CommandGroup>
+                              </Command>
+                            </ScrollArea>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <div className="flex justify-between mt-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setNewEvaluatorInput(false);
+                            setNewRoom(newRoomInitialState);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button type="button" onClick={handleAddNewRoom}>
+                          Add Room
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                <CardFooter className="justify-center border-t p-4">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    type="button"
+                    className="gap-1"
+                    onClick={() => setNewEvaluatorInput(true)}
+                  >
+                    <PlusCircle className="h-3.5 w-3.5" />
+                    Add Room
+                  </Button>
+                </CardFooter>
+              </Card>
+            )}
+            {rooms.length > 0 && (
+              <div className="mt-4 flex justify-center">
+                {rooms.length > 0 && (
+                  <Button type="button">
+                    Populate Rooms <ArrowBigDown className="h-5 w-5 ml-2" />
+                  </Button>
+                )}
+              </div>
+            )}
           </form>
         </div>
       </div>
