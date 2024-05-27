@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+
 import {
   Card,
   CardContent,
@@ -70,7 +71,7 @@ import {
   getProgramByCode,
 } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -114,6 +115,23 @@ const populateProjects = (
   }
 };
 
+const populateRooms = (rooms, projects) => {
+  if (rooms.length === 0) return [];
+
+  if (projects.length === 0) return rooms;
+
+  const shuffledProjects = projects.sort(() => Math.random() - 0.5);
+
+  const updatedRooms = rooms.map((room) => ({ ...room, projects: [] }));
+
+  shuffledProjects.forEach((project, index) => {
+    const roomIndex = index % updatedRooms.length;
+    updatedRooms[roomIndex].projects.push(project);
+  });
+
+  return updatedRooms;
+};
+
 const newRoomInitialState = {
   block: "",
   roomNumber: "",
@@ -127,6 +145,7 @@ function AdminNewDefense() {
   const [newEvaluatorInput, setNewEvaluatorInput] = useState(false);
   const [newRoom, setNewRoom] = useState(newRoomInitialState);
   const [open, setOpen] = useState(false);
+  const [isPopulateProject, setISPopulateProject] = useState(false);
 
   const { data: response, isLoading, isSuccess } = useCreateDefenseDataQuery();
   const {
@@ -201,6 +220,7 @@ function AdminNewDefense() {
   const handleRemoveRoom = (room) => {
     if (!room) return;
     setRooms((prev) => prev.filter((r) => r.room !== room));
+    setISPopulateProject(false);
   };
 
   const handleAddNewRoom = () => {
@@ -236,10 +256,23 @@ function AdminNewDefense() {
     });
     setNewRoom(newRoomInitialState);
     setNewEvaluatorInput(false);
+    setISPopulateProject(false);
+  };
+
+  const handlePopulateRoom = () => {
+    const newRoomState = populateRooms(rooms, eligibaleProjects);
+    setRooms(newRoomState);
   };
 
   async function onSubmit(data) {
-    console.log(data);
+    const newDefense = {
+      eventId: data.event,
+      defenseTime: data.defenseTime.$d,
+      defenseType: data.defenseType,
+      defenseDate: selectedEventDefenseDate,
+      rooms: rooms,
+    };
+    console.log(newDefense);
     // try {
     //   const year = new Date().getFullYear();
     //   const newEvent = {
@@ -460,7 +493,8 @@ function AdminNewDefense() {
                 <CardHeader>
                   <CardTitle>Defense Rooms</CardTitle>
                   <CardDescription>
-                    Allocate rooms with their evaluators to populate projects
+                    Allocate rooms with their evaluators to populate with
+                    projects
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -673,13 +707,87 @@ function AdminNewDefense() {
               </Card>
             )}
             {rooms.length > 0 && (
-              <div className="mt-4 flex justify-center">
+              <div className="my-4 flex justify-center">
                 {rooms.length > 0 && (
-                  <Button type="button">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      handlePopulateRoom();
+                      setISPopulateProject(true);
+                    }}
+                  >
                     Populate Rooms <ArrowBigDown className="h-5 w-5 ml-2" />
                   </Button>
                 )}
               </div>
+            )}
+            {isPopulateProject && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Populated Rooms</CardTitle>
+                  <CardDescription>
+                    Review the room, evaluators and projects before creating
+                    defense
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {rooms.map((room) => {
+                    return (
+                      <Fragment key={room.room}>
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold">{room.room}</span>
+
+                          <span className="text-slate-900 text-sm">
+                            {room.evaluators
+                              .map((evaluator) => evaluator.fullname)
+                              .join(", ")}
+                          </span>
+                        </div>
+                        <div className="mb-6 mt-1 border rounded-md">
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>SN</TableHead>
+                                <TableHead>Project Code</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Members</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {room.projects.map((project, index) => {
+                                return (
+                                  <TableRow key={project._id}>
+                                    <TableCell className="text-slate-700">
+                                      {index + 1}
+                                    </TableCell>
+                                    <TableCell className="text-sm text-slate-500">
+                                      {project.projectCode}
+                                    </TableCell>
+                                    <TableCell className="text-sm text-semibold">
+                                      {project.projectName}
+                                    </TableCell>
+                                    <TableCell className="text-xs text-slate-500">
+                                      {project.teamMembers
+                                        .map(
+                                          (members) =>
+                                            `${members.fullname}(${members.rollNumber})`
+                                        )
+                                        .join(", ")}
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      </Fragment>
+                    );
+                  })}
+                </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button>Create Defense</Button>
+                </CardFooter>
+              </Card>
             )}
           </form>
         </div>
