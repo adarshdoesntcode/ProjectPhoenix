@@ -60,7 +60,10 @@ import { CalendarIcon, ChevronLeft, Loader2, ShieldAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
-import { useCreateDefenseDataQuery } from "../adminApiSlice";
+import {
+  useCreateDefenseDataQuery,
+  useCreateDefenseMutation,
+} from "../adminApiSlice";
 import {
   EVENT_TYPE,
   PROGRAM_CODE,
@@ -148,6 +151,7 @@ function AdminNewDefense() {
   const [isPopulateProject, setISPopulateProject] = useState(false);
 
   const { data: response, isLoading, isSuccess } = useCreateDefenseDataQuery();
+  const [createDefense] = useCreateDefenseMutation();
   const {
     handleSubmit,
     register,
@@ -265,42 +269,33 @@ function AdminNewDefense() {
   };
 
   async function onSubmit(data) {
-    const newDefense = {
-      eventId: data.event,
-      defenseTime: data.defenseTime.$d,
-      defenseType: data.defenseType,
-      defenseDate: selectedEventDefenseDate,
-      rooms: rooms,
-    };
-    console.log(newDefense);
-    // try {
-    //   const year = new Date().getFullYear();
-    //   const newEvent = {
-    //     ...data,
-    //     ...subEvent,
-    //     year,
-    //   };
-    //   const res = await createEvent(newEvent);
+    try {
+      const newDefense = {
+        eventId: data.event,
+        defenseTime: data.defenseTime.$d,
+        defenseType: data.defenseType,
+        defenseDate: selectedEventDefenseDate,
+        rooms: rooms,
+      };
+      const res = await createDefense(newDefense);
 
-    //   if (res.error) {
-    //     setModal(false);
-    //     throw new Error("Try Again");
-    //   }
-    //   if (!res.error) {
-    //     setModal(false);
-    //     navigate(`/${ROLES_LIST.admin}/events`);
-    //     toast({
-    //       title: "Event created successfully!",
-    //       description: "Students can now enroll",
-    //     });
-    //   }
-    // } catch (error) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Something Went Wrong!!",
-    //     description: error.message,
-    //   });
-    // }
+      if (res.error) {
+        throw new Error("Try Again");
+      }
+      if (!res.error) {
+        navigate(`/${ROLES_LIST.admin}/defense`);
+        toast({
+          title: "Defense created successfully!",
+          description: "Students can now enroll",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
   }
   if (isLoading) {
     content = (
@@ -785,7 +780,14 @@ function AdminNewDefense() {
                   })}
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                  <Button>Create Defense</Button>
+                  {isSubmitting ? (
+                    <Button variant="secondary" disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating...
+                    </Button>
+                  ) : (
+                    <Button type="submit">Create Defense</Button>
+                  )}
                 </CardFooter>
               </Card>
             )}

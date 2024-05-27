@@ -97,7 +97,7 @@ function AdminDefense() {
 
             <Button className="mt-4" asChild>
               <Link to={`/${ROLES_LIST.admin}/defense/new`}>
-                Create an Defense
+                Create a Defense
               </Link>
             </Button>
           </div>
