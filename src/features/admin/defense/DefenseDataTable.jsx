@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
-  filename: "Projects",
+  filename: "Defenses",
   decimalSeparator: ".",
   useKeysAsHeaders: true,
 });
@@ -36,13 +36,10 @@ const csvConfig = mkConfig({
 const exportExcel = (rows) => {
   const rowData = rows.map((row) => {
     return {
-      Project_Code: row.original.projectCode,
-      Name: row.original.projectName,
-      Status: getEventStatusByCode(row.original.status),
-      Type: getEventTypeByCode(row.original.projectType),
-      Supervisor: "Not Assigned",
-      Members: row.original.teamMembers.length,
-      created_On: format(row.original.createdAt, "PPP"),
+      For_Event: row.original.event.eventCode,
+      Type: row.original.defenseType,
+      defenseDate: format(row.original.defenseDate, "PPP"),
+      defenseTime: format(row.original.defenseTime, "HH:mm a"),
     };
   });
   const csv = generateCsv(csvConfig)(rowData);
@@ -55,7 +52,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     pageSize: 10,
   });
   const [sorting, setSorting] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState();
+  const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
 
   const table = useReactTable({
@@ -139,7 +136,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No Projects.
+                  No Defenses.
                 </TableCell>
               </TableRow>
             )}

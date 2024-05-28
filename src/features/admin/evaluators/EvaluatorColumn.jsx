@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 export const EvaluatorColumn = [
   {
     accessorKey: "sn",
-    header: ({ column }) => <TableHead className="">SN</TableHead>,
+    header: () => <TableHead className="">SN</TableHead>,
     cell: ({ row }) => {
       return (
         <TableCell className="text-gray-950 ">{Number(row.id) + 1}</TableCell>
@@ -58,8 +58,8 @@ export const EvaluatorColumn = [
   },
   {
     accessorKey: "contact",
-    header: ({ column }) => (
-      <TableHead className="hidden lg:block">Contact</TableHead>
+    header: () => (
+      <TableHead className="hidden lg:table-cell">Contact</TableHead>
     ),
     cell: ({ row }) => {
       const email = row.original.email;

@@ -40,7 +40,7 @@ function AdminDefense() {
   let content;
   let numberOfActivedefenses,
     numberOfCompletedefenses,
-    noOfDevelopingProjects,
+    numberofArchivedDefenses,
     activedefenses,
     completedefenses,
     archivedefenses;
@@ -48,31 +48,33 @@ function AdminDefense() {
   if (defenses) {
     numberOfActivedefenses = numberOfValues(
       defenses?.data,
-      "defensestatus",
+      "status",
       EVENT_STATUS.Active
     );
+
     numberOfCompletedefenses = numberOfValues(
       defenses?.data,
-      "defensestatus",
+      "status",
       EVENT_STATUS.Complete
     );
 
-    noOfDevelopingProjects = numberOfDevelopingProjects(
+    numberofArchivedDefenses = numberOfValues(
       defenses?.data,
-      "defensestatus",
-      EVENT_STATUS.Active
+      "status",
+      EVENT_STATUS.Archive
     );
   }
 
   if (defenses) {
     activedefenses = defenses.data.filter(
-      (event) => event.defensestatus === EVENT_STATUS.Active
+      (event) => event.status === EVENT_STATUS.Active
     );
+
     completedefenses = defenses.data.filter(
-      (event) => event.defensestatus === EVENT_STATUS.Complete
+      (event) => event.status === EVENT_STATUS.Complete
     );
     archivedefenses = defenses.data.filter(
-      (event) => event.defensestatus === EVENT_STATUS.Archive
+      (event) => event.status === EVENT_STATUS.Archive
     );
   }
 
@@ -124,7 +126,7 @@ function AdminDefense() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Active defenses
+                  Active Defenses
                 </CardTitle>
                 <Activity className="h-4 w-4 text-gray-500" />
               </CardHeader>
@@ -137,32 +139,34 @@ function AdminDefense() {
                 </p>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Developing Projects
-                </CardTitle>
-                <Hammer className="h-4 w-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {noOfDevelopingProjects}
-                </div>
-                <p className="text-xs text-gray-500 text-right">
-                  from last year
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Complete defenses
+                  Complete Defenses
                 </CardTitle>
                 <CheckCheck className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
                   {numberOfCompletedefenses}
+                </div>
+                <p className="text-xs text-gray-500 text-right">
+                  from last year
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Archived Defenses
+                </CardTitle>
+                <CheckCheck className="h-4 w-4 text-gray-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {numberofArchivedDefenses}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
                   from last year
@@ -203,7 +207,7 @@ function AdminDefense() {
             <TabsContent value="active">
               <Card>
                 <CardHeader>
-                  <CardTitle>Active defenses</CardTitle>
+                  <CardTitle>Active Defenses</CardTitle>
                   <CardDescription>
                     Currently active defenses on the system
                   </CardDescription>
@@ -220,7 +224,7 @@ function AdminDefense() {
             <TabsContent value="complete">
               <Card>
                 <CardHeader>
-                  <CardTitle>Complete defenses</CardTitle>
+                  <CardTitle>Complete Defenses</CardTitle>
                   <CardDescription>
                     All the completed defenses on the system
                   </CardDescription>
@@ -254,7 +258,7 @@ function AdminDefense() {
             <TabsContent value="all">
               <Card>
                 <CardHeader>
-                  <CardTitle>All defenses</CardTitle>
+                  <CardTitle>All Defenses</CardTitle>
                   <CardDescription>
                     All the defenses on the system
                   </CardDescription>

@@ -55,7 +55,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     pageSize: 10,
   });
   const [sorting, setSorting] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState();
+  const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
 
   const table = useReactTable({

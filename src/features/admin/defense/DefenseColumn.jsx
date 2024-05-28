@@ -22,35 +22,43 @@ import { Link } from "react-router-dom";
 
 export const DefenseColumn = [
   {
-    accessorKey: "projectCode",
-    header: () => <TableHead>Project Code</TableHead>,
-    cell: ({ row }) => {
-      const projectCode = row.getValue("projectCode");
-
-      return <TableCell className="text-gray-700">{projectCode}</TableCell>;
-    },
-  },
-  {
-    accessorKey: "projectName",
+    accessorKey: "eventCode",
     header: ({ column }) => (
       <TableHead
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="cursor-pointer"
       >
         <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-          Project Name
+          For Event
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       </TableHead>
     ),
     cell: ({ row }) => {
-      const projectName = row.getValue("projectName");
-      const description = row.original.projectDescription;
+      const eventCode = row.original.event.eventCode;
+
+      return <TableCell className="text-gray-700">{eventCode}</TableCell>;
+    },
+  },
+  {
+    accessorKey: "defenseType",
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Type
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    ),
+    cell: ({ row }) => {
+      const defenseType = row.original.defenseType;
 
       return (
         <TableCell className="text-gray-600">
-          <div className="font-semibold">{projectName}</div>
-          {description && <div className="text-xs">{description}</div>}
+          <Badge>{defenseType.toUpperCase()}</Badge>
         </TableCell>
       );
     },
@@ -73,119 +81,37 @@ export const DefenseColumn = [
     },
   },
   {
-    accessorKey: "projectType",
-    header: () => <TableHead className="hidden md:table-cell">Type</TableHead>,
+    accessorKey: "defenseDate",
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden sm:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Defense Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    ),
     cell: ({ row }) => {
-      const projectType = row.getValue("projectType");
-      const formatted = getEventTypeByCode(projectType);
+      const defenseDate = format(row.original.defenseDate, "PPP");
       return (
         <TableCell className="hidden md:table-cell">
-          <Badge>{formatted}</Badge>
+          <div>{defenseDate}</div>
         </TableCell>
       );
     },
   },
 
   {
-    accessorKey: "eligibleFor",
-    header: () => (
-      <TableHead className="hidden lg:table-cell">Eligible For</TableHead>
-    ),
+    accessorKey: "defenseTime",
+    header: () => <TableHead className="hidden lg:table-cell">Time</TableHead>,
     cell: ({ row }) => {
-      const progressStatus = row.original.teamMembers[0].progressStatus;
-      let formatted = "-";
-
-      if (
-        progressStatus ===
-        PROGRESS_STATUS()[row.original.projectType]
-          .ELIGIBLE_FOR_PROPOSAL_DEFENSE[1]
-      ) {
-        formatted = "Proposal";
-      } else if (
-        progressStatus ===
-        PROGRESS_STATUS()[row.original.projectType]
-          .ELIGIBLE_FOR_FINAL_DEFENSE[1]
-      ) {
-        formatted = "Final";
-      } else if (row.original.projectType !== EVENT_TYPE.FIRST) {
-        if (
-          progressStatus ===
-          PROGRESS_STATUS()[row.original.projectType]
-            .ELIGIBLE_FOR_MID_DEFENSE[1]
-        ) {
-          formatted = "Mid";
-        }
-      }
+      const defenseTime = format(row.original.defenseTime, "HH:mm a");
 
       return (
         <TableCell className="hidden  lg:table-cell">
-          <Badge variant="outline">{formatted}</Badge>
-        </TableCell>
-      );
-    },
-  },
-  {
-    accessorKey: "members",
-    header: () => (
-      <TableHead className="hidden xl:table-cell">Members</TableHead>
-    ),
-    cell: ({ row }) => {
-      const teamMembers = row.original.teamMembers;
-
-      const formatted = teamMembers.length;
-
-      return (
-        <TableCell className="font-semibold hidden xl:table-cell">
-          {formatted}
-        </TableCell>
-      );
-    },
-  },
-  {
-    accessorKey: "supervisor",
-    header: ({ column }) => (
-      <TableHead
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="cursor-pointer hidden xl:table-cell"
-      >
-        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-          Supervisor
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      </TableHead>
-    ),
-
-    cell: ({ row }) => {
-      // const teamMembers = row.original.teamMembers;
-
-      // const formatted = teamMembers.length;
-
-      return (
-        <TableCell className="hidden xl:table-cell">Not assigned</TableCell>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <TableHead
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="cursor-pointer hidden xl:table-cell"
-      >
-        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-          Created On
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      </TableHead>
-    ),
-
-    cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt");
-      const formatted = format(createdAt, "PPP");
-
-      return (
-        <TableCell className="text-gray-500 hidden xl:table-cell">
-          {formatted}
+          <Badge variant="outline">{defenseTime}</Badge>
         </TableCell>
       );
     },
@@ -194,8 +120,6 @@ export const DefenseColumn = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const project = row.original;
-
       return (
         <TableCell className="hidden md:table-cell">
           <DropdownMenu>
@@ -207,21 +131,14 @@ export const DefenseColumn = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigator.clipboard.writeText(project.projectCode);
-                }}
-              >
-                Copy Project Code
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
               >
-                <Link to={`${row.original._id}`}>View Project</Link>
+                <Link to={`${row.original._id}`}>View Defense</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
