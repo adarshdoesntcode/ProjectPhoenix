@@ -42,7 +42,7 @@ const ProtectedRoute = ({ allowedRole }) => {
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
     <Navigate
-      to={`${allowedRole}/login?tab=login`}
+      to={`/${allowedRole}/login?tab=login`}
       state={{ from: location }}
       replace
     />

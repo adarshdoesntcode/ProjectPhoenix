@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.admin} />,
     children: [
       {
-        path: `${ROLES_LIST.admin}`,
+        path: `/${ROLES_LIST.admin}/*`,
         element: <AdminLayout />,
         children: AdminRoutes,
       },
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.student} />,
     children: [
       {
-        path: `${ROLES_LIST.student}`,
+        path: `/${ROLES_LIST.student}/*`,
         element: <StudentLayout />,
         children: StudentRoutes,
       },
@@ -45,14 +45,14 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.supervisor} />,
     children: [
       {
-        path: `${ROLES_LIST.supervisor}`,
+        path: `/${ROLES_LIST.supervisor}/*`,
         element: <SupervisorLayout />,
         children: SupervisorRoutes,
       },
     ],
   },
   {
-    path: "unauthorized",
+    path: "/unauthorized",
     element: <Unauthorized />,
   },
   {

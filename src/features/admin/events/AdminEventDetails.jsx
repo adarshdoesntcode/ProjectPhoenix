@@ -11,6 +11,7 @@ import { useGetEventQuery } from "../adminApiSlice";
 import {
   Cctv,
   ChevronLeft,
+  CirclePlus,
   Clock,
   FileCheck,
   Handshake,
@@ -24,6 +25,7 @@ import {
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -40,6 +42,7 @@ import { ProjectColumn } from "./ProjectColum";
 import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { DefenseColumn } from "./DefenseColumn";
 
 function getTotalNumberOfAssociatedStudents(event) {
   if (event.data && Array.isArray(event.data.projects)) {
@@ -99,6 +102,8 @@ function AdminEventDetails() {
     isError,
     error,
   } = useGetEventQuery(id);
+
+  console.log(event);
   const navigate = useNavigate();
 
   const tableRef = useRef();
@@ -558,6 +563,87 @@ function AdminEventDetails() {
                   ref={tableRef}
                   columns={ProjectColumn}
                   data={finalTable}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+        <Tabs className="mt-4" defaultValue="active">
+          <div className="flex items-center">
+            <TabsList>
+              <TabsTrigger value="active">Active</TabsTrigger>
+              <TabsTrigger value="complete" className="hidden lg:inline-flex">
+                Complete
+              </TabsTrigger>
+              <TabsTrigger value="archive" className="hidden lg:inline-flex">
+                Archive
+              </TabsTrigger>
+              <TabsTrigger value="all">All</TabsTrigger>
+            </TabsList>
+            <div className="ml-auto flex items-center gap-2">
+              {/* <Button
+                size="sm"
+                variant="outline"
+                className=" h-10 gap-1 text-sm"
+                onClick={() => tableRef.current?.exportCSV()}
+              >
+                <File className="h-3.5 w-3.5" />
+                <span className="sr-only sm:not-sr-only">Export</span>
+              </Button> */}
+            </div>
+          </div>
+          <TabsContent value="active">
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Defenses</CardTitle>
+                <CardDescription>
+                  Currently active defenses on the system
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="complete">
+            <Card>
+              <CardHeader>
+                <CardTitle>Complete Defenses</CardTitle>
+                <CardDescription>
+                  All the completed defenses on the system
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="archive">
+            <Card>
+              <CardHeader>
+                <CardTitle>Archived defenses</CardTitle>
+                <CardDescription>
+                  All the achived defenses on the system
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="all">
+            <Card>
+              <CardHeader>
+                <CardTitle>All Defenses</CardTitle>
+                <CardDescription>
+                  All the defenses on the system
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DataTable
+                  ref={tableRef}
+                  columns={DefenseColumn}
+                  data={event.defenses}
                 />
               </CardContent>
             </Card>

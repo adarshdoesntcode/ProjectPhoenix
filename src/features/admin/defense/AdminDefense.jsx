@@ -23,7 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { File } from "lucide-react";
 
 import { DataTable } from "./DefenseDataTable";
-import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
+import { numberOfValues } from "@/lib/utils";
 import { useRef } from "react";
 
 function AdminDefense() {
@@ -36,7 +36,6 @@ function AdminDefense() {
     error,
   } = useGetAllDefensesQuery();
 
-  console.log(defenses);
   let content;
   let numberOfActivedefenses,
     numberOfCompletedefenses,
