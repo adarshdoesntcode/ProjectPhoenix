@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import PublicAppLayout from "./components/layouts/PublicAppLayout";
 import PublicRoutes from "./routes/PublicRoutes";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
@@ -14,6 +13,8 @@ import StudentLayout from "./components/layouts/StudentLayout";
 import StudentRoutes from "./routes/StudentRoutes";
 import SupervisorLayout from "./components/layouts/SupervisorLayout";
 import SupervisorRoutes from "./routes/SupervisorRoutes";
+import DefenseLayout from "./components/layouts/DefenseLayout";
+import DefenseRoutes from "./routes/DefenseRoutes";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.admin} />,
     children: [
       {
-        path: `/${ROLES_LIST.admin}/*`,
+        path: `${ROLES_LIST.admin}`,
         element: <AdminLayout />,
         children: AdminRoutes,
       },
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.student} />,
     children: [
       {
-        path: `/${ROLES_LIST.student}/*`,
+        path: `${ROLES_LIST.student}`,
         element: <StudentLayout />,
         children: StudentRoutes,
       },
@@ -45,12 +46,23 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRole={ROLES_LIST.supervisor} />,
     children: [
       {
-        path: `/${ROLES_LIST.supervisor}/*`,
+        path: `${ROLES_LIST.supervisor}`,
         element: <SupervisorLayout />,
         children: SupervisorRoutes,
       },
     ],
   },
+  {
+    element: <ProtectedRoute allowedRole={ROLES_LIST.defense} />,
+    children: [
+      {
+        path: `${ROLES_LIST.defense}`,
+        element: <DefenseLayout />,
+        children: DefenseRoutes,
+      },
+    ],
+  },
+
   {
     path: "/unauthorized",
     element: <Unauthorized />,
