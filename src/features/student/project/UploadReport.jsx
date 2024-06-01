@@ -73,13 +73,13 @@ function UploadReport({ disabled }) {
           submittedOn: new Date(),
         }).unwrap();
         await refreshUser();
-        onSuccess("ok");
+        // onSuccess("ok");
         toast({
           title: "Report Submitted Successfully",
           description: file.name,
         });
       } catch (error) {
-        onError(error);
+        // onError(error);
         toast({
           variant: "destructive",
           title: "Something Went Wrong",
