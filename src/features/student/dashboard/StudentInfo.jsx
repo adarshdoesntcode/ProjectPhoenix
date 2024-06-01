@@ -102,6 +102,9 @@ function StudentInfo() {
       </CardContent>
     );
   } else if (isSuccess) {
+    if (!project) {
+      return null;
+    }
     projectContent = (
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
