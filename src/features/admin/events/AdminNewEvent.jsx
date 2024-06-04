@@ -357,7 +357,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               proposal: {
                                 ...subEvent.proposal,
-                                reportDeadline: date,
+                                reportDeadline: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}
@@ -395,7 +395,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               proposal: {
                                 ...subEvent.proposal,
-                                defenseDate: date,
+                                defenseDate: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}
@@ -489,7 +489,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               mid: {
                                 ...subEvent.mid,
-                                reportDeadline: date,
+                                reportDeadline: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}
@@ -529,7 +529,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               mid: {
                                 ...subEvent.mid,
-                                defenseDate: date,
+                                defenseDate: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}
@@ -613,7 +613,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               final: {
                                 ...subEvent.final,
-                                reportDeadline: date,
+                                reportDeadline: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}
@@ -651,7 +651,7 @@ function AdminNewEvent() {
                               ...subEvent,
                               final: {
                                 ...subEvent.final,
-                                defenseDate: date,
+                                defenseDate: date.setHours(23, 59, 59, 0),
                               },
                             });
                           }}

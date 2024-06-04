@@ -27,9 +27,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
-
 import { useState } from "react";
-
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import { toast } from "../ui/use-toast";
 

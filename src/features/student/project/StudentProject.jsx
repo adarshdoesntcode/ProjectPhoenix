@@ -33,10 +33,33 @@ import {
   ROLES_LIST,
   getRankbyStatus,
 } from "@/lib/config";
+import Countdown from "react-countdown";
+import { useCallback, useState } from "react";
+
+const renderer = ({ hours, minutes, seconds, completed }) => {
+  const formatTime = (time) => time.toString().padStart(2, "0");
+
+  if (completed) {
+    return <Badge>Deadline Missed</Badge>;
+  } else {
+    return (
+      <>
+        <span className="text-slate-500">Time Remaining &nbsp;</span>
+        <Badge>
+          {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)}
+        </Badge>
+      </>
+    );
+  }
+};
 
 function StudentProject() {
+  const [disableUpload, setDisableUpload] = useState({
+    proposal: false,
+    mid: false,
+    final: false,
+  });
   const user = useSelector(selectCurrentUser);
-
   const {
     data: project,
     isLoading,
@@ -73,6 +96,21 @@ function StudentProject() {
     );
   } else if (isSuccess) {
     const rank = getRankbyStatus(user.progressStatus);
+    const proposalReportDeadlineDays = daysFromToday(
+      project.data.event.proposal.reportDeadline
+    );
+
+    let midReportDeadlineDays;
+
+    if (project.data.event.mid.defense) {
+      midReportDeadlineDays = daysFromToday(
+        project.data.event.mid.reportDeadline
+      );
+    }
+
+    const finalReportDeadlineDays = daysFromToday(
+      project.data.event.final?.reportDeadline
+    );
 
     content = (
       <main className="grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
@@ -102,14 +140,14 @@ function StudentProject() {
               <div>
                 {project.data.event.proposal.defense && (
                   <div className="grid gap-6 mb-4">
-                    <div className="flex  justify-between items-center">
+                    <div className="flex flex-col gap-2 sm:flex-row justify-between items-center">
                       <div className="text-md font-semibold">
                         Proposal Report
                       </div>
 
                       {project.data.proposal.report?.filePath ? (
-                        <Badge variant="secondary">
-                          Submitted on{" "}
+                        <Badge>
+                          Submitted on &nbsp;
                           {format(
                             project.data.proposal.report?.submittedOn,
                             "PPP"
@@ -117,12 +155,37 @@ function StudentProject() {
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
-                          <Badge variant="secondary">
-                            {`Deadline in 
-                          ${daysFromToday(
-                            project.data.event.proposal.reportDeadline
-                          )}d`}
-                          </Badge>
+                          {proposalReportDeadlineDays >= 1 && (
+                            <Badge>
+                              {`Submit Before 
+                              ${format(
+                                project.data.event.proposal.reportDeadline,
+                                "PPP"
+                              )} (${proposalReportDeadlineDays}d)`}
+                            </Badge>
+                          )}
+
+                          {proposalReportDeadlineDays < 0 && (
+                            <Badge>
+                              {`Deadline Missed  (${Math.abs(
+                                proposalReportDeadlineDays
+                              )}d ago)`}
+                            </Badge>
+                          )}
+                          {proposalReportDeadlineDays === 0 ? (
+                            <Countdown
+                              renderer={renderer}
+                              date={project.data.event.proposal.reportDeadline}
+                              onComplete={() =>
+                                setDisableUpload((prev) => {
+                                  return {
+                                    ...prev,
+                                    proposal: true,
+                                  };
+                                })
+                              }
+                            />
+                          ) : null}
                         </div>
                       )}
                     </div>
@@ -151,9 +214,8 @@ function StudentProject() {
                             PROGRESS_STATUS()[project.data.projectType]
                               .ELIGIBLE_FOR_PROPOSAL_REPORT_SUBMISSION[1] !==
                               user.progressStatus ||
-                            daysFromToday(
-                              project.data.event.proposal.reportDeadline
-                            ) < 0
+                            proposalReportDeadlineDays < 0 ||
+                            disableUpload.proposal
                           }
                         />
                         {PROGRESS_STATUS()[project.data.projectType]
@@ -172,22 +234,46 @@ function StudentProject() {
               <div className="mt-6">
                 {project.data.event.mid.defense && (
                   <div className="grid gap-6 mb-4">
-                    <div className="flex  justify-between items-center">
+                    <div className="flex flex-col gap-2 sm:flex-row justify-between items-center">
                       <div className="text-md font-semibold">Mid Report</div>
 
                       {project.data.mid.report?.filePath ? (
-                        <Badge variant="secondary">
-                          Submitted on{" "}
+                        <Badge>
+                          Submitted on &nbsp;
                           {format(project.data.mid.report?.submittedOn, "PPP")}
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
-                          <Badge variant="secondary">
-                            {`Deadline in 
-                          ${daysFromToday(
-                            project.data.event.mid.reportDeadline
-                          )}d`}
-                          </Badge>
+                          {midReportDeadlineDays >= 1 && (
+                            <Badge>
+                              {`Submit Before 
+                              ${format(
+                                project.data.event.mid.reportDeadline,
+                                "PPP"
+                              )} (${midReportDeadlineDays}d)`}
+                            </Badge>
+                          )}
+                          {midReportDeadlineDays < 0 && (
+                            <Badge>
+                              {`Deadline Missed  (${Math.abs(
+                                midReportDeadlineDays
+                              )}d ago)`}
+                            </Badge>
+                          )}
+                          {midReportDeadlineDays === 0 ? (
+                            <Countdown
+                              renderer={renderer}
+                              date={project.data.event.mid.reportDeadline}
+                              onComplete={() =>
+                                setDisableUpload((prev) => {
+                                  return {
+                                    ...prev,
+                                    mid: true,
+                                  };
+                                })
+                              }
+                            />
+                          ) : null}
                         </div>
                       )}
                     </div>
@@ -217,7 +303,8 @@ function StudentProject() {
                               user.progressStatus ||
                             daysFromToday(
                               project.data.event.mid.reportDeadline
-                            ) < 0
+                            ) < 0 ||
+                            disableUpload.mid
                           }
                         />
                         {PROGRESS_STATUS()[project.data.projectType]
@@ -236,12 +323,12 @@ function StudentProject() {
               <div className="my-6">
                 {project.data.event.final.defense && (
                   <div className="grid gap-6 mb-4">
-                    <div className="flex  justify-between items-center">
+                    <div className="flex flex-col gap-2 sm:flex-row justify-between items-center">
                       <div className="text-md font-semibold">Final Report</div>
 
                       {project.data.final.report?.filePath ? (
-                        <Badge variant="secondary">
-                          Submitted on{" "}
+                        <Badge>
+                          Submitted on &nbsp;
                           {format(
                             project.data.final.report?.submittedOn,
                             "PPP"
@@ -249,12 +336,36 @@ function StudentProject() {
                         </Badge>
                       ) : (
                         <div className="text-xs font-semibold">
-                          <Badge variant="secondary">
-                            {`Deadline in 
-                          ${daysFromToday(
-                            project.data.event.final.reportDeadline
-                          )}d`}
-                          </Badge>
+                          {finalReportDeadlineDays >= 1 && (
+                            <Badge>
+                              {`Submit Before 
+                              ${format(
+                                project.data.event.final.reportDeadline,
+                                "PPP"
+                              )} (${finalReportDeadlineDays}d)`}
+                            </Badge>
+                          )}
+                          {finalReportDeadlineDays < 0 && (
+                            <Badge>
+                              {`Deadline Missed  (${Math.abs(
+                                finalReportDeadlineDays
+                              )}d ago)`}
+                            </Badge>
+                          )}
+                          {finalReportDeadlineDays === 0 ? (
+                            <Countdown
+                              renderer={renderer}
+                              date={project.data.event.final.reportDeadline}
+                              onComplete={() =>
+                                setDisableUpload((prev) => {
+                                  return {
+                                    ...prev,
+                                    final: true,
+                                  };
+                                })
+                              }
+                            />
+                          ) : null}
                         </div>
                       )}
                     </div>

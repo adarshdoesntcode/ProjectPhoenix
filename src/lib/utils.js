@@ -101,12 +101,17 @@ export function getGoogleOAuthURL(redirect_uri, role) {
 }
 
 export function daysFromToday(targetDate) {
-  const target = new Date(targetDate);
-  const today = new Date();
-  const differenceInMs = target.getTime() - today.getTime();
-  const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+  let date1 = new Date(targetDate);
+  let date2 = new Date();
 
-  return differenceInDays;
+  let utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  let utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+  let timeDiff = utc1 - utc2;
+
+  let daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+  return daysDiff;
 }
 
 export function numberOfValues(objects, key, status) {
