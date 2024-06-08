@@ -1,4 +1,5 @@
-export const API_BASE_URL = "https://project-phoenix-clz.vercel.app/api";
+// export const API_BASE_URL = "https://project-phoenix-clz.vercel.app/api";
+export const API_BASE_URL = "https://project-phoenix-omega.vercel.app/api";
 // export const API_BASE_URL = "http://localhost:3500/api";
 
 export const GOOGLE_CLIENT_ID =
