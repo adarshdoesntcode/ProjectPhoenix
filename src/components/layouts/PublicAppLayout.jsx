@@ -2,10 +2,15 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { getRoleByValue } from "@/lib/utils";
 import { Origami } from "lucide-react";
+import { useEffect } from "react";
 
 function PublicAppLayout() {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <div className="grid grid-cols-12 max-w-7xl mx-auto">

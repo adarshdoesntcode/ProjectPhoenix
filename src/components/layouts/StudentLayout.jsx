@@ -26,7 +26,7 @@ import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import { toast } from "../ui/use-toast";
@@ -66,6 +66,10 @@ function AdminLayout() {
 
   const user = useSelector(selectCurrentUser);
   const [updateStudent] = useUpdateStudentMutation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const crumbs = location.pathname.split("/").filter((crumb) => {
     if (crumb !== "" && crumb != ROLES_LIST.student) {

@@ -6,7 +6,9 @@ import { Toaster } from "./components/ui/toaster.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
-    <Toaster />
+    <div style={{ marginTop: "env(safe-area-inset-top)" }}>
+      <App />
+      <Toaster />
+    </div>
   </React.StrictMode>
 );

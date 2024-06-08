@@ -1,0 +1,7 @@
+{
+	"appId": "com.example.app",
+	"appName": "project-phoenix",
+	"webDir": "dist",
+	"bundleWebRuntime": false,
+	"packageClassList": []
+}

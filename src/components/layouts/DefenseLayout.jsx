@@ -19,7 +19,7 @@ import {
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { getInitials } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useLogout from "@/hooks/useLogout";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
@@ -48,6 +48,10 @@ const DefenseLayout = () => {
   const logout = useLogout();
 
   const user = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const crumbs = location.pathname.split("/").filter((crumb) => {
     if (crumb !== "" && crumb != ROLES_LIST.defense) {

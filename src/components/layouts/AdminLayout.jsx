@@ -27,9 +27,10 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import { toast } from "../ui/use-toast";
+import ScrollToTop from "../ScrollToTop";
 
 function AdminLayout() {
   const [logoutLoader, setLogoutLoader] = useState(false);
@@ -43,6 +44,10 @@ function AdminLayout() {
       return crumb;
     }
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const handlelogout = async () => {
     try {
