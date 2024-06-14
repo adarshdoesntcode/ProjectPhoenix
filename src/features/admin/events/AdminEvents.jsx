@@ -3,6 +3,7 @@ import { EVENT_STATUS, ROLES_LIST } from "@/lib/config";
 import { Link } from "react-router-dom";
 import { useGetAllEventsQuery } from "../adminApiSlice";
 import { EventColumns } from "./EventColumn";
+
 import {
   Activity,
   CalendarCheck2,
@@ -104,7 +105,7 @@ function AdminEvents() {
       );
     } else {
       content = (
-        <>
+        <div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -266,7 +267,7 @@ function AdminEvents() {
               </Card>
             </TabsContent>
           </Tabs>
-        </>
+        </div>
       );
     }
   }

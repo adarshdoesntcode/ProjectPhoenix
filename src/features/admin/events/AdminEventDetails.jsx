@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  EVENT_STATUS,
   EVENT_TYPE,
   PROGRESS_STATUS,
   ROLES_LIST,
@@ -43,6 +44,7 @@ import { format } from "date-fns";
 import { daysFromToday } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { DefenseColumn } from "./DefenseColumn";
+import { DefenseDataTable } from "./DefenseDataTable";
 
 function getTotalNumberOfAssociatedStudents(event) {
   if (event.data && Array.isArray(event.data.projects)) {
@@ -116,6 +118,9 @@ function AdminEventDetails() {
     midTable,
     eligibleForPrposal,
     eligibleForMid,
+    activedefenses,
+    completedefenses,
+    archivedefenses,
     eligibleForFinal;
 
   if (event) {
@@ -152,6 +157,17 @@ function AdminEventDetails() {
     finalTable = getProjectsWithProgressStatus(
       event,
       PROGRESS_STATUS()[event.data.eventType].ELIGIBLE_FOR_FINAL_DEFENSE[1]
+    );
+
+    activedefenses = event.defenses.filter(
+      (event) => event.status === EVENT_STATUS.Active
+    );
+
+    completedefenses = event.defenses.filter(
+      (event) => event.status === EVENT_STATUS.Complete
+    );
+    archivedefenses = event.defenses.filter(
+      (event) => event.status === EVENT_STATUS.Archive
     );
   }
 
@@ -206,7 +222,7 @@ function AdminEventDetails() {
                 )}
 
                 <Button size="sm" className="h-10 gap-1 text-sm" asChild>
-                  <Link to="defense">
+                  <Link to={`/${ROLES_LIST.admin}/defense/new`}>
                     <FileCheck className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only">Defense</span>
                   </Link>
@@ -491,7 +507,7 @@ function AdminEventDetails() {
           <TabsContent value="all">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center justify-between text-xl">
+                <CardTitle className="flex items-center justify-between">
                   <div>Enrolled Projects</div>
                   <div className="text-sm font-semibold text-slate-500">
                     {event.data.projects.length} project(s)
@@ -510,7 +526,7 @@ function AdminEventDetails() {
           <TabsContent value="proposal">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center justify-between text-xl">
+                <CardTitle className="flex items-center justify-between ">
                   <div>Eligible for Proposal</div>
                   <div className="text-sm font-semibold text-slate-500">
                     {proposalTable.length} project(s)
@@ -530,7 +546,7 @@ function AdminEventDetails() {
             <TabsContent value="mid">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center justify-between text-xl">
+                  <CardTitle className="flex items-center justify-between ">
                     <div>Eligible for Mid</div>
                     <div className="text-sm font-semibold text-slate-500">
                       {midTable.length} project(s)
@@ -551,7 +567,7 @@ function AdminEventDetails() {
           <TabsContent value="final">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center justify-between text-xl">
+                <CardTitle className="flex items-center justify-between ">
                   <div>Eligible for Final</div>
                   <div className="text-sm font-semibold text-slate-500">
                     {finalTable.length} project(s)
@@ -601,7 +617,10 @@ function AdminEventDetails() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+                <DefenseDataTable
+                  columns={DefenseColumn}
+                  data={activedefenses}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -614,7 +633,10 @@ function AdminEventDetails() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+                <DefenseDataTable
+                  columns={DefenseColumn}
+                  data={completedefenses}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -627,7 +649,10 @@ function AdminEventDetails() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable ref={tableRef} columns={DefenseColumn} data={[]} />
+                <DefenseDataTable
+                  columns={DefenseColumn}
+                  data={archivedefenses}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -640,8 +665,7 @@ function AdminEventDetails() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DataTable
-                  ref={tableRef}
+                <DefenseDataTable
                   columns={DefenseColumn}
                   data={event.defenses}
                 />
@@ -659,7 +683,9 @@ function AdminEventDetails() {
             Error Status {error.status} !!
           </h3>
 
-          <p className="text-sm text-gray-500">{error.data.message}</p>
+          <p className="text-sm text-gray-500">
+            {error.data.message || "Error"}
+          </p>
 
           <Button className="mt-4" onClick={() => navigate(-1)}>
             Go Back

@@ -45,5 +45,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>WKAppBoundDomains</key>
+	<array>
+		<string>https://project-phoenix-omega.vercel.app</string>
+		<string>https://project-phoenix-clz.vercel.app</string>
+	</array>
 </dict>
 </plist>

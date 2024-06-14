@@ -106,3 +106,14 @@ export const getRankbyStatus = (rank) => {
   }
   return null;
 };
+
+export const animationProps = () => {
+  return {
+    initial: { y: 10 },
+    animate: { y: 0 },
+    transition: {
+      ease: "easeIn",
+      duration: 0.1,
+    },
+  };
+};

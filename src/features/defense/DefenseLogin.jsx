@@ -20,7 +20,7 @@ import { setCredentials } from "../auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 
 function DefenseLogin() {
   const {
@@ -72,7 +72,18 @@ function DefenseLogin() {
 
       <Card className="w-[350px] lg:w-[400px] mt-4 col-span-12  max-w-xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-lg">Login with Access Code</CardTitle>
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            Login with Access Code
+          </CardTitle>
           <CardDescription>
             The defense portal is accessible with your access code only on the
             specified date and time.

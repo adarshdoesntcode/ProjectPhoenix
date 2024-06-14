@@ -88,7 +88,7 @@ export const DefenseColumn = [
     header: ({ column }) => (
       <TableHead
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="cursor-pointer hidden sm:table-cell"
+        className="cursor-pointer "
       >
         <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
           Defense Date
@@ -98,9 +98,14 @@ export const DefenseColumn = [
     ),
     cell: ({ row }) => {
       const defenseDate = format(row.original.defenseDate, "PPP");
+      const defenseTime = format(row.original.defenseTime, "HH:mm a");
+
       return (
-        <TableCell className="hidden md:table-cell">
-          <div>{defenseDate}</div>
+        <TableCell>
+          <div className="flex gap-2 items-center">
+            <div>{defenseDate}</div>
+            <span className=" lg:hidden">- {defenseTime}</span>
+          </div>
         </TableCell>
       );
     },

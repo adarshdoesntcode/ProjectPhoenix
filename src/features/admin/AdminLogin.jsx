@@ -10,7 +10,7 @@ import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../auth/authSlice";
@@ -77,7 +77,18 @@ function AdminLogin() {
 
       <Card className="mt-4 col-span-12 w-[350px] lg:w-[400px] max-w-xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-xl">Login</CardTitle>
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            Login
+          </CardTitle>
           <CardDescription>
             Enter your administrator email below to login
           </CardDescription>

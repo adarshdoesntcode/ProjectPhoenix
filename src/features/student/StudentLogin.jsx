@@ -21,8 +21,12 @@ import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/lib/config";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import {
+  GOOGLE_OAUTH_REDIRECT_URL,
+  ROLES_LIST,
+  animationProps,
+} from "@/lib/config";
+import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { setCredentials } from "../auth/authSlice";
 import StudentSignup from "./StudentSignup";
 import { useState } from "react";
@@ -99,7 +103,18 @@ function StudentLogin() {
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">Login</CardTitle>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                Login
+              </CardTitle>
               <CardDescription>
                 Enter your college email below to login
               </CardDescription>

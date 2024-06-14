@@ -15,41 +15,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { download, generateCsv, mkConfig } from "export-to-csv";
+import React, { useState } from "react";
+
 import { Input } from "@/components/ui/input";
-import {
-  ROLES_LIST,
-  getEventStatusByCode,
-  getEventTypeByCode,
-} from "@/lib/config";
-import { format } from "date-fns";
+
 import { useNavigate } from "react-router-dom";
 
-const csvConfig = mkConfig({
-  fieldSeparator: ",",
-  filename: "Projects",
-  decimalSeparator: ".",
-  useKeysAsHeaders: true,
-});
-
-const exportExcel = (rows) => {
-  const rowData = rows.map((row) => {
-    return {
-      Project_Code: row.original.projectCode,
-      Name: row.original.projectName,
-      Status: getEventStatusByCode(row.original.status),
-      Type: getEventTypeByCode(row.original.projectType),
-      Supervisor: "Not Assigned",
-      Members: row.original.teamMembers.length,
-      created_On: format(row.original.createdAt, "PPP"),
-    };
-  });
-  const csv = generateCsv(csvConfig)(rowData);
-  download(csvConfig)(csv);
-};
-
-export const DataTable = forwardRef(({ columns, data }, ref) => {
+export const DefenseDataTable = ({ columns, data }) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -76,21 +48,13 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
     globalFilterFn: "auto",
   });
 
-  useImperativeHandle(ref, () => {
-    return {
-      exportCSV: () => {
-        exportExcel(table.getFilteredRowModel().rows);
-      },
-    };
-  });
-
   return (
     <>
       <div className="flex items-center mb-4 space-x-2">
         <Input
           placeholder="Search name, code..."
           value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
+          onChange={(defense) => setGlobalFilter(defense.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -139,7 +103,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No Data.
+                  No Defense.
                 </TableCell>
               </TableRow>
             )}
@@ -170,6 +134,4 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
       </div>
     </>
   );
-});
-
-DataTable.displayName = "DataTable";
+};

@@ -23,7 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { GOOGLE_OAUTH_REDIRECT_URL, ROLES_LIST } from "@/lib/config";
 import { setCredentials } from "../auth/authSlice";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import SupervisorSignup from "./SupervisorSignup";
 import { useState } from "react";
 import { ResetPassword } from "@/components/ResetPassword";
@@ -96,7 +96,18 @@ function SupervisorLogin() {
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">Login</CardTitle>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                Login
+              </CardTitle>
               <CardDescription>
                 Enter your college email below to login
               </CardDescription>

@@ -14,7 +14,8 @@ import {
   ShieldHalf,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ROLES_LIST } from "@/lib/config";
+import { ROLES_LIST, animationProps } from "@/lib/config";
+import { motion } from "framer-motion";
 import Phoenix from "./Phoenix";
 
 function Landing() {
@@ -32,6 +33,7 @@ function Landing() {
           A Complete Solution for your College Projects.
         </p>
       </div>
+
       <Card className="mt-6 col-span-12 w-[350px] max-w-xl mx-auto">
         <CardHeader>
           <CardTitle>Portals</CardTitle>
