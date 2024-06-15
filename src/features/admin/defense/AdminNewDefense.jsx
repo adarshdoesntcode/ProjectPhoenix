@@ -231,7 +231,7 @@ function AdminNewDefense() {
     if (
       !newRoom.block ||
       !newRoom.roomNumber ||
-      !newRoom.evaluators.length === 0
+      newRoom.evaluators.length === 0
     ) {
       return toast({
         variant: "destructive",

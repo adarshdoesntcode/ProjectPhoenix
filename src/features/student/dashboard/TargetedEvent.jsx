@@ -53,7 +53,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
-import { daysFromToday, getInitials } from "@/lib/utils";
+import { daysFromToday, formatDays, getInitials } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Link } from "react-router-dom";
@@ -156,11 +156,14 @@ function TargetedEvent() {
         <Card>
           <CardHeader className="bg-slate-100">
             <CardTitle className="flex items-center justify-between gap-4">
-              <div className="text-lg sm:text-2xl flex   items-center  gap-4">
-                <span>{targetedEvent.data.eventCode}</span>
-                <Badge className="hidden sm:block">
-                  {getEventStatusByCode(targetedEvent.data.eventStatus)}
-                </Badge>
+              <div className="text-lg sm:text-2xl flex flex-col">
+                <div className="text-xs text-gray-600">Your Event</div>
+                <div className="flex  items-center gap-4">
+                  <span>{targetedEvent.data.eventCode}</span>
+                  <Badge className="hidden sm:block">
+                    {getEventStatusByCode(targetedEvent.data.eventStatus)}
+                  </Badge>
+                </div>
               </div>
               <div>
                 {!user.isAssociated && (
@@ -435,9 +438,9 @@ function TargetedEvent() {
                     {`${format(
                       targetedEvent.data.proposal.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(
-                      targetedEvent.data.proposal.reportDeadline
-                    )}d)`}
+                    )} (${formatDays(
+                      daysFromToday(targetedEvent.data.proposal.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -447,9 +450,9 @@ function TargetedEvent() {
                   <div className="text-xs sm:text-sm">{`${format(
                     targetedEvent.data.proposal.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(
-                    targetedEvent.data.proposal.defenseDate
-                  )}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(targetedEvent.data.proposal.defenseDate)
+                  )})`}</div>
                 </div>
               </>
             )}
@@ -467,9 +470,9 @@ function TargetedEvent() {
                     {`${format(
                       targetedEvent.data.mid.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(
-                      targetedEvent.data.mid.reportDeadline
-                    )}d)`}
+                    )} (${formatDays(
+                      daysFromToday(targetedEvent.data.mid.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -479,9 +482,9 @@ function TargetedEvent() {
                   <div className="text-xs sm:text-sm">{`${format(
                     targetedEvent.data.mid.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(
-                    targetedEvent.data.mid.defenseDate
-                  )}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(targetedEvent.data.mid.defenseDate)
+                  )})`}</div>
                 </div>
               </>
             )}
@@ -499,9 +502,9 @@ function TargetedEvent() {
                     {`${format(
                       targetedEvent.data.final.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(
-                      targetedEvent.data.final.reportDeadline
-                    )}d)`}
+                    )} (${formatDays(
+                      daysFromToday(targetedEvent.data.final.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -511,9 +514,9 @@ function TargetedEvent() {
                   <div className="text-xs sm:text-sm">{`${format(
                     targetedEvent.data.final.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(
-                    targetedEvent.data.final.defenseDate
-                  )}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(targetedEvent.data.final.defenseDate)
+                  )})`}</div>
                 </div>
               </>
             )}

@@ -41,7 +41,7 @@ import { Progress } from "@/components/ui/progress";
 import { DataTable } from "./ProjectDataTable";
 import { ProjectColumn } from "./ProjectColum";
 import { format } from "date-fns";
-import { daysFromToday } from "@/lib/utils";
+import { daysFromToday, formatDays } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { DefenseColumn } from "./DefenseColumn";
 import { DefenseDataTable } from "./DefenseDataTable";
@@ -246,7 +246,9 @@ function AdminEventDetails() {
                     {`${format(
                       event.data.proposal.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(event.data.proposal.reportDeadline)}d)`}
+                    )} (${formatDays(
+                      daysFromToday(event.data.proposal.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -256,9 +258,9 @@ function AdminEventDetails() {
                   <div className="text-xs sm:text-sm">{`${format(
                     event.data.proposal.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(
-                    event.data.proposal.defenseDate
-                  )}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(event.data.proposal.defenseDate)
+                  )})`}</div>
                 </div>
               </div>
             )}
@@ -278,7 +280,9 @@ function AdminEventDetails() {
                     {`${format(
                       event.data.mid.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(event.data.mid.reportDeadline)}d)`}
+                    )} (${formatDays(
+                      daysFromToday(event.data.mid.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -288,7 +292,9 @@ function AdminEventDetails() {
                   <div className="text-xs sm:text-sm">{`${format(
                     event.data.mid.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(event.data.mid.defenseDate)}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(event.data.mid.defenseDate)
+                  )})`}</div>
                 </div>
               </div>
             )}
@@ -307,7 +313,9 @@ function AdminEventDetails() {
                     {`${format(
                       event.data.final.reportDeadline,
                       "PPP"
-                    )} (${daysFromToday(event.data.final.reportDeadline)}d)`}
+                    )} (${formatDays(
+                      daysFromToday(event.data.final.reportDeadline)
+                    )})`}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -317,7 +325,9 @@ function AdminEventDetails() {
                   <div className="text-xs sm:text-sm">{`${format(
                     event.data.final.defenseDate,
                     "PPP"
-                  )} (${daysFromToday(event.data.final.defenseDate)}d)`}</div>
+                  )} (${formatDays(
+                    daysFromToday(event.data.final.defenseDate)
+                  )})`}</div>
                 </div>
               </div>
             )}

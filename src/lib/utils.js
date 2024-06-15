@@ -125,6 +125,16 @@ export function numberOfValues(objects, key, status) {
   return count;
 }
 
+export function formatDays(number) {
+  if (number > 0) {
+    return `in ${number}d`;
+  } else if (number == 0) {
+    return `Today`;
+  } else if (number < 0) {
+    return `${Math.abs(number)}d ago`;
+  }
+}
+
 export function numberOfDevelopingProjects(objects, key, status) {
   const count = objects.reduce((acc, obj) => {
     if (obj[key] === status) {

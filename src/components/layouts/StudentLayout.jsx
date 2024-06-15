@@ -122,7 +122,7 @@ function AdminLayout() {
 
   if (!user.phoneNumber || !user.program) {
     return (
-      <div className="w-full h-full fixed top-[env(safe-area-inset-top)] left-0 bg-white z-40 flex justify-center items-center">
+      <div className="w-full h-full fixed top-0 left-0 bg-white z-40 flex justify-center items-center">
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">

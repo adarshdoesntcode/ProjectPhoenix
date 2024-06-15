@@ -198,7 +198,7 @@ function AdminDefense() {
                 <Button size="sm" className="h-10 gap-1 text-sm" asChild>
                   <Link to="new">
                     <CirclePlus className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">New Event</span>
+                    <span className="sr-only sm:not-sr-only">New Defense</span>
                   </Link>
                 </Button>
               </div>

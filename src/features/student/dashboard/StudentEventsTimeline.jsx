@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { EVENT_STATUS, getEventTypeByCode } from "@/lib/config";
 import { CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
-import { cn, daysFromToday } from "@/lib/utils";
+import { cn, daysFromToday, formatDays } from "@/lib/utils";
 
 function StudentEventsTimeline() {
   const { data: events, isLoading, isSuccess } = useGetEventsQuery();
@@ -51,7 +51,8 @@ function StudentEventsTimeline() {
               check >= 0 ? "text-slate-700  text-xs" : "text-slate-300  text-xs"
             )}
           >
-            {format(event.date, "PPP")} ({daysFromToday(event.date)}d)
+            {format(event.date, "PPP")} ({formatDays(daysFromToday(event.date))}
+            )
           </div>
         ),
         children: (

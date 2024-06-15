@@ -75,12 +75,11 @@ function DefenseLogin() {
           <CardTitle className="text-xl flex items-center gap-2">
             <Button
               variant="outline"
-              size="sm"
-              onClick={() => {
-                navigate(-1);
-              }}
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             Login with Access Code
           </CardTitle>

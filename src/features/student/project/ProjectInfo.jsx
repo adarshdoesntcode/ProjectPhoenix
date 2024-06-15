@@ -136,7 +136,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
   return (
     <>
       <Card className="col-span-4">
-        <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+        <CardHeader className="flex flex-row gap-4 bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
           <div>
             <CardTitle className="text-lg">
               {project.data.projectName}
