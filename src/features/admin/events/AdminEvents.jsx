@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { EVENT_STATUS, ROLES_LIST } from "@/lib/config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllEventsQuery } from "../adminApiSlice";
 import { EventColumns } from "./EventColumn";
 
@@ -8,6 +8,7 @@ import {
   Activity,
   CalendarCheck2,
   CheckCheck,
+  ChevronLeft,
   CirclePlus,
   Hammer,
   Loader2,
@@ -36,6 +37,7 @@ function AdminEvents() {
     isError,
     error,
   } = useGetAllEventsQuery();
+  const navigate = useNavigate();
 
   let content;
   let numberOfActiveEvents,
@@ -106,6 +108,17 @@ function AdminEvents() {
     } else {
       content = (
         <div>
+          <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            Events
+          </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

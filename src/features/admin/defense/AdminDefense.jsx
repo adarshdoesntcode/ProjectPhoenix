@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { EVENT_STATUS, ROLES_LIST } from "@/lib/config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllDefensesQuery } from "../adminApiSlice";
 import { DefenseColumn } from "./DefenseColumn";
 import {
   Activity,
   CalendarCheck2,
   CheckCheck,
+  ChevronLeft,
   CirclePlus,
   Hammer,
   Loader2,
@@ -27,6 +28,7 @@ import { numberOfValues } from "@/lib/utils";
 import { useRef } from "react";
 
 function AdminDefense() {
+  const navigate = useNavigate();
   const tableRef = useRef();
   const {
     data: defenses,
@@ -107,6 +109,17 @@ function AdminDefense() {
     } else {
       content = (
         <>
+          <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            Defense
+          </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

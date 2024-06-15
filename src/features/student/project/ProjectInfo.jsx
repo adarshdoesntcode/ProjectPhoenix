@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { BookmarkCheck, Loader2 } from "lucide-react";
+import { BookmarkCheck, ChevronLeft, Loader2 } from "lucide-react";
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -15,8 +15,10 @@ import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function ProjectInfo({ project, isLoading, isSuccess, user }) {
+  const navigate = useNavigate();
   let projectContent, teamContent;
 
   if (!user.isAssociated) {
@@ -137,16 +139,26 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
     <>
       <Card className="col-span-4">
         <CardHeader className="flex flex-row gap-4 bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
-          <div>
-            <CardTitle className="text-lg">
-              {project.data.projectName}
-            </CardTitle>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <CardTitle className="text-lg">
+                {project.data.projectName}
+              </CardTitle>
 
-            <CardDescription className="text-xs">
-              {project.data.projectDescription
-                ? project.data.projectDescription
-                : "Details of you current project"}
-            </CardDescription>
+              <CardDescription className="text-xs">
+                {project.data.projectDescription
+                  ? project.data.projectDescription
+                  : "Details of you current project"}
+              </CardDescription>
+            </div>
           </div>
           <div className="flex gap-4">
             <Button size="sm" className="text-xs">

@@ -31,10 +31,12 @@ import {
   EVENT_TYPE,
   PROGRESS_STATUS,
   ROLES_LIST,
+  animationProps,
   getRankbyStatus,
 } from "@/lib/config";
 import Countdown from "react-countdown";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const renderer = ({ hours, minutes, seconds, completed }) => {
   const formatTime = (time) => time.toString().padStart(2, "0");
@@ -113,7 +115,10 @@ function StudentProject() {
     );
 
     content = (
-      <main className="grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
+      <motion.main
+        {...animationProps()}
+        className="grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3"
+      >
         <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
           <div className="grid gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
             <ProjectInfo
@@ -604,7 +609,7 @@ function StudentProject() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </motion.main>
     );
   }
   return content;

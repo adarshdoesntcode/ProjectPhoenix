@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { EVALUATOR_TYPE, ROLES_LIST } from "@/lib/config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useCreateEvaluatorMutation,
   useGetAllEvaluatorQuery,
@@ -16,6 +16,7 @@ import {
   Handshake,
   Loader2,
   File,
+  ChevronLeft,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,6 +49,7 @@ function AdminEvaluators() {
     error,
   } = useGetAllEvaluatorQuery();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -149,6 +151,17 @@ function AdminEvaluators() {
     } else {
       content = (
         <>
+          <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            Evaluators
+          </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

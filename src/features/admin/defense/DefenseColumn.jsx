@@ -23,6 +23,16 @@ import { Link } from "react-router-dom";
 
 export const DefenseColumn = [
   {
+    accessorKey: "serialNumber",
+    header: () => <TableHead>SN</TableHead>,
+    cell: ({ row, index }) => {
+      console.log(row);
+      return (
+        <TableCell className="text-gray-700">{Number(row.id) + 1}</TableCell>
+      );
+    },
+  },
+  {
     accessorKey: "eventCode",
     header: ({ column }) => {
       return (

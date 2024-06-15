@@ -44,10 +44,12 @@ import {
   EVENT_TYPE,
   PROGRAM_CODE,
   ROLES_LIST,
+  animationProps,
   getEventTypeByCode,
   getProgramByCode,
 } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 
 const initalState = {
   proposal: {
@@ -140,7 +142,10 @@ function AdminNewEvent() {
   }
 
   return (
-    <div className="flex items-center flex-col px-4 ">
+    <motion.div
+      {...animationProps()}
+      className="flex items-center flex-col px-4 "
+    >
       <div className="  mx-auto">
         <div className="flex items-center gap-4 mt-4">
           <Button
@@ -849,7 +854,7 @@ function AdminNewEvent() {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

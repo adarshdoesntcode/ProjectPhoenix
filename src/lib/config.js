@@ -109,11 +109,10 @@ export const getRankbyStatus = (rank) => {
 
 export const animationProps = () => {
   return {
-    initial: { y: 10 },
-    animate: { y: 0 },
+    initial: { y: 40, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
     transition: {
-      ease: "easeIn",
-      duration: 0.1,
+      duration: 0.2,
     },
   };
 };
