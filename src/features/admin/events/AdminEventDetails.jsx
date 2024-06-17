@@ -222,7 +222,9 @@ function AdminEventDetails() {
                 )}
 
                 <Button size="sm" className="h-10 gap-1 text-sm" asChild>
-                  <Link to={`/${ROLES_LIST.admin}/defense/new`}>
+                  <Link
+                    to={`/${ROLES_LIST.admin}/defense/new?id=${event.data._id}`}
+                  >
                     <FileCheck className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only">Defense</span>
                   </Link>

@@ -84,7 +84,7 @@ function StudentEventsTimeline() {
       </CardContent>
     );
   } else if (isSuccess) {
-    if (!events) {
+    if (!events || events.data.length === 0) {
       content = (
         <div className="flex flex-col items-center justify-center gap-1 mt-4 rounded-md h-[200px] text-center">
           <h3 className="text-lg font-bold tracking-tight">No Events</h3>

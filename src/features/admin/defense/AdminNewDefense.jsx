@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 
 import {
   Card,
@@ -33,7 +32,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import {
   Select,
@@ -42,36 +40,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
-import { Textarea } from "@/components/ui/textarea";
 import { cn, getInitials } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, ChevronLeft, Loader2, ShieldAlert } from "lucide-react";
+import { CalendarIcon, ChevronLeft, Loader2 } from "lucide-react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { Separator } from "@/components/ui/separator";
+
 import {
   useCreateDefenseDataQuery,
   useCreateDefenseMutation,
 } from "../adminApiSlice";
 import {
   EVENT_TYPE,
-  PROGRAM_CODE,
   PROGRESS_STATUS,
   ROLES_LIST,
   getEvaluatorTypeByCode,
-  getEventTypeByCode,
-  getProgramByCode,
 } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
 import { Fragment, useState } from "react";
@@ -144,6 +129,7 @@ const newRoomInitialState = {
 
 function AdminNewDefense() {
   const navigate = useNavigate();
+
   const [rooms, setRooms] = useState([]);
   const [newEvaluatorInput, setNewEvaluatorInput] = useState(false);
   const [newRoom, setNewRoom] = useState(newRoomInitialState);
@@ -154,9 +140,7 @@ function AdminNewDefense() {
   const [createDefense] = useCreateDefenseMutation();
   const {
     handleSubmit,
-    register,
     watch,
-    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm();
@@ -189,8 +173,8 @@ function AdminNewDefense() {
 
   let eligibaleProjects = [];
 
-  const selectedDefenseType = watch("defenseType", "");
-  const selectedEventId = watch("event", "");
+  const selectedDefenseType = watch("defenseType");
+  const selectedEventId = watch("event");
 
   const selectedEvent = activeEvents.find(
     (event) => event._id == selectedEventId
@@ -336,9 +320,9 @@ function AdminNewDefense() {
                   <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
                     <div className="grid gap-2">
                       <Label htmlFor="eventType">
-                        {errors.eventType ? (
+                        {errors.event ? (
                           <span className="text-red-500">
-                            {errors.eventType.message}
+                            {errors.event.message}
                           </span>
                         ) : (
                           <span>For Event</span>
@@ -375,9 +359,9 @@ function AdminNewDefense() {
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="eventTarget">
-                        {errors.eventTarget ? (
+                        {errors.defenseType ? (
                           <span className="text-red-500">
-                            {errors.eventTarget.message}
+                            {errors.defenseType.message}
                           </span>
                         ) : (
                           <span>Defense Type</span>

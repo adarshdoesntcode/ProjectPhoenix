@@ -1,22 +1,13 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import {
   Table,
   TableBody,
@@ -26,18 +17,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  CookingPot,
-  File,
-  ListFilter,
-  Loader2,
-  MoreHorizontal,
-  PlusCircle,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useGetDefenseQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 import { daysFromToday } from "@/lib/utils";
+import Countdown from "react-countdown";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { DataTable } from "./DefenseProjectDataTable";
+import { DefenseProjectColumn } from "./DefenseProjectColumn";
 
 const findRoomByEvaluatorId = (data, evaluatorId) => {
   if (!data || !data.rooms) {
@@ -49,7 +38,25 @@ const findRoomByEvaluatorId = (data, evaluatorId) => {
   return room;
 };
 
+const renderer = ({ hours, minutes, seconds, completed }) => {
+  const formatTime = (time) => time.toString().padStart(2, "0");
+
+  if (completed) {
+    return;
+  } else {
+    return (
+      <>
+        <div className="text-slate-500">Time Remaining</div>
+        <div className="font-bold text-7xl text-gray-800">
+          {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)}
+        </div>
+      </>
+    );
+  }
+};
+
 function DefenseDashboard() {
+  const [showProjects, setShowProjects] = useState(false);
   const user = useSelector(selectCurrentUser);
 
   const {
@@ -59,6 +66,7 @@ function DefenseDashboard() {
   } = useGetDefenseQuery(user.currentDefense);
 
   console.log(defense);
+
   let content, room;
   if (defense) {
     console.log(daysFromToday(defense.data.defenseDate));
@@ -69,72 +77,61 @@ function DefenseDashboard() {
 
   if (isLoading) {
     content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
+      <div className="flex flex-1 items-center justify-center bg-slate-50 ">
         <Loader2 className="h-6 w-6 animate-spin mr-4" />
       </div>
     );
   } else if (isSuccess) {
     content = (
-      <Tabs defaultValue="notgraded">
-        <div className="flex items-center">
-          <TabsList>
-            <TabsTrigger value="notgraded">Not Graded</TabsTrigger>
-            <TabsTrigger value="graded">Graded</TabsTrigger>
-          </TabsList>
-          <div className="ml-auto flex items-center gap-2"></div>
-        </div>
-        <TabsContent value="notgraded">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-4">
-                {room.room}{" "}
-                <Badge>{defense.data.defenseType.toUpperCase()}</Badge>
-              </CardTitle>
-              <CardDescription>
-                Grade the following projects assigned to this room
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>SN</TableHead>
-                    <TableHead>Project Code</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Members
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Supervisor
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {room.projects.map((project, index) => {
-                    return (
-                      <TableRow key={project._id}>
-                        <TableCell className="font-medium">
-                          {index + 1}
-                        </TableCell>
-                        <TableCell>{project.projectCode}</TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {project.projectName}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {project.teamMembers.length}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          Not Assigned
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <>
+        {!showProjects && (
+          <div className="flex flex-1 flex-col gap-4 items-center justify-center text-gray-600  bg-slate-50 ">
+            <div className="text-slate-800 font-bold text-2xl">
+              {defense.data.defenseType.toUpperCase()} DEFENSE
+            </div>
+
+            <Countdown
+              renderer={renderer}
+              date={defense.data.defenseTime}
+              onComplete={() => setShowProjects(true)}
+            />
+            <Badge className="text-xl" variant="outline">
+              {room.room}
+            </Badge>
+          </div>
+        )}
+
+        {showProjects && (
+          <Tabs defaultValue="notgraded">
+            <div className="flex items-center">
+              <TabsList>
+                <TabsTrigger value="notgraded">Not Graded</TabsTrigger>
+                <TabsTrigger value="graded">Graded</TabsTrigger>
+              </TabsList>
+              <div className="ml-auto flex items-center gap-2"></div>
+            </div>
+            <TabsContent value="notgraded">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-4">
+                    {room.room}{" "}
+                    <Badge>{defense.data.defenseType.toUpperCase()}</Badge>
+                  </CardTitle>
+                  <CardDescription>
+                    Grade the following projects assigned to this room
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <DataTable
+                    columns={DefenseProjectColumn}
+                    data={room.projects}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        )}
+      </>
     );
   }
 

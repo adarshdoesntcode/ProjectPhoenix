@@ -233,7 +233,17 @@ function SupervisorLogin() {
         <TabsContent value="signup">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">Sign Up</CardTitle>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => navigate(-1)}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                Sign Up
+              </CardTitle>
               <CardDescription>
                 Enter your information to create an account
               </CardDescription>

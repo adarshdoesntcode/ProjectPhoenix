@@ -213,6 +213,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
               </div>
               <div className="flex items-center justify-between">
                 <Button
+                  type="button"
                   variant="outline"
                   size="icon"
                   onClick={() => setStep(1)}
@@ -332,6 +333,7 @@ export function ResetPassword({ forgotPassword, setForgotPassword, role }) {
               <div className="flex items-center justify-between">
                 <Button
                   variant="outline"
+                  type="button"
                   size="icon"
                   onClick={() => setStep(2)}
                 >
