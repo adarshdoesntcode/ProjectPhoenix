@@ -86,12 +86,20 @@ const projectEvaluationConfig = [
     key: "documentation",
   },
   {
-    title: "Plagiarism %",
+    title: "Documentation Plagiarism %",
     max: 100,
     min: 0,
     key: "plagiarism",
   },
 ];
+
+const judgementConfig = {
+  0: "Accepted",
+  1: "Accepted Conditionally",
+  2: "Re-Defense",
+  3: "Rejected",
+  "-1": "Absent",
+};
 
 const projectEvaluationInitalState = {
   projectTitleAndAbstract: "",
@@ -101,7 +109,7 @@ const projectEvaluationInitalState = {
   documentation: "",
   plagiarism: "",
   judgement: "",
-  feedback: "",
+  feedback: "<p>No Feedback</p>",
   exceptional: false,
 };
 
@@ -111,9 +119,9 @@ const projectAbsentInitalState = {
   objective: "0",
   teamWork: "0",
   documentation: "0",
-  plagiarism: "0",
+  plagiarism: "-",
   judgement: "-1",
-  feedback: "Absent",
+  feedback: "<p>No Feedback</p>",
   exceptional: false,
 };
 
@@ -341,8 +349,8 @@ function ProposalEvaluationForm({ project }) {
                     <SelectContent>
                       <SelectItem value="0">Accepted</SelectItem>
                       <SelectItem value="1">Accepted Conditionally</SelectItem>
-                      <SelectItem value="3">Re-Defense Required</SelectItem>
-                      <SelectItem value="4">Rejected</SelectItem>
+                      <SelectItem value="2">Re-Defense</SelectItem>
+                      <SelectItem value="3">Rejected</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -389,7 +397,100 @@ function ProposalEvaluationForm({ project }) {
                 </DialogDescription>
               </DialogHeader>
               <Card className="max-h-[70vh] overflow-scroll">
-                <CardContent className="p-5 text-sm"></CardContent>
+                <CardContent className="p-5 text-sm">
+                  <div className="flex justify-between">
+                    <div className="font-semibold">
+                      {project.data.projectName}
+                    </div>
+                    <div>{project.data.projectCode}</div>
+                  </div>
+                  <Separator className="my-3" />
+                  <div className="flex justify-between ">
+                    <div className="font-semibold text-slate-500">Members</div>
+                    <div>Presentation (10%)</div>
+                  </div>
+                  <Separator className="my-2" />
+
+                  <div>
+                    {project.data.teamMembers.map((member) => {
+                      return (
+                        <div key={member._id} className="flex justify-between">
+                          <div>{member.fullname}</div>
+                          <div>
+                            <div>
+                              {projectPresent
+                                ? studentEvaluation.find(
+                                    (evalu) => evalu.member === member._id
+                                  ).performanceAtPresentation
+                                : studenAbsentInitalState.find(
+                                    (evalu) => evalu.member === member._id
+                                  ).performanceAtPresentation}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Separator className="my-2" />
+
+                  <div>
+                    <p className="font-semibold text-slate-500">
+                      Project Marking
+                    </p>
+                    <Separator className="my-2" />
+                    {projectEvaluationConfig.map((config, index) => {
+                      return (
+                        <div key={index} className="flex justify-between">
+                          <div>{config.title}</div>
+                          <div>
+                            <div>
+                              {projectPresent
+                                ? projectEvaluation[config.key]
+                                : projectAbsentInitalState[config.key]}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex justify-between">
+                    <div className="font-semibold text-slate-500">
+                      Judgement
+                    </div>
+                    <div className="font-semibold">
+                      {projectPresent
+                        ? judgementConfig[projectEvaluation.judgement]
+                        : judgementConfig[projectAbsentInitalState.judgement]}
+                    </div>
+                  </div>
+                  <Separator className="my-2" />
+                  <div>
+                    <div className="font-semibold mb-2 text-slate-500">
+                      Comments and Feedback
+                    </div>
+                    <div className="border rounded-lg p-4">
+                      {projectPresent ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: projectEvaluation.feedback,
+                          }}
+                        />
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: projectAbsentInitalState.feedback,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                  <div className="flex justify-between">
+                    <div className="font-semibold text-slate-500">Examiner</div>
+                    <div className="">{user.fullname}</div>
+                  </div>
+                </CardContent>
               </Card>
               <DialogFooter>
                 <Button>Submit</Button>
