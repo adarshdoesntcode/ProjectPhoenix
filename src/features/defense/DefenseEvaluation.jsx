@@ -49,7 +49,8 @@ function DefenseEvaluation() {
   let defenseType, content, teamContent, projectContent;
 
   if (project) {
-    defenseType = checkDefenseId(user.currentDefense, project);
+    // defenseType = checkDefenseId(user.currentDefense, project);
+    defenseType = 2;
   }
 
   if (isLoading) {

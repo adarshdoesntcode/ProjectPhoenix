@@ -110,7 +110,7 @@ const projectEvaluationInitalState = {
   plagiarism: "",
   judgement: "",
   feedback: "<p>No Feedback</p>",
-  exceptional: false,
+  outstanding: false,
 };
 
 const projectAbsentInitalState = {
@@ -122,7 +122,7 @@ const projectAbsentInitalState = {
   plagiarism: "-",
   judgement: "-1",
   feedback: "<p>No Feedback</p>",
-  exceptional: false,
+  outstanding: false,
 };
 
 function ProposalEvaluationForm({ project }) {
@@ -186,7 +186,7 @@ function ProposalEvaluationForm({ project }) {
         <div className="pt-6 mb-4">
           <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-between">
-              <div className="text-xl font-bold">Is the Team Present?</div>
+              <div className="text-lg font-bold">Team Attendance</div>
               <Switch
                 checked={projectPresent}
                 onCheckedChange={(value) => {
@@ -198,8 +198,8 @@ function ProposalEvaluationForm({ project }) {
             {projectPresent && (
               <div>
                 <div className="max-w-2xl mx-auto">
-                  <div className="text-xl mb-4 font-semibold">
-                    Individual Marking
+                  <div className="text-slate-700 mb-4 font-semibold">
+                    Individual Evaluation
                   </div>
                   <Separator />
                   <Table>
@@ -287,8 +287,8 @@ function ProposalEvaluationForm({ project }) {
                 </div>
                 <Separator className="my-6" />
                 <div className="max-w-2xl mx-auto">
-                  <div className="text-xl mb-4 font-semibold">
-                    Project Marking
+                  <div className="text-slate-700 mb-4 font-semibold">
+                    Project Evaluation
                   </div>
                   <Separator />
                   <Table>
@@ -353,6 +353,22 @@ function ProposalEvaluationForm({ project }) {
                       <SelectItem value="3">Rejected</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="flex items-center justify-end gap-4 mt-6">
+                  <div className="text-sm">
+                    Mark Project as &apos;Outstanding&apos; ?
+                  </div>
+                  <Checkbox
+                    value={projectEvaluation.outstanding}
+                    onCheckedChange={(bol) =>
+                      setProjectEvaluation((prev) => {
+                        return {
+                          ...prev,
+                          outstanding: bol,
+                        };
+                      })
+                    }
+                  />
                 </div>
                 <Separator className="my-6" />
                 <Card className="max-w-2xl mx-auto">
