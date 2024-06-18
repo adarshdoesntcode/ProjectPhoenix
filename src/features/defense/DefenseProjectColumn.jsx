@@ -1,4 +1,3 @@
-// import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,17 +9,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableHead } from "@/components/ui/table";
-import {
-  EVENT_TYPE,
-  PROGRESS_STATUS,
-  getEventStatusByCode,
-  getEventTypeByCode,
-} from "@/lib/config";
-import { format } from "date-fns";
+import { ROLES_LIST, getEventTypeByCode } from "@/lib/config";
+
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const DefenseProjectColumn = [
+  {
+    accessorKey: "SN",
+    header: () => <TableHead>SN</TableHead>,
+    cell: ({ row }) => {
+      return (
+        <TableCell className="text-gray-700">{Number(row.id) + 1}</TableCell>
+      );
+    },
+  },
   {
     accessorKey: "projectCode",
     header: () => <TableHead>Project Code</TableHead>,
@@ -71,7 +74,7 @@ export const DefenseProjectColumn = [
   },
 
   {
-    accessorKey: "eligibleFor",
+    accessorKey: "attemptNo",
     header: () => (
       <TableHead className="hidden lg:table-cell">Attempt</TableHead>
     ),
@@ -121,42 +124,45 @@ export const DefenseProjectColumn = [
     },
   },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const project = row.original;
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const project = row.original;
 
-      return (
-        <TableCell className="hidden md:table-cell">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigator.clipboard.writeText(project.projectCode);
-                }}
-              >
-                Copy Project Code
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <Link to={`${row.original._id}`}>Evaluate</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TableCell>
-      );
-    },
-  },
+  //     return (
+  //       <TableCell className="hidden md:table-cell">
+  //         <DropdownMenu>
+  //           <DropdownMenuTrigger asChild>
+  //             <Button variant="ghost" className="h-8 w-8 p-0">
+  //               <span className="sr-only">Open menu</span>
+  //               <MoreHorizontal className="h-4 w-4" />
+  //             </Button>
+  //           </DropdownMenuTrigger>
+  //           <DropdownMenuContent align="end">
+  //             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //             <DropdownMenuItem
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 navigator.clipboard.writeText(project.projectCode);
+  //               }}
+  //             >
+  //               Copy Project Code
+  //             </DropdownMenuItem>
+  //             <DropdownMenuSeparator />
+  //             <DropdownMenuItem>
+  //               <Link
+  //                 onClick={(e) => {
+  //                   e.stopPropagation();
+  //                 }}
+  //                 to={`/${ROLES_LIST.defense}/evaluate/${row.original._id}`}
+  //               >
+  //                 Evaluate
+  //               </Link>
+  //             </DropdownMenuItem>
+  //           </DropdownMenuContent>
+  //         </DropdownMenu>
+  //       </TableCell>
+  //     );
+  //   },
+  // },
 ];

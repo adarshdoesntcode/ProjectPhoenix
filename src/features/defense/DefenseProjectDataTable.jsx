@@ -20,6 +20,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 
 import { useNavigate } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
 
 export const DataTable = ({ columns, data }) => {
   const [pagination, setPagination] = useState({
@@ -85,7 +86,11 @@ export const DataTable = ({ columns, data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
-                  onClick={() => navigate(`${row.original._id}`)}
+                  onClick={() =>
+                    navigate(
+                      `/${ROLES_LIST.defense}/evaluate/${row.original._id}`
+                    )
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>

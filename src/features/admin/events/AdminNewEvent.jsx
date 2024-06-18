@@ -713,7 +713,7 @@ function AdminNewEvent() {
                     Carefully review your form before submitting
                   </DialogDescription>
                 </DialogHeader>
-                <Card className="max-h-[60vh] overflow-scroll">
+                <Card className="max-h-[70vh] overflow-scroll">
                   <CardContent className="p-5 text-sm">
                     <div className="grid gap-2">
                       <div className="font-semibold">Event Details</div>

@@ -8,23 +8,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 import { useGetDefenseQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
-import { daysFromToday } from "@/lib/utils";
+
 import Countdown from "react-countdown";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+
 import { DataTable } from "./DefenseProjectDataTable";
 import { DefenseProjectColumn } from "./DefenseProjectColumn";
 
@@ -65,15 +57,10 @@ function DefenseDashboard() {
     isSuccess,
   } = useGetDefenseQuery(user.currentDefense);
 
-  console.log(defense);
-
   let content, room;
   if (defense) {
-    console.log(daysFromToday(defense.data.defenseDate));
     room = findRoomByEvaluatorId(defense.data, user._id);
   }
-
-  console.log(room);
 
   if (isLoading) {
     content = (

@@ -14,3 +14,18 @@
     font-family: "Inter", "Geist", sans-serif;
   }
 }
+
+.ql-toolbar {
+  border: none !important; /* Remove the border of the toolbar */
+}
+
+.ql-container {
+  border: 1px solid rgb(223, 223, 223) !important;
+
+  border-radius: 0.5rem !important;
+  height: 12rem !important; /* Remove the top border of the editor container */
+}
+
+.ql-tooltip {
+  display: none !important;
+}

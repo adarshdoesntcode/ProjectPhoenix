@@ -216,12 +216,15 @@ export const ProjectColumn = [
                 Copy Project Code
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <Link to={`${row.original._id}`}>View Project</Link>
+              <DropdownMenuItem>
+                <Link
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  to={`${row.original._id}`}
+                >
+                  View Project
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
