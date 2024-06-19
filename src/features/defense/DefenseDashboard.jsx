@@ -89,7 +89,7 @@ function DefenseDashboard() {
         )}
 
         {showProjects && (
-          <Tabs defaultValue="notgraded">
+          <Tabs defaultValue="notgraded" className="mt-4">
             <div className="flex items-center">
               <TabsList>
                 <TabsTrigger value="notgraded">Not Graded</TabsTrigger>

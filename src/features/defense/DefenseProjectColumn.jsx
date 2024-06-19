@@ -67,7 +67,7 @@ export const DefenseProjectColumn = [
       const formatted = getEventTypeByCode(projectType);
       return (
         <TableCell className="hidden md:table-cell">
-          <Badge variant="outline">{formatted}</Badge>
+          <Badge>{formatted}</Badge>
         </TableCell>
       );
     },

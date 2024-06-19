@@ -86,7 +86,7 @@ const DefenseLayout = () => {
           </nav>
         </aside>
         <div className="flex flex-col sm:pl-14">
-          <header className="flex sticky top-0 h-14 items-center gap-4  z-50 bg-white border-b  px-4  lg:px-6">
+          <header className="flex sticky top-0 h-14 items-center gap-4  z-50 bg-slate-50   border-b  px-4  lg:px-6">
             <Origami className="sm:hidden" />
 
             <Breadcrumb className="hidden md:flex">
@@ -99,7 +99,7 @@ const DefenseLayout = () => {
               </BreadcrumbList>
             </Breadcrumb>
             <div className=" ml-auto  flex md:grow-0">
-              <span className="text-slate-500 text-sm">
+              <span className="text-slate-600 font-semibold text-sm">
                 {getGreeting()}, {user.fullname}
               </span>
             </div>

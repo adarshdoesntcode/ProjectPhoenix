@@ -39,6 +39,7 @@ function checkDefenseId(defenseId, data) {
 }
 
 function DefenseEvaluation() {
+  const user = useSelector(selectCurrentUser);
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -123,7 +124,7 @@ function DefenseEvaluation() {
                     <ArrowUpRight className="ml-1 w-4 h-4 transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]" />
                   </div>
                 ) : (
-                  <Badge variant="secondary">Not Available</Badge>
+                  <Badge variant="outline">Not Available</Badge>
                 )}
               </div>
             </div>
@@ -144,7 +145,7 @@ function DefenseEvaluation() {
                     <ArrowUpRight className="ml-1 w-4 h-4 transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]" />
                   </div>
                 ) : (
-                  <Badge variant="secondary">Not Available</Badge>
+                  <Badge variant="outline">Not Available</Badge>
                 )}
               </div>
             </div>
@@ -165,7 +166,7 @@ function DefenseEvaluation() {
                     <ArrowUpRight className="ml-1 w-4 h-4 transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]" />
                   </div>
                 ) : (
-                  <Badge variant="secondary">Not Available</Badge>
+                  <Badge variant="outline">Not Available</Badge>
                 )}
               </div>
             </div>
@@ -176,7 +177,7 @@ function DefenseEvaluation() {
 
     content = (
       <>
-        <div className="sticky top-14 bg-slate-100/50 backdrop-filter backdrop-blur-lg z-50 xl:px-10 flex items-center justify-between py-3 font-semibold">
+        <div className="sticky top-14 bg-slate-100/50 backdrop-filter backdrop-blur-lg z-50 min-[1500px]:px-16 flex items-center justify-between py-3 font-semibold">
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -190,14 +191,14 @@ function DefenseEvaluation() {
           </div>
           <DefenseStopwatch />
         </div>
-        <div className="xl:px-10 grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-4">
+        <div className="min-[1500px]:px-16 grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-4 mt-1">
           <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-3">
             <div className="grid gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
               <Card className="col-span-4">
-                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 sm:gap-10 bg-slate-100 rounded-t-md border-b py-4 ">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 sm:gap-10  rounded-t-md border-b py-4 ">
                   <div className="flex  items-center gap-4  ">
                     <div>
-                      <CardTitle className="text-xl flex items-center gap-4">
+                      <CardTitle className="text-xl flex items-center gap-4 mb-1">
                         {project.data.projectName}
                         <Badge>
                           {getEventTypeByCode(project.data.projectType)}
@@ -212,8 +213,8 @@ function DefenseEvaluation() {
                     </div>
                   </div>
                   <Badge
-                    variant="outline"
-                    className="font-bold text-xl bg-white px-4 "
+                    variant="secondary"
+                    className="font-semibold text-sm sm:text-xl  px-4 "
                   >
                     {project.data.projectCode}
                   </Badge>

@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -40,6 +40,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useDefenseEvaluationMutation } from "./defenseApiSlice";
+import { useNavigate } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
 
 function hasEmptyFields(obj) {
   for (const key in obj) {
@@ -127,6 +130,8 @@ const projectAbsentInitalState = {
 
 function ProposalEvaluationForm({ project }) {
   const user = useSelector(selectCurrentUser);
+  const [defenseEvaluation, { isLoading }] = useDefenseEvaluationMutation();
+  const navigate = useNavigate();
   const studentEvaluationInitalState = project.data.teamMembers.map(
     (member) => {
       return {
@@ -167,6 +172,55 @@ function ProposalEvaluationForm({ project }) {
   } else {
     disabled = false;
   }
+
+  const onSubmit = async () => {
+    let body;
+    try {
+      if (projectPresent) {
+        body = {
+          individualEvaluation: studentEvaluation,
+          projectEvaluation,
+          projectId: project.data._id,
+          evaluatorId: user._id,
+          defenseId: user.currentDefense,
+          eventId: project.data.event._id,
+          evaluationType: "proposal",
+        };
+      } else {
+        body = {
+          individualEvaluation: studenAbsentInitalState,
+          projectEvaluation: projectAbsentInitalState,
+          projectId: project.data._id,
+          evaluatorId: user._id,
+          defenseId: user.currentDefense,
+          eventId: project.data.event._id,
+          evaluationType: "proposal",
+        };
+      }
+
+      const res = await defenseEvaluation(body);
+
+      if (res.error) {
+        if (res.error.status === 409) {
+          throw new Error("Judgement Mismatch");
+        }
+      }
+      if (!res.error) {
+        toast({
+          title: "Project Evaluation !",
+          description: "Successful",
+        });
+        navigate(`/${ROLES_LIST.defense}/dashboard`);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  };
+
   return (
     <Card className="mb-20">
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
@@ -217,6 +271,7 @@ function ProposalEvaluationForm({ project }) {
                             <TableCell>{member.fullname}</TableCell>
                             <TableCell>
                               <Input
+                                onWheel={(e) => e.target.blur()}
                                 placeholder="0-10"
                                 type={hideMarks ? "password" : "number"}
                                 value={
@@ -297,6 +352,7 @@ function ProposalEvaluationForm({ project }) {
                             <TableCell>{config.title}</TableCell>
                             <TableCell>
                               <Input
+                                onWheel={(e) => e.target.blur()}
                                 placeholder={`${config.min}-${config.max}`}
                                 type={hideMarks ? "password" : "number"}
                                 value={projectEvaluation[config.key]}
@@ -352,10 +408,7 @@ function ProposalEvaluationForm({ project }) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex items-center justify-end gap-4 mt-6">
-                  <div className="text-sm">
-                    Mark Project as &apos;Outstanding&apos; ?
-                  </div>
+                <div className="flex items-center justify-start gap-3 mt-6">
                   <Checkbox
                     value={projectEvaluation.outstanding}
                     onCheckedChange={(bol) =>
@@ -367,6 +420,9 @@ function ProposalEvaluationForm({ project }) {
                       })
                     }
                   />
+                  <div className="text-sm">
+                    Mark Project as &apos;Outstanding&apos;
+                  </div>
                 </div>
                 <Separator className="my-6" />
                 <Card className="max-w-2xl mx-auto">
@@ -502,12 +558,19 @@ function ProposalEvaluationForm({ project }) {
                   <Separator className="my-4" />
                   <div className="flex justify-between">
                     <div className="font-semibold text-slate-500">Examiner</div>
-                    <div className="">{user.fullname}</div>
+                    <div>{user.fullname}</div>
                   </div>
                 </CardContent>
               </Card>
               <DialogFooter>
-                <Button>Submit</Button>
+                {isLoading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting..
+                  </Button>
+                ) : (
+                  <Button onClick={onSubmit}>Submit</Button>
+                )}
               </DialogFooter>
             </DialogContent>
           </Dialog>

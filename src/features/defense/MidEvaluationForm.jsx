@@ -9,8 +9,7 @@ import {
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+
 import { Separator } from "@/components/ui/separator";
 import {
   Card,
@@ -20,14 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import QuillEditor from "./QuillEditor";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
@@ -40,6 +32,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { toast } from "@/components/ui/use-toast";
+import { useDefenseEvaluationMutation } from "./defenseApiSlice";
+import { useNavigate } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
+import { Loader2 } from "lucide-react";
 
 function hasEmptyFields(obj) {
   for (const key in obj) {
@@ -56,40 +54,22 @@ function hasEmptyPerformanceAtPresentation(arr) {
 
 const projectEvaluationConfig = [
   {
-    title: "How is the Project Title and Abstract? (10%)",
-    max: 10,
-    min: 0,
-    key: "projectTitleAndAbstract",
-  },
-  {
-    title: "How is the Project? (40%)",
-    max: 40,
-    min: 0,
-    key: "project",
-  },
-  {
-    title: "Objective (5%)",
+    title: "Feedbacks Incorporated",
     max: 5,
     min: 0,
-    key: "objective",
+    key: "feedbackIncorporated",
   },
   {
-    title: "Team Work (10%)",
-    max: 10,
+    title: "Work Progress",
+    max: 5,
     min: 0,
-    key: "teamWork",
+    key: "workProgress",
   },
   {
-    title: "Documentation (25%)",
-    max: 25,
+    title: "Documentation",
+    max: 5,
     min: 0,
     key: "documentation",
-  },
-  {
-    title: "Documentation Plagiarism %",
-    max: 100,
-    min: 0,
-    key: "plagiarism",
   },
 ];
 
@@ -102,31 +82,25 @@ const judgementConfig = {
 };
 
 const projectEvaluationInitalState = {
-  projectTitleAndAbstract: "",
-  project: "",
-  objective: "",
-  teamWork: "",
+  feedbackIncorporated: "",
+  workProgress: "",
   documentation: "",
-  plagiarism: "",
-  judgement: "",
   feedback: "<p>No Feedback</p>",
   outstanding: false,
 };
 
 const projectAbsentInitalState = {
-  projectTitleAndAbstract: "0",
-  project: "0",
-  objective: "0",
-  teamWork: "0",
+  feedbackIncorporated: "0",
+  workProgress: "0",
   documentation: "0",
-  plagiarism: "-",
-  judgement: "-1",
-  feedback: "<p>No Feedback</p>",
+  feedback: "<p>Absent</p>",
   outstanding: false,
 };
 
 function MidEvaluationForm({ project }) {
   const user = useSelector(selectCurrentUser);
+  const [defenseEvaluation, { isLoading }] = useDefenseEvaluationMutation();
+  const navigate = useNavigate();
   const studentEvaluationInitalState = project.data.teamMembers.map(
     (member) => {
       return {
@@ -153,7 +127,7 @@ function MidEvaluationForm({ project }) {
     projectEvaluationInitalState
   );
   const [projectPresent, setProjectPresent] = useState(false);
-  const [hideMarks, setHideMarks] = useState(false);
+
   const [modal, setModal] = useState(false);
 
   let disabled = true;
@@ -167,20 +141,59 @@ function MidEvaluationForm({ project }) {
   } else {
     disabled = false;
   }
+
+  const onSubmit = async () => {
+    let body;
+    try {
+      if (projectPresent) {
+        body = {
+          individualEvaluation: studentEvaluation,
+          projectEvaluation,
+          projectId: project.data._id,
+          evaluatorId: user._id,
+          defenseId: user.currentDefense,
+          eventId: project.data.event._id,
+          evaluationType: "mid",
+        };
+      } else {
+        body = {
+          individualEvaluation: studenAbsentInitalState,
+          projectEvaluation: projectAbsentInitalState,
+          projectId: project.data._id,
+          evaluatorId: user._id,
+          defenseId: user.currentDefense,
+          eventId: project.data.event._id,
+          evaluationType: "mid",
+        };
+      }
+
+      const res = await defenseEvaluation(body);
+
+      if (res.error) {
+        if (res.error.status === 409) {
+          throw new Error("Judgement Mismatch");
+        }
+      }
+      if (!res.error) {
+        toast({
+          title: "Project Evaluation !",
+          description: "Successful",
+        });
+        navigate(`/${ROLES_LIST.defense}/dashboard`);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  };
+
   return (
     <Card className="mb-20">
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
-        <CardTitle className="text-xl flex gap-4 items-center justify-between">
-          <div>Mid Term Evaluation Form</div>
-          <Button onClick={() => setHideMarks(!hideMarks)}>
-            Marks
-            {hideMarks ? (
-              <Eye className="ml-1 w-4 h-4" />
-            ) : (
-              <EyeOff className="ml-1 w-4 h-4" />
-            )}
-          </Button>
-        </CardTitle>
+        <CardTitle className="text-xl ">Mid Term Evaluation Form</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="pt-6 mb-4">
@@ -206,38 +219,43 @@ function MidEvaluationForm({ project }) {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Members</TableHead>
-                        <TableHead>Performance at Presentation (10%)</TableHead>
+                        <TableHead className="text-center">
+                          Presentation
+                        </TableHead>
                         <TableHead className="text-center">Absent</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {project.data.teamMembers.map((member) => {
                         return (
-                          <TableRow key={member._id}>
+                          <TableRow
+                            key={member._id}
+                            className="hover:bg-inherit"
+                          >
                             <TableCell>{member.fullname}</TableCell>
-                            <TableCell>
-                              <Input
-                                placeholder="0-10"
-                                type={hideMarks ? "password" : "number"}
+                            <TableCell className="text-center">
+                              <ToggleGroup
+                                variant="outline"
+                                type="single"
+                                size="sm"
+                                className="gap-1 sm:gap-2"
+                                disabled={
+                                  studentEvaluation.find(
+                                    (evalu) => evalu.member === member._id
+                                  ).absent
+                                }
                                 value={
                                   studentEvaluation.find(
                                     (evalu) => evalu.member === member._id
                                   ).performanceAtPresentation
                                 }
-                                onChange={(e) => {
-                                  if (e.target.value < 0 || e.target.value > 10)
-                                    return toast({
-                                      title: "Out of Bounds !!!",
-                                      description: "Must be between 0 and 10",
-                                    });
-
+                                onValueChange={(value) => {
                                   setStudentEvaluation((prev) =>
                                     prev.map((pre) => {
                                       if (pre.member === member._id) {
                                         return {
                                           ...pre,
-                                          performanceAtPresentation:
-                                            e.target.value,
+                                          performanceAtPresentation: value,
                                         };
                                       } else {
                                         return {
@@ -247,7 +265,13 @@ function MidEvaluationForm({ project }) {
                                     })
                                   );
                                 }}
-                              />
+                              >
+                                <ToggleGroupItem value="1">1</ToggleGroupItem>
+                                <ToggleGroupItem value="2">2</ToggleGroupItem>
+                                <ToggleGroupItem value="3">3</ToggleGroupItem>
+                                <ToggleGroupItem value="4">4</ToggleGroupItem>
+                                <ToggleGroupItem value="5">5</ToggleGroupItem>
+                              </ToggleGroup>
                             </TableCell>
                             <TableCell className="text-center">
                               <Checkbox
@@ -293,31 +317,30 @@ function MidEvaluationForm({ project }) {
                     <TableBody>
                       {projectEvaluationConfig.map((config, index) => {
                         return (
-                          <TableRow key={index}>
+                          <TableRow key={index} className="hover:bg-inherit">
                             <TableCell>{config.title}</TableCell>
-                            <TableCell>
-                              <Input
-                                placeholder={`${config.min}-${config.max}`}
-                                type={hideMarks ? "password" : "number"}
+                            <TableCell className="text-center">
+                              <ToggleGroup
+                                variant="outline"
+                                type="single"
+                                size="sm"
+                                className="gap-1 sm:gap-2"
                                 value={projectEvaluation[config.key]}
-                                onChange={(e) => {
-                                  if (
-                                    e.target.value < config.min ||
-                                    e.target.value > config.max
-                                  )
-                                    return toast({
-                                      title: "Out of Bounds !!!",
-                                      description: `Must be between ${config.min} and ${config.max}`,
-                                    });
-
+                                onValueChange={(value) => {
                                   setProjectEvaluation((prev) => {
                                     return {
                                       ...prev,
-                                      [config.key]: e.target.value,
+                                      [config.key]: value,
                                     };
                                   });
                                 }}
-                              />
+                              >
+                                <ToggleGroupItem value="1">1</ToggleGroupItem>
+                                <ToggleGroupItem value="2">2</ToggleGroupItem>
+                                <ToggleGroupItem value="3">3</ToggleGroupItem>
+                                <ToggleGroupItem value="4">4</ToggleGroupItem>
+                                <ToggleGroupItem value="5">5</ToggleGroupItem>
+                              </ToggleGroup>
                             </TableCell>
                           </TableRow>
                         );
@@ -325,37 +348,8 @@ function MidEvaluationForm({ project }) {
                     </TableBody>
                   </Table>
                 </div>
-                <Separator className="my-6" />
 
-                <div className="max-w-2xl mx-auto flex items-center justify-between gap-20">
-                  <div className=" font-semibold">Judgement</div>
-
-                  <Select
-                    value={projectEvaluation.judgement}
-                    onValueChange={(value) =>
-                      setProjectEvaluation((prev) => {
-                        return {
-                          ...prev,
-                          judgement: value,
-                        };
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">Accepted</SelectItem>
-                      <SelectItem value="1">Accepted Conditionally</SelectItem>
-                      <SelectItem value="2">Re-Defense</SelectItem>
-                      <SelectItem value="3">Rejected</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex items-center justify-end gap-4 mt-6">
-                  <div className="text-sm">
-                    Mark Project as &apos;Outstanding&apos; ?
-                  </div>
+                <div className="flex items-center justify-start gap-3 mt-6">
                   <Checkbox
                     value={projectEvaluation.outstanding}
                     onCheckedChange={(bol) =>
@@ -367,6 +361,9 @@ function MidEvaluationForm({ project }) {
                       })
                     }
                   />
+                  <div className="text-sm">
+                    Mark Project as &apos;Outstanding&apos;
+                  </div>
                 </div>
                 <Separator className="my-6" />
                 <Card className="max-w-2xl mx-auto">
@@ -421,7 +418,7 @@ function MidEvaluationForm({ project }) {
                   <Separator className="my-3" />
                   <div className="flex justify-between ">
                     <div className="font-semibold text-slate-500">Members</div>
-                    <div>Presentation (10%)</div>
+                    <div>Presentation</div>
                   </div>
                   <Separator className="my-2" />
 
@@ -467,17 +464,7 @@ function MidEvaluationForm({ project }) {
                       );
                     })}
                   </div>
-                  <Separator className="my-2" />
-                  <div className="flex justify-between">
-                    <div className="font-semibold text-slate-500">
-                      Judgement
-                    </div>
-                    <div className="font-semibold">
-                      {projectPresent
-                        ? judgementConfig[projectEvaluation.judgement]
-                        : judgementConfig[projectAbsentInitalState.judgement]}
-                    </div>
-                  </div>
+
                   <Separator className="my-2" />
                   <div>
                     <div className="font-semibold mb-2 text-slate-500">
@@ -502,12 +489,19 @@ function MidEvaluationForm({ project }) {
                   <Separator className="my-4" />
                   <div className="flex justify-between">
                     <div className="font-semibold text-slate-500">Examiner</div>
-                    <div className="">{user.fullname}</div>
+                    <div>{user.fullname}</div>
                   </div>
                 </CardContent>
               </Card>
               <DialogFooter>
-                <Button>Submit</Button>
+                {isLoading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting..
+                  </Button>
+                ) : (
+                  <Button onClick={onSubmit}>Submit</Button>
+                )}
               </DialogFooter>
             </DialogContent>
           </Dialog>
