@@ -202,7 +202,7 @@ function ProposalEvaluationForm({ project }) {
                     Individual Evaluation
                   </div>
                   <Separator />
-                  <Table>
+                  <Table className="text-xs sm:text-sm">
                     <TableHeader>
                       <TableRow>
                         <TableHead>Members</TableHead>
@@ -214,9 +214,7 @@ function ProposalEvaluationForm({ project }) {
                       {project.data.teamMembers.map((member) => {
                         return (
                           <TableRow key={member._id}>
-                            <TableCell>
-                              {member.fullname} ({member.rollNumber})
-                            </TableCell>
+                            <TableCell>{member.fullname}</TableCell>
                             <TableCell>
                               <Input
                                 placeholder="0-10"

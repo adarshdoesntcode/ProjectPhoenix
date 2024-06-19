@@ -1,6 +1,6 @@
-import { useDispatch } from "react-redux";
-import { logOut } from "@/features/auth/authSlice";
 import { authApiSlice } from "@/features/auth/authApiSlice";
+import { logOut } from "@/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const useLogout = () => {
   const dispatch = useDispatch();
@@ -11,10 +11,11 @@ const useLogout = () => {
         authApiSlice.endpoints.logout.initiate(undefined, {
           forceRefetch: true,
         })
-      );
-      await dispatch(logOut());
+      ).unwrap();
+
+      dispatch(logOut());
     } catch (err) {
-      console.error(err);
+      console.error("Logout failed:", err);
     }
   };
 

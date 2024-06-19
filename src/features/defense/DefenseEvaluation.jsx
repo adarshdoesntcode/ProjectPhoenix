@@ -39,7 +39,6 @@ function checkDefenseId(defenseId, data) {
 }
 
 function DefenseEvaluation() {
-  const user = useSelector(selectCurrentUser);
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ function DefenseEvaluation() {
 
   if (project) {
     // defenseType = checkDefenseId(user.currentDefense, project);
-    defenseType = 2;
+    defenseType = 1;
   }
 
   if (isLoading) {

@@ -210,7 +210,7 @@ function FinalEvaluationForm({ project }) {
       </CardHeader>
       <CardContent>
         <div className="pt-6 mb-4">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="text-lg font-bold">Team Attendance</div>
               <Switch
@@ -223,12 +223,12 @@ function FinalEvaluationForm({ project }) {
             <Separator className="my-6" />
             {projectPresent && (
               <div>
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-2xl mx-auto">
                   <div className="text-slate-700 mb-4 font-semibold">
                     Individual Evaluation
                   </div>
                   <Separator />
-                  <Table className="text-xs sm:text-base">
+                  <Table className="text-xs sm:text-sm">
                     <TableHeader>
                       <TableRow>
                         <TableHead>Members</TableHead>
@@ -241,9 +241,7 @@ function FinalEvaluationForm({ project }) {
                       {project.data.teamMembers.map((member) => {
                         return (
                           <TableRow key={member._id}>
-                            <TableCell>
-                              {member.fullname} ({member.rollNumber})
-                            </TableCell>
+                            <TableCell>{member.fullname}</TableCell>
                             <TableCell>
                               <Input
                                 placeholder="0-10"
@@ -347,7 +345,7 @@ function FinalEvaluationForm({ project }) {
                   </Table>
                 </div>
                 <Separator className="my-6" />
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-2xl mx-auto">
                   <div className="text-slate-700 mb-4 font-semibold">
                     Project Evaluation
                   </div>
@@ -390,7 +388,7 @@ function FinalEvaluationForm({ project }) {
                 </div>
                 <Separator className="my-6" />
 
-                <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
+                <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
                   <div className=" font-semibold">Judgement</div>
 
                   <Select
@@ -432,7 +430,7 @@ function FinalEvaluationForm({ project }) {
                   />
                 </div>
                 <Separator className="my-6" />
-                <Card className="max-w-3xl mx-auto">
+                <Card className="max-w-2xl mx-auto">
                   <CardHeader>
                     <CardTitle className="text-xl">
                       Comments and Feedback
@@ -453,7 +451,7 @@ function FinalEvaluationForm({ project }) {
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto flex items-center gap-4 justify-end">
+        <div className="max-w-2xl mx-auto flex items-center gap-4 justify-end">
           <div className="text-slate-500 text-xs">
             {projectPresent
               ? disabled

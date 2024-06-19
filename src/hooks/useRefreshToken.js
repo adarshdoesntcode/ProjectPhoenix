@@ -1,4 +1,4 @@
-import { setCredentials } from "@/features/auth/authSlice";
+import { logOut, setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { authApiSlice } from "@/features/auth/authApiSlice";
 
@@ -7,17 +7,25 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     try {
-      const { data: refreshData } = await dispatch(
+      const resultAction = await dispatch(
         authApiSlice.endpoints.refresh.initiate(undefined, {
           forceRefetch: true,
         })
       );
+      if (resultAction.status === "fulfilled") {
+        const refreshData = resultAction.data;
 
-      if (refreshData) dispatch(setCredentials({ data: refreshData }));
+        if (refreshData) {
+          dispatch(setCredentials({ data: refreshData }));
+        }
+      } else {
+        dispatch(logOut());
+      }
     } catch (error) {
-      console.log(error);
+      dispatch(logOut());
     }
   };
+
   return refresh;
 };
 
