@@ -255,7 +255,7 @@ function FinalEvaluationForm({ project }) {
   };
 
   return (
-    <Card className="mb-20">
+    <Card>
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
         <CardTitle className="text-xl flex gap-4 items-center justify-between">
           <div>Final Evaluation Form</div>

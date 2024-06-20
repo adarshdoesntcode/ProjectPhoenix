@@ -21,11 +21,18 @@ import DefenseStopwatch from "./DefenseStopwatch";
 import ProposalEvaluationForm from "./ProposalEvaluationForm";
 import MidEvaluationForm from "./MidEvaluationForm";
 import FinalEvaluationForm from "./FinalEvaluationForm";
+import PreviousEvaluation from "./PreviousEvaluation";
 
 function checkDefenseId(defenseId, data) {
-  const proposalIds = data.data.proposal.defenseId;
-  const midIds = data.data.mid.defenseId;
-  const finalIds = data.data.final.defenseId;
+  const proposalIds =
+    data.data.proposal.defenses?.map((defense) => defense.defense) || [];
+
+  console.log(defenseId);
+  console.log(proposalIds);
+  const midIds =
+    data.data.mid?.defenses?.map((defense) => defense.defense) || [];
+  const finalIds =
+    data.data.final.defenses?.map((defense) => defense.defense) || [];
 
   if (proposalIds.includes(defenseId)) {
     return 0;
@@ -45,6 +52,8 @@ function DefenseEvaluation() {
   const navigate = useNavigate();
 
   const { data: project, isLoading, isSuccess } = useGetDefenseProjectQuery(id);
+
+  console.log(project);
 
   let defenseType, content, teamContent, projectContent;
 
@@ -176,7 +185,7 @@ function DefenseEvaluation() {
 
     content = (
       <>
-        <div className="sticky top-14 bg-slate-100/50 backdrop-filter backdrop-blur-lg z-50 min-[1500px]:px-16 flex items-center justify-between py-3 font-semibold">
+        <div className="sticky top-14 bg-slate-100/50 backdrop-filter backdrop-blur-lg z-50 min-[1500px]:px-16 flex items-center justify-between py-4 font-semibold">
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -190,8 +199,8 @@ function DefenseEvaluation() {
           </div>
           <DefenseStopwatch />
         </div>
-        <div className="min-[1500px]:px-16 grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-4 mt-1">
-          <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-3">
+        <div className="min-[1500px]:px-16 grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-12 mt-1">
+          <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-8">
             <div className="grid gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
               <Card className="col-span-4">
                 <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 sm:gap-10  rounded-t-md border-b py-4 ">
@@ -249,12 +258,7 @@ function DefenseEvaluation() {
             )}
           </div>
 
-          <Card className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
-            <CardHeader className=" bg-slate-100 rounded-t-md border-b">
-              <CardTitle className="text-lg">Previous Evaluations</CardTitle>
-            </CardHeader>
-            <CardContent></CardContent>
-          </Card>
+          <PreviousEvaluation project={project} />
         </div>
       </>
     );

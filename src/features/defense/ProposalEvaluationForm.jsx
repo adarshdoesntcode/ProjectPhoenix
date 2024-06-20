@@ -222,11 +222,11 @@ function ProposalEvaluationForm({ project }) {
   };
 
   return (
-    <Card className="mb-20">
+    <Card>
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
         <CardTitle className="text-xl flex gap-4 items-center justify-between">
           <div>Proposal Evaluation Form</div>
-          <Button onClick={() => setHideMarks(!hideMarks)}>
+          <Button variant="outline" onClick={() => setHideMarks(!hideMarks)}>
             Marks
             {hideMarks ? (
               <Eye className="ml-1 w-4 h-4" />

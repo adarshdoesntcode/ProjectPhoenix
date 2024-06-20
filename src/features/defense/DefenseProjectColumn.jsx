@@ -51,9 +51,11 @@ export const DefenseProjectColumn = [
       const description = row.original.projectDescription;
 
       return (
-        <TableCell className="text-gray-600">
-          <div className="font-semibold">{projectName}</div>
-          {description && <div className="text-xs">{description}</div>}
+        <TableCell className="text-gray-600 max-w-64">
+          <div className="font-semibold line-clamp-1">{projectName}</div>
+          {description && (
+            <div className="text-xs line-clamp-2">{description}</div>
+          )}
         </TableCell>
       );
     },

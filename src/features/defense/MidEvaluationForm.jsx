@@ -191,7 +191,7 @@ function MidEvaluationForm({ project }) {
   };
 
   return (
-    <Card className="mb-20">
+    <Card>
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
         <CardTitle className="text-xl ">Mid Term Evaluation Form</CardTitle>
       </CardHeader>

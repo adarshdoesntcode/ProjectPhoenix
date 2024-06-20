@@ -596,7 +596,7 @@ function StudentProject() {
           <Card>
             <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
               <div>
-                <CardTitle className="text-lg">Defense Feedbaks</CardTitle>
+                <CardTitle className="text-lg">Defense Feedbacks</CardTitle>
                 <CardDescription className="text-xs">
                   Feedbacks provided by the evaluators
                 </CardDescription>

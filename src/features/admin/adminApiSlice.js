@@ -52,7 +52,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
-      invalidatesTags: ["Defenses"],
+      invalidatesTags: ["Defenses", "Events", "Event"],
     }),
     createDefenseData: builder.query({
       query: () => ({

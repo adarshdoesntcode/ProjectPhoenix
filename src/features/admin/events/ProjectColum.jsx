@@ -48,30 +48,32 @@ export const ProjectColumn = [
       const description = row.original.projectDescription;
 
       return (
-        <TableCell className="text-gray-600">
-          <div className="font-semibold">{projectName}</div>
-          {description && <div className="text-xs">{description}</div>}
+        <TableCell className="text-gray-600 max-w-64">
+          <div className="font-semibold line-clamp-1">{projectName}</div>
+          {description && (
+            <div className="text-xs line-clamp-2">{description}</div>
+          )}
         </TableCell>
       );
     },
   },
-  {
-    accessorKey: "status",
+  // {
+  //   accessorKey: "status",
 
-    header: () => (
-      <TableHead className="hidden lg:table-cell"> Status</TableHead>
-    ),
-    cell: ({ row }) => {
-      const status = row.getValue("status");
-      const formatted = getEventStatusByCode(status);
+  //   header: () => (
+  //     <TableHead className="hidden lg:table-cell"> Status</TableHead>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const status = row.getValue("status");
+  //     const formatted = getEventStatusByCode(status);
 
-      return (
-        <TableCell className="hidden lg:table-cell">
-          <Badge variant="secondary">{formatted}</Badge>
-        </TableCell>
-      );
-    },
-  },
+  //     return (
+  //       <TableCell className="hidden lg:table-cell">
+  //         <Badge variant="secondary">{formatted}</Badge>
+  //       </TableCell>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "projectType",
     header: () => <TableHead className="hidden md:table-cell">Type</TableHead>,
