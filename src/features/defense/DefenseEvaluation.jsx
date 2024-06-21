@@ -2,7 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetDefenseProjectQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
-import { ArrowUpRight, ChevronLeft, Loader2 } from "lucide-react";
+import {
+  ArrowUpRight,
+  BadgeCheck,
+  CheckCheck,
+  ChevronLeft,
+  CloudFog,
+  FileCheck,
+  Loader2,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -15,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
-import { format } from "date-fns";
+
 import { getEventTypeByCode, getProgramByCode } from "@/lib/config";
 import DefenseStopwatch from "./DefenseStopwatch";
 import ProposalEvaluationForm from "./ProposalEvaluationForm";
@@ -25,10 +33,7 @@ import PreviousEvaluation from "./PreviousEvaluation";
 
 function checkDefenseId(defenseId, data) {
   const proposalIds =
-    data.data.proposal.defenses?.map((defense) => defense.defense) || [];
-
-  console.log(defenseId);
-  console.log(proposalIds);
+    data.data.proposal?.defenses?.map((defense) => defense.defense) || [];
   const midIds =
     data.data.mid?.defenses?.map((defense) => defense.defense) || [];
   const finalIds =
@@ -45,6 +50,19 @@ function checkDefenseId(defenseId, data) {
   }
 }
 
+function hasEvaluatorEvaluated(subEvent, defenseId, evaluatorId) {
+  for (const defense of subEvent.defenses) {
+    if (defense.defense === defenseId) {
+      for (const evaluator of defense.evaluators) {
+        if (evaluator.evaluator === evaluatorId) {
+          return evaluator.hasEvaluated;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 function DefenseEvaluation() {
   const user = useSelector(selectCurrentUser);
   const { id } = useParams();
@@ -53,14 +71,26 @@ function DefenseEvaluation() {
 
   const { data: project, isLoading, isSuccess } = useGetDefenseProjectQuery(id);
 
-  console.log(project);
-
-  let defenseType, content, teamContent, projectContent;
+  let defenseType,
+    content,
+    teamContent,
+    projectContent,
+    hasEvaluated = false;
 
   if (project) {
     defenseType = checkDefenseId(user.currentDefense, project);
+
+    const defenseTypeString =
+      defenseType === 0 ? "proposal" : defenseType === 1 ? "mid" : "final";
+
+    hasEvaluated = hasEvaluatorEvaluated(
+      project.data[defenseTypeString],
+      user.currentDefense,
+      user._id
+    );
   }
 
+  console.log(project);
   if (isLoading) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">
@@ -222,7 +252,7 @@ function DefenseEvaluation() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="font-semibold text-sm sm:text-xl  px-4 "
+                    className="font-semibold text-sm  md:text-lg px-4 "
                   >
                     {project.data.projectCode}
                   </Badge>
@@ -241,20 +271,31 @@ function DefenseEvaluation() {
               </Card>
             </div>
 
-            {defenseType === 0 && (
+            {defenseType === 0 && !hasEvaluated && (
               <ProposalEvaluationForm
                 project={project}
                 defenseType={defenseType}
               />
             )}
-            {defenseType === 1 && (
+            {defenseType === 1 && !hasEvaluated && (
               <MidEvaluationForm project={project} defenseType={defenseType} />
             )}
-            {defenseType === 2 && (
+            {defenseType === 2 && !hasEvaluated && (
               <FinalEvaluationForm
                 project={project}
                 defenseType={defenseType}
               />
+            )}
+
+            {hasEvaluated && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center">
+                    Successfully Graded
+                    <FileCheck className="h-8 w-8" />
+                  </CardTitle>
+                </CardHeader>
+              </Card>
             )}
           </div>
 

@@ -99,7 +99,7 @@ const DefenseLayout = () => {
               </BreadcrumbList>
             </Breadcrumb>
             <div className=" ml-auto  flex md:grow-0">
-              <span className="text-slate-600 font-semibold text-sm">
+              <span className="text-slate-600 font-base leading-6 text-sm">
                 {getGreeting()}, {user.fullname}
               </span>
             </div>

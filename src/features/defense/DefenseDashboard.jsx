@@ -19,6 +19,44 @@ import { useState } from "react";
 
 import { DataTable } from "./DefenseProjectDataTable";
 import { DefenseProjectColumn } from "./DefenseProjectColumn";
+import { Separator } from "@/components/ui/separator";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+const seprateProjects = (
+  projects,
+  specificDefenseId,
+  specificEvaluatorId,
+  gradedProjects,
+  notGradedProjects,
+  defenseType
+) => {
+  projects.forEach((project) => {
+    let hasEvaluated = false;
+
+    project[defenseType].defenses.forEach((defense) => {
+      if (defense.defense === specificDefenseId) {
+        defense.evaluators.forEach((evaluator) => {
+          if (
+            evaluator.evaluator === specificEvaluatorId &&
+            evaluator.hasEvaluated
+          ) {
+            hasEvaluated = true;
+          }
+        });
+      }
+    });
+
+    if (hasEvaluated) {
+      gradedProjects.push(project);
+    } else {
+      notGradedProjects.push(project);
+    }
+  });
+};
 
 const findRoomByEvaluatorId = (data, evaluatorId) => {
   if (!data || !data.rooms) {
@@ -57,11 +95,23 @@ function DefenseDashboard() {
     isSuccess,
   } = useGetDefenseQuery(user.currentDefense);
 
-  let content, room;
+  let content,
+    room,
+    gradedProjects = [],
+    notGradedProjects = [];
   if (defense) {
     room = findRoomByEvaluatorId(defense.data, user._id);
+    seprateProjects(
+      room.projects,
+      defense.data._id,
+      user._id,
+      gradedProjects,
+      notGradedProjects,
+      defense.data.defenseType
+    );
   }
 
+  console.log(room);
   if (isLoading) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">
@@ -89,34 +139,109 @@ function DefenseDashboard() {
         )}
 
         {showProjects && (
-          <Tabs defaultValue="notgraded" className="mt-4">
-            <div className="flex items-center">
-              <TabsList>
-                <TabsTrigger value="notgraded">Not Graded</TabsTrigger>
-                <TabsTrigger value="graded">Graded</TabsTrigger>
-              </TabsList>
-              <div className="ml-auto flex items-center gap-2"></div>
-            </div>
-            <TabsContent value="notgraded">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-4">
-                    {room.room}{" "}
-                    <Badge>{defense.data.defenseType.toUpperCase()}</Badge>
-                  </CardTitle>
-                  <CardDescription>
-                    Grade the following projects assigned to this room
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DataTable
-                    columns={DefenseProjectColumn}
-                    data={room.projects}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+          <>
+            <Card className="max-w-[450px] mt-4">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-4">
+                  {room.room}
+                  <Badge>{defense.data.defenseType.toUpperCase()}</Badge>
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Evalutors of the current defense room
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-2">
+                {room.evaluators.map((evaluator) => {
+                  return (
+                    <div
+                      key={evaluator._id}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="text-sm font-semibold text-slate-500">
+                        {user._id === evaluator._id
+                          ? "Evaluator (You)"
+                          : "Co Evaluator"}
+                      </div>
+
+                      <HoverCard openDelay={50} closeDelay={50}>
+                        <HoverCardTrigger>
+                          <Badge
+                            variant="outline"
+                            className="flex items-center gap-2 cursor-pointer pr-1 py-1"
+                          >
+                            <div>{evaluator.fullname}</div>
+                            <Badge variant="secondary">
+                              {evaluator.evaluatorType === "88"
+                                ? "Internal"
+                                : "External"}
+                            </Badge>
+                          </Badge>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="top">
+                          <div className="font-semibold text-base">
+                            {evaluator.fullname}
+                          </div>
+                          <div className="text-sm text-slate-500">
+                            {evaluator.designation}, {evaluator.institution}
+                          </div>
+
+                          <div className="text-sm text-slate-500">
+                            {evaluator.contact}
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+            <Tabs defaultValue="notgraded" className="mt-4">
+              <div className="flex items-center">
+                <TabsList>
+                  <TabsTrigger value="notgraded">Not Graded</TabsTrigger>
+                  <TabsTrigger value="graded">Graded</TabsTrigger>
+                </TabsList>
+                <div className="ml-auto flex items-center gap-2"></div>
+              </div>
+              <TabsContent value="notgraded">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-4">
+                      Not Graded Project
+                    </CardTitle>
+                    <CardDescription>
+                      Remaining projects to be graded by you in this defense
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <DataTable
+                      columns={DefenseProjectColumn}
+                      data={notGradedProjects}
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="graded">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-4">
+                      Graded Projects
+                      <Badge>{defense.data.defenseType.toUpperCase()}</Badge>
+                    </CardTitle>
+                    <CardDescription>
+                      Graded projects by you in this defense
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <DataTable
+                      columns={DefenseProjectColumn}
+                      data={gradedProjects}
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </>
         )}
       </>
     );
