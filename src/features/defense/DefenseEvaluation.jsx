@@ -50,8 +50,8 @@ function checkDefenseId(defenseId, data) {
   }
 }
 
-function hasEvaluatorEvaluated(subEvent, defenseId, evaluatorId) {
-  for (const defense of subEvent.defenses) {
+function hasEvaluatorEvaluated(defenses, defenseId, evaluatorId) {
+  for (const defense of defenses) {
     if (defense.defense === defenseId) {
       for (const evaluator of defense.evaluators) {
         if (evaluator.evaluator === evaluatorId) {
@@ -84,7 +84,7 @@ function DefenseEvaluation() {
       defenseType === 0 ? "proposal" : defenseType === 1 ? "mid" : "final";
 
     hasEvaluated = hasEvaluatorEvaluated(
-      project.data[defenseTypeString],
+      project.data[defenseTypeString].defenses || [],
       user.currentDefense,
       user._id
     );
