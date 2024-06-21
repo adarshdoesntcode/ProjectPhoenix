@@ -77,6 +77,8 @@ function DefenseEvaluation() {
     projectContent,
     hasEvaluated = false;
 
+  console.log(project);
+
   if (project) {
     defenseType = checkDefenseId(user.currentDefense, project);
 

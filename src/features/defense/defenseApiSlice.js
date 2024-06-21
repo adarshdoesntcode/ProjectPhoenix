@@ -7,7 +7,7 @@ export const defenseApiSlice = apiSlice.injectEndpoints({
         url: `/evaluator/defense/project/${id}`,
         method: "GET",
       }),
-      providesTags: ["Project"],
+      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
     defenseEvaluation: builder.mutation({
       query: (credentials) => ({
@@ -15,14 +15,17 @@ export const defenseApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
-      invalidatesTags: ["Project", "Defense"],
+      invalidatesTags: (result, error, credentials) => [
+        { type: "Project", id: credentials.projectId },
+        { type: "Defense", id: credentials.defenseId },
+      ],
     }),
     getDefense: builder.query({
       query: (id) => ({
         url: `/evaluator/defense/${id}`,
         method: "GET",
       }),
-      providesTags: ["Defense"],
+      providesTags: (result, error, id) => [{ type: "Defense", id }],
     }),
   }),
 });
