@@ -39,6 +39,13 @@ import { useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import { Loader2 } from "lucide-react";
 import { getOrdinal } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function hasEmptyFields(obj) {
   for (const key in obj) {
@@ -75,10 +82,9 @@ const projectEvaluationConfig = [
 ];
 
 const judgementConfig = {
-  0: "Accepted",
-  1: "Accepted Conditionally",
-  2: "Re-Defense",
-  3: "Rejected",
+  0: "Progress Satisfactory",
+  1: "Progress Seen",
+  2: "Progress Not Satisfactory",
   "-1": "Absent",
 };
 
@@ -86,6 +92,7 @@ const projectEvaluationInitalState = {
   feedbackIncorporated: "",
   workProgress: "",
   documentation: "",
+  judgement: "",
   feedback: "<p>No Feedback</p>",
   outstanding: false,
 };
@@ -94,7 +101,8 @@ const projectAbsentInitalState = {
   feedbackIncorporated: "0",
   workProgress: "0",
   documentation: "0",
-  feedback: "<p>Absent</p>",
+  judgement: "-1",
+  feedback: "<p>No Feedback</p>",
   outstanding: false,
 };
 
@@ -362,6 +370,33 @@ function MidEvaluationForm({ project, defenseType }) {
                     </TableBody>
                   </Table>
                 </div>
+                <Separator className="my-6" />
+                <div className="max-w-2xl mx-auto flex items-center justify-between gap-20">
+                  <div className=" font-semibold">Judgement</div>
+
+                  <Select
+                    value={projectEvaluation.judgement}
+                    onValueChange={(value) =>
+                      setProjectEvaluation((prev) => {
+                        return {
+                          ...prev,
+                          judgement: value,
+                        };
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">Progress Satisfactory</SelectItem>
+                      <SelectItem value="1">Progress Seen</SelectItem>
+                      <SelectItem value="2">
+                        Progress Not Satisfactory
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 <div className="flex items-center justify-start gap-3 mt-6">
                   <Checkbox
@@ -477,6 +512,17 @@ function MidEvaluationForm({ project, defenseType }) {
                         </div>
                       );
                     })}
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex justify-between">
+                    <div className="font-semibold text-slate-500">
+                      Judgement
+                    </div>
+                    <div className="font-semibold">
+                      {projectPresent
+                        ? judgementConfig[projectEvaluation.judgement]
+                        : judgementConfig[projectAbsentInitalState.judgement]}
+                    </div>
                   </div>
 
                   <Separator className="my-2" />

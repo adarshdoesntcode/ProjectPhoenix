@@ -77,10 +77,9 @@ function DefenseEvaluation() {
     projectContent,
     hasEvaluated = false;
 
-  console.log(project);
-
   if (project) {
     defenseType = checkDefenseId(user.currentDefense, project);
+    // defenseType = 1;
 
     const defenseTypeString =
       defenseType === 0 ? "proposal" : defenseType === 1 ? "mid" : "final";

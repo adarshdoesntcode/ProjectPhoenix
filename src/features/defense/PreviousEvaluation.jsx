@@ -5,8 +5,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BookCheck } from "lucide-react";
+import { ArrowUpRight, BookCheck, Calendar, Clock, Timer } from "lucide-react";
 import { Timeline } from "antd";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { format } from "date-fns";
+
+const proposalJudgementConfig = {
+  0: "Accepted",
+  1: "Accepted Conditionally",
+  2: "Re-Defense",
+  3: "Rejected",
+  "-1": "Absent",
+};
+
+const midJudgementConfig = {
+  0: "Progress Satisfactory",
+  1: "Progress Seen",
+  2: "Progress Not Satisfactory",
+  "-1": "Absent",
+};
+
+const finalJudgementConfig = {
+  0: "Accepted",
+  1: "Accepted Conditionally",
+  2: "Re-Demo",
+  3: "Re-Defend",
+  "-1": "Absent",
+};
 
 const groupDefenses = (data) => {
   const groupedByDefense = data.reduce((acc, evaluation) => {
@@ -38,8 +70,203 @@ function PreviousEvaluation({ project }) {
   const mid = groupDefenses(midEvaluations);
   const final = groupDefenses(finalEvaluations);
 
-  console.log(proposal);
+  const proposalItems = proposal.map((proposalEval, index) => {
+    const judgement = proposalEval[0].projectEvaluation.judgement;
+    let color = judgement === "0" || judgement === "1" ? "black" : "lightgrey";
 
+    return {
+      color: color,
+      children: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Card key={index} className="cursor-pointer">
+              <CardContent className="p-2">
+                <div className="group flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <div className="font-semibold text-sm text-slate-700">
+                      {proposalJudgementConfig[judgement]}
+                    </div>
+                    <div className="flex items-center text-xs">
+                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
+                      {format(proposalEval[0].createdAt, "PPP")}
+                    </div>
+                  </div>
+                  <div>
+                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Comments and Feedback</DialogTitle>
+            </DialogHeader>
+
+            <div className="text-slate-700 pt-4">
+              <>
+                {proposalEval.map((evaluation) => {
+                  return (
+                    <div
+                      key={evaluation._id}
+                      className="flex gap-2 flex-col mb-4"
+                    >
+                      <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
+                        {evaluation.evaluator.fullname}
+
+                        <span>
+                          {evaluation.evaluator.designation},{" "}
+                          {evaluation.evaluator.institution}
+                        </span>
+                      </div>
+                      <div
+                        className="p-4 border text-sm rounded-md text-slate-600"
+                        dangerouslySetInnerHTML={{
+                          __html: evaluation.projectEvaluation.feedback,
+                        }}
+                      ></div>
+                    </div>
+                  );
+                })}
+              </>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ),
+    };
+  });
+
+  const midItems = mid.map((midEval, index) => {
+    const judgement = midEval[0].projectEvaluation.judgement;
+    let color = judgement === "0" || judgement === "1" ? "black" : "lightgrey";
+
+    return {
+      color: color,
+      children: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Card key={index} className="cursor-pointer">
+              <CardContent className="p-2">
+                <div className="group flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <div className="font-semibold text-sm text-slate-700">
+                      {midJudgementConfig[judgement]}
+                    </div>
+                    <div className="flex items-center text-xs">
+                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
+                      {format(midEval[0].createdAt, "PPP")}
+                    </div>
+                  </div>
+                  <div>
+                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Comments and Feedback</DialogTitle>
+            </DialogHeader>
+
+            <div className="text-slate-700 pt-4">
+              <>
+                {midEval.map((evaluation) => {
+                  return (
+                    <div
+                      key={evaluation._id}
+                      className="flex gap-2 flex-col mb-4"
+                    >
+                      <div className="flex items-center justify-between text-sm text-slate-700 font-semibold">
+                        {evaluation.evaluator.fullname}
+
+                        <span>
+                          {evaluation.evaluator.designation},{" "}
+                          {evaluation.evaluator.institution}
+                        </span>
+                      </div>
+                      <div
+                        className="p-4 border rounded-md text-sm text-slate-600"
+                        dangerouslySetInnerHTML={{
+                          __html: evaluation.projectEvaluation.feedback,
+                        }}
+                      ></div>
+                    </div>
+                  );
+                })}
+              </>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ),
+    };
+  });
+
+  const finalItems = final.map((finalEval, index) => {
+    const judgement = finalEval[0].projectEvaluation.judgement;
+    let color = judgement === "0" || judgement === "1" ? "black" : "lightgrey";
+
+    return {
+      color: color,
+      children: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Card key={index} className="cursor-pointer">
+              <CardContent className="p-2">
+                <div className="group flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <div className="font-semibold text-sm text-slate-700">
+                      {finalJudgementConfig[judgement]}
+                    </div>
+                    <div className="flex items-center text-xs">
+                      <Calendar className="text-slate-500 w-4 h-4 mr-1" />
+                      {format(finalEval[0].createdAt, "PPP")}
+                    </div>
+                  </div>
+                  <div>
+                    <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Comments and Feedback</DialogTitle>
+            </DialogHeader>
+
+            <div className="text-slate-700 pt-4">
+              <>
+                {finalEval.map((evaluation) => {
+                  return (
+                    <div
+                      key={evaluation._id}
+                      className="flex gap-1 flex-col mb-4"
+                    >
+                      <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
+                        {evaluation.evaluator.fullname}
+
+                        <span>
+                          {evaluation.evaluator.designation},{" "}
+                          {evaluation.evaluator.institution}
+                        </span>
+                      </div>
+                      <div
+                        className="p-4 border rounded-md text-sm text-slate-600 "
+                        dangerouslySetInnerHTML={{
+                          __html: evaluation.projectEvaluation.feedback,
+                        }}
+                      ></div>
+                    </div>
+                  );
+                })}
+              </>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ),
+    };
+  });
   return (
     <Card className="xl:sticky top-32 grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-8 xl:col-span-4">
       <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
@@ -55,15 +282,16 @@ function PreviousEvaluation({ project }) {
       <CardContent>
         <div>
           <div className="text-slate-700 font-semibold ">
-            Porposal Evaluations
+            Proposal Evaluations
           </div>
           <div>
-            <Timeline
-              className="ml-4 my-4"
-              items={proposal.map((proposalEval, index) => (
-                <div key={index}>{proposalEval}</div>
-              ))}
-            />
+            {proposal.length > 0 ? (
+              <Timeline className="ml-4 my-4" items={proposalItems} />
+            ) : (
+              <div className="flex text-xs items-center justify-center p-4">
+                No Evaluations
+              </div>
+            )}
           </div>
         </div>
         {project.data.event.mid.defense && (
@@ -72,21 +300,13 @@ function PreviousEvaluation({ project }) {
               Mid Term Evaluations
             </div>
             <div>
-              <Timeline
-                className="ml-4 my-4"
-                items={[
-                  {
-                    color: "red",
-                    children: (
-                      <>
-                        <p>Solve initial network problems 1</p>
-                        <p>Solve initial network problems 2</p>
-                        <p>Solve initial network problems 3 2015-09-01</p>
-                      </>
-                    ),
-                  },
-                ]}
-              />
+              {mid.length > 0 ? (
+                <Timeline className="ml-4 my-4" items={midItems} />
+              ) : (
+                <div className="flex text-xs items-center justify-center p-4">
+                  No Evaluations
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -94,21 +314,13 @@ function PreviousEvaluation({ project }) {
         <div>
           <div className="text-slate-700 font-semibold ">Final Evaluations</div>
           <div>
-            <Timeline
-              className="ml-4 my-4"
-              items={[
-                {
-                  color: "red",
-                  children: (
-                    <>
-                      <p>Solve initial network problems 1</p>
-                      <p>Solve initial network problems 2</p>
-                      <p>Solve initial network problems 3 2015-09-01</p>
-                    </>
-                  ),
-                },
-              ]}
-            />
+            {final.length > 0 ? (
+              <Timeline className="ml-4 my-4" items={finalItems} />
+            ) : (
+              <div className="flex text-xs items-center justify-center p-4">
+                No Evaluations
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
