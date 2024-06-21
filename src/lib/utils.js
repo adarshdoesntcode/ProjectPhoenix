@@ -145,3 +145,17 @@ export function numberOfDevelopingProjects(objects, key, status) {
   }, 0);
   return count;
 }
+
+export function getOrdinal(n) {
+  let ord = "th";
+
+  if (n % 10 == 1 && n % 100 != 11) {
+    ord = `${n}st`;
+  } else if (n % 10 == 2 && n % 100 != 12) {
+    ord = `${n}nd`;
+  } else if (n % 10 == 3 && n % 100 != 13) {
+    ord = `${n}rd`;
+  }
+
+  return ord;
+}

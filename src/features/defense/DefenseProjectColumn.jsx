@@ -17,10 +17,12 @@ import { Link } from "react-router-dom";
 export const DefenseProjectColumn = [
   {
     accessorKey: "SN",
-    header: () => <TableHead>SN</TableHead>,
+    header: () => <TableHead className="hidden md:table-cell">SN</TableHead>,
     cell: ({ row }) => {
       return (
-        <TableCell className="text-gray-700">{Number(row.id) + 1}</TableCell>
+        <TableCell className="text-gray-700 hidden md:table-cell">
+          {Number(row.id) + 1}
+        </TableCell>
       );
     },
   },
@@ -75,15 +77,6 @@ export const DefenseProjectColumn = [
     },
   },
 
-  {
-    accessorKey: "attemptNo",
-    header: () => (
-      <TableHead className="hidden lg:table-cell">Attempt</TableHead>
-    ),
-    cell: ({ row }) => {
-      return <TableCell className="hidden  lg:table-cell">1st</TableCell>;
-    },
-  },
   {
     accessorKey: "members",
     header: () => (

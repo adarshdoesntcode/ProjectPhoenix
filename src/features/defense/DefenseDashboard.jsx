@@ -111,7 +111,6 @@ function DefenseDashboard() {
     );
   }
 
-  console.log(room);
   if (isLoading) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">

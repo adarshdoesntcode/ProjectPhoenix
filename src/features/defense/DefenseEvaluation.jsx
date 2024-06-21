@@ -90,7 +90,6 @@ function DefenseEvaluation() {
     );
   }
 
-  console.log(project);
   if (isLoading) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">

@@ -43,6 +43,7 @@ import {
 import { useDefenseEvaluationMutation } from "./defenseApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
+import { getOrdinal } from "@/lib/utils";
 
 function hasEmptyFields(obj) {
   for (const key in obj) {
@@ -128,7 +129,7 @@ const projectAbsentInitalState = {
   outstanding: false,
 };
 
-function ProposalEvaluationForm({ project }) {
+function ProposalEvaluationForm({ project, defenseType }) {
   const user = useSelector(selectCurrentUser);
   const [defenseEvaluation, { isLoading }] = useDefenseEvaluationMutation();
   const navigate = useNavigate();
@@ -149,6 +150,12 @@ function ProposalEvaluationForm({ project }) {
       absent: true,
     };
   });
+
+  const defenseTypeString =
+    defenseType === "0" ? "prospoal" : defenseType === "1" ? "mid" : "final";
+  const evaluations = project.data[defenseTypeString].evaluations;
+  const attempt =
+    evaluations.filter((item) => item.evaluationType === "proposal").length + 1;
 
   const [studentEvaluation, setStudentEvaluation] = useState(
     studentEvaluationInitalState
@@ -225,7 +232,12 @@ function ProposalEvaluationForm({ project }) {
     <Card>
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
         <CardTitle className="text-xl flex gap-4 items-center justify-between">
-          <div>Proposal Evaluation Form</div>
+          <div>
+            <div>Proposal Defense</div>
+            <div className="text-sm text-slate-600 font-normal">
+              {getOrdinal(attempt)} Attempt
+            </div>
+          </div>
           <Button variant="outline" onClick={() => setHideMarks(!hideMarks)}>
             Marks
             {hideMarks ? (

@@ -38,6 +38,7 @@ import { useDefenseEvaluationMutation } from "./defenseApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 import { Loader2 } from "lucide-react";
+import { getOrdinal } from "@/lib/utils";
 
 function hasEmptyFields(obj) {
   for (const key in obj) {
@@ -97,7 +98,7 @@ const projectAbsentInitalState = {
   outstanding: false,
 };
 
-function MidEvaluationForm({ project }) {
+function MidEvaluationForm({ project, defenseType }) {
   const user = useSelector(selectCurrentUser);
   const [defenseEvaluation, { isLoading }] = useDefenseEvaluationMutation();
   const navigate = useNavigate();
@@ -118,6 +119,12 @@ function MidEvaluationForm({ project }) {
       absent: true,
     };
   });
+
+  const defenseTypeString =
+    defenseType === "0" ? "prospoal" : defenseType === "1" ? "mid" : "final";
+  const evaluations = project.data[defenseTypeString].evaluations;
+  const attempt =
+    evaluations.filter((item) => item.evaluationType === "proposal").length + 1;
 
   const [studentEvaluation, setStudentEvaluation] = useState(
     studentEvaluationInitalState
@@ -193,7 +200,14 @@ function MidEvaluationForm({ project }) {
   return (
     <Card>
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
-        <CardTitle className="text-xl ">Mid Term Evaluation Form</CardTitle>
+        <CardTitle className="text-xl ">
+          <div>
+            <div>Mid Term Defense</div>
+            <div className="text-sm text-slate-600 font-normal">
+              {getOrdinal(attempt)} Attempt
+            </div>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="pt-6 mb-4">
