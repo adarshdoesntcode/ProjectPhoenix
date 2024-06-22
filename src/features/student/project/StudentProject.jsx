@@ -70,6 +70,7 @@ function StudentProject() {
 
   let content;
 
+  console.log(project);
   if (user.isAssociated === false) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">

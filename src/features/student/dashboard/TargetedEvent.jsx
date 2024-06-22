@@ -79,9 +79,12 @@ function TargetedEvent() {
     data: targetedEvent,
     isLoading,
     isSuccess,
-  } = useGetTargetedEventQuery();
+  } = useGetTargetedEventQuery(undefined, {
+    forceRefetch: true,
+  });
   const { data: selectionStudents } = useGetSelectionStudentsQuery(undefined, {
     skip: user.isAssociated,
+    forceRefetch: true,
   });
   const [createProject] = useCreateProjectMutation();
   const {

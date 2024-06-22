@@ -69,7 +69,16 @@ function DefenseEvaluation() {
 
   const navigate = useNavigate();
 
-  const { data: project, isLoading, isSuccess } = useGetDefenseProjectQuery(id);
+  console.log(id);
+
+  const {
+    data: project,
+    isLoading,
+    isSuccess,
+  } = useGetDefenseProjectQuery(id, {
+    forceRefetch: true,
+    refetchOnMountOrArgChange: 1,
+  });
 
   let defenseType,
     content,
@@ -90,6 +99,8 @@ function DefenseEvaluation() {
       user._id
     );
   }
+
+  console.log(hasEvaluated);
 
   if (isLoading) {
     content = (
