@@ -923,7 +923,7 @@ function AdminNewEvent() {
                       </CardContent>
                     </Card>
                     <DialogFooter>
-                      {isSubmitting ? (
+                      {isSubmitting || isLoading ? (
                         <Button variant="secondary" disabled>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                           Submitting..

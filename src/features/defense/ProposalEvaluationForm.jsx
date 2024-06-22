@@ -151,11 +151,21 @@ function ProposalEvaluationForm({ project, defenseType }) {
     };
   });
 
-  const defenseTypeString =
-    defenseType === "0" ? "prospoal" : defenseType === "1" ? "mid" : "final";
+  let defenseTypeString = "";
+
+  if (defenseType === 0) {
+    defenseTypeString = "proposal";
+  } else if (defenseType === 1) {
+    defenseTypeString = "mid";
+  } else {
+    defenseTypeString = "final";
+  }
+
   const evaluations = project.data[defenseTypeString].evaluations;
+
   const attempt =
     evaluations.filter((item) => item.evaluationType === "proposal").length + 1;
+  console.log("🚀 ~ ProposalEvaluationForm ~ attempt:", attempt);
 
   const [studentEvaluation, setStudentEvaluation] = useState(
     studentEvaluationInitalState
