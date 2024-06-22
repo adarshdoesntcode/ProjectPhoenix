@@ -93,7 +93,6 @@ function AdminNewEvent() {
   } = useForm();
 
   const eventType = watch("eventType");
-  console.log("🚀 ~ AdminNewEvent ~ eventType:", eventType);
 
   const triggerSubmit = () => {
     if (subEvent.mid.defense) {

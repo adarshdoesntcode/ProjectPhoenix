@@ -57,23 +57,23 @@ export const ProjectColumn = [
       );
     },
   },
-  // {
-  //   accessorKey: "status",
+  {
+    accessorKey: "status",
 
-  //   header: () => (
-  //     <TableHead className="hidden lg:table-cell"> Status</TableHead>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const status = row.getValue("status");
-  //     const formatted = getEventStatusByCode(status);
+    header: () => (
+      <TableHead className="hidden lg:table-cell"> Status</TableHead>
+    ),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      const formatted = getEventStatusByCode(status);
 
-  //     return (
-  //       <TableCell className="hidden lg:table-cell">
-  //         <Badge variant="secondary">{formatted}</Badge>
-  //       </TableCell>
-  //     );
-  //   },
-  // },
+      return (
+        <TableCell className="hidden lg:table-cell">
+          <Badge variant="secondary">{formatted}</Badge>
+        </TableCell>
+      );
+    },
+  },
   {
     accessorKey: "projectType",
     header: () => <TableHead className="hidden md:table-cell">Type</TableHead>,
@@ -167,31 +167,31 @@ export const ProjectColumn = [
       );
     },
   },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <TableHead
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="cursor-pointer hidden xl:table-cell"
-      >
-        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-          Created On
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      </TableHead>
-    ),
+  // {
+  //   accessorKey: "createdAt",
+  //   header: ({ column }) => (
+  //     <TableHead
+  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       className="cursor-pointer hidden xl:table-cell"
+  //     >
+  //       <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+  //         Created On
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     </TableHead>
+  //   ),
 
-    cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt");
-      const formatted = format(createdAt, "PPP");
+  //   cell: ({ row }) => {
+  //     const createdAt = row.getValue("createdAt");
+  //     const formatted = format(createdAt, "PPP");
 
-      return (
-        <TableCell className="text-gray-500 hidden xl:table-cell">
-          {formatted}
-        </TableCell>
-      );
-    },
-  },
+  //     return (
+  //       <TableCell className="text-gray-500 hidden xl:table-cell">
+  //         {formatted}
+  //       </TableCell>
+  //     );
+  //   },
+  // },
 
   {
     id: "actions",

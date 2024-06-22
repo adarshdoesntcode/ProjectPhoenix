@@ -45,6 +45,7 @@ import { daysFromToday, formatDays } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { DefenseColumn } from "./DefenseColumn";
 import { DefenseDataTable } from "./DefenseDataTable";
+import AdminExtendEvent from "./AdminExtendEvent";
 
 function getTotalNumberOfAssociatedStudents(event) {
   if (event.data && Array.isArray(event.data.projects)) {
@@ -202,14 +203,7 @@ function AdminEventDetails() {
                 </h1>
               </div>
               <div className="ml-auto flex items-center gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className=" h-10 gap-1 text-sm"
-                >
-                  <Clock className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only">Extend</span>
-                </Button>
+                <AdminExtendEvent event={event} />
 
                 <Button size="sm" className="h-10 gap-1 text-sm">
                   <FileCheck className="h-3.5 w-3.5" />

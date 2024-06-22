@@ -24,6 +24,14 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Events"],
     }),
+    extendDeadline: builder.mutation({
+      query: (credentials) => ({
+        url: "/event/event/extendDeadline",
+        method: "PATCH",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["Event"],
+    }),
     createEvaluator: builder.mutation({
       query: (credentials) => ({
         url: "/event/evaluator/create",
@@ -72,4 +80,5 @@ export const {
   useGetAllDefensesQuery,
   useCreateDefenseDataQuery,
   useCreateDefenseMutation,
+  useExtendDeadlineMutation,
 } = adminApiSlice;
