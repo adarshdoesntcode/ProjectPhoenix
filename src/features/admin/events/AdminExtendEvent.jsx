@@ -47,6 +47,8 @@ function AdminExtendEvent({ event }) {
     reportDeadline: undefined,
     defenseDate: undefined,
   });
+  const [modal, setModal] = useState(false);
+
   const [extendDeadline, { isLoading }] = useExtendDeadlineMutation();
 
   const defenseType = watch("defenseType");
@@ -78,6 +80,8 @@ function AdminExtendEvent({ event }) {
           title: "Deadline Extended",
           description: "New phase started",
         });
+
+        setModal(false);
       }
     } catch (error) {
       toast({
@@ -89,7 +93,7 @@ function AdminExtendEvent({ event }) {
   }
 
   return (
-    <Dialog>
+    <Dialog open={modal} onOpenChange={setModal}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline" className=" h-10 gap-1 text-sm">
           <Clock className="h-3.5 w-3.5" />
