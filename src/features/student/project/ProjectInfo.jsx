@@ -7,7 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { BookmarkCheck, ChevronLeft, Loader2 } from "lucide-react";
+import {
+  BookmarkCheck,
+  ChevronLeft,
+  Loader2,
+  MessageSquareCode,
+} from "lucide-react";
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -161,9 +166,9 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
             </div>
           </div>
           <div className="flex gap-4">
-            <Button size="sm" className="text-xs">
-              Log Progress
-              <BookmarkCheck className="h-4 w-4 ml-1" />
+            <Button size="sm" className="flex items-center gap-1">
+              <span className="sr-only sm:not-sr-only">Progress</span>
+              <MessageSquareCode className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>

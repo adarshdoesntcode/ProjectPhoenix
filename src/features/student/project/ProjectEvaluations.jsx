@@ -62,7 +62,7 @@ const groupDefenses = (data) => {
   return groupedAndSortedEvaluations;
 };
 
-function PreviousEvaluation({ project }) {
+function ProjectEvaluations({ project }) {
   const proposalEvaluations = project.data.proposal.evaluations || [];
   const midEvaluations = project.data.mid?.evaluations || [];
   const finalEvaluations = project.data.final.evaluations || [];
@@ -269,18 +269,18 @@ function PreviousEvaluation({ project }) {
     };
   });
   return (
-    <Card className="xl:sticky top-32 grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-8 xl:col-span-4">
+    <Card>
       <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
         <div>
-          <CardTitle className="text-lg">Previous Evaluations</CardTitle>
+          <CardTitle className="text-lg">Defense Evaluations</CardTitle>
           <CardDescription className="text-xs">
-            Project evaluations from the previous defenses
+            Evaluation provided by the evaluators
           </CardDescription>
         </div>
 
         <BookCheck className="text-slate-500" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-4">
         <div>
           <div className="text-slate-700 font-semibold ">Proposal</div>
           <Separator className="my-2 mb-6" />
@@ -315,7 +315,6 @@ function PreviousEvaluation({ project }) {
         <div>
           <div className="text-slate-700 font-semibold ">Final</div>
           <Separator className="my-2 mb-6" />
-
           <div>
             {final.length > 0 ? (
               <Timeline className="ml-4 my-4" items={finalItems} />
@@ -331,4 +330,4 @@ function PreviousEvaluation({ project }) {
   );
 }
 
-export default PreviousEvaluation;
+export default ProjectEvaluations;

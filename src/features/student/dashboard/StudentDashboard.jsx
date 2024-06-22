@@ -33,7 +33,7 @@ function StudentDashboard() {
                 Notices from the administrator
               </CardDescription>
             </div>
-            <Button size="sm" className="ml-auto text-xs">
+            <Button size="sm" variant="outline" className="ml-auto text-xs">
               All
               <ArrowUpRight className="ml-1 h-4 w-4" />
             </Button>

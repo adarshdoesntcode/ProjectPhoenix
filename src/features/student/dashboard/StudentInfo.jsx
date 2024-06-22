@@ -14,14 +14,16 @@ import {
 
 import { selectCurrentUser } from "@/features/auth/authSlice";
 
-import { Contact, FolderGit2, Loader2 } from "lucide-react";
+import { ArrowUpRight, Contact, FolderGit2, Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useGetProjectQuery } from "../studentApiSlice";
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getEventTypeByCode, getProgramByCode } from "@/lib/config";
+import { ROLES_LIST, getEventTypeByCode, getProgramByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 function StudentInfo() {
   const user = useSelector(selectCurrentUser);
@@ -109,7 +111,9 @@ function StudentInfo() {
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
-          <Badge>{getEventTypeByCode(project.data.projectType)}</Badge>
+          <Badge variant={"secondary"}>
+            {getEventTypeByCode(project.data.projectType)}
+          </Badge>
         </div>
         <Separator className="mb-3" />
 
@@ -199,7 +203,18 @@ function StudentInfo() {
               Details of you current project
             </CardDescription>
           </div>
-          <FolderGit2 className="text-slate-500" />
+          <div>
+            {user.isAssociated ? (
+              <Button size="sm" asChild>
+                <Link to={`/${ROLES_LIST.student}/project`}>
+                  View
+                  <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            ) : (
+              <FolderGit2 className="text-slate-500" />
+            )}
+          </div>
         </CardHeader>
         <CardContent className="mt-4">{projectContent}</CardContent>
       </Card>

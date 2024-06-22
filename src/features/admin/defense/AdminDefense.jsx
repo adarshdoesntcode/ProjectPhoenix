@@ -130,9 +130,7 @@ function AdminDefense() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{defenses.data.length}</div>
-                <p className="text-xs text-gray-500 text-right">
-                  defenses have been hosted
-                </p>
+                <p className="text-xs text-gray-500 text-right">all defenses</p>
               </CardContent>
             </Card>
             <Card>
@@ -147,7 +145,7 @@ function AdminDefense() {
                   {numberOfActivedefenses}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  since last year
+                  running defenses
                 </p>
               </CardContent>
             </Card>
@@ -164,7 +162,7 @@ function AdminDefense() {
                   {numberOfCompletedefenses}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  from last year
+                  successful defenses
                 </p>
               </CardContent>
             </Card>
@@ -181,7 +179,7 @@ function AdminDefense() {
                   {numberofArchivedDefenses}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  from last year
+                  terminated defenses
                 </p>
               </CardContent>
             </Card>

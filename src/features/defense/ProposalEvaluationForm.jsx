@@ -214,8 +214,8 @@ function ProposalEvaluationForm({ project, defenseType }) {
       }
       if (!res.error) {
         toast({
-          title: "Project Evaluation !",
-          description: "Successful",
+          title: "Project Evaluation",
+          description: "Successfully Graded",
         });
         navigate(`/${ROLES_LIST.defense}/dashboard`);
       }

@@ -264,13 +264,17 @@ function AdminNewDefense() {
       const res = await createDefense(newDefense);
 
       if (res.error) {
-        throw new Error("Try Again");
+        if (res.error.status === 409) {
+          throw new Error("This defense is currently active");
+        } else {
+          throw new Error("Try Again");
+        }
       }
       if (!res.error) {
         navigate(`/${ROLES_LIST.admin}/defense`);
         toast({
           title: "Defense created successfully!",
-          description: "Students can now enroll",
+          description: "Projects will be evaluataed",
         });
       }
     } catch (error) {
@@ -478,13 +482,16 @@ function AdminNewDefense() {
                 </CardHeader>
                 <CardContent>
                   <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Rooms</TableHead>
-                        <TableHead>Evaluators</TableHead>
-                        <TableHead></TableHead>
-                      </TableRow>
-                    </TableHeader>
+                    {rooms.length > 0 && (
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Rooms</TableHead>
+                          <TableHead>Evaluators</TableHead>
+                          <TableHead></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                    )}
+
                     <TableBody>
                       {rooms.map((room, index) => {
                         return (

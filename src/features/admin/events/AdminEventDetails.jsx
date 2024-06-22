@@ -12,11 +12,11 @@ import { useGetEventQuery } from "../adminApiSlice";
 import {
   Cctv,
   ChevronLeft,
-  CirclePlus,
   Clock,
   FileCheck,
   Handshake,
   Loader2,
+  PlusCircle,
   Tally1,
   Tally2,
   Tally3,
@@ -210,24 +210,10 @@ function AdminEventDetails() {
                   <Clock className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only">Extend</span>
                 </Button>
-                {event.data.eventType > EVENT_TYPE.FIRST && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className=" h-10 gap-1 text-sm"
-                  >
-                    <Cctv className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Supervisor</span>
-                  </Button>
-                )}
 
-                <Button size="sm" className="h-10 gap-1 text-sm" asChild>
-                  <Link
-                    to={`/${ROLES_LIST.admin}/defense/new?id=${event.data._id}`}
-                  >
-                    <FileCheck className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Defense</span>
-                  </Link>
+                <Button size="sm" className="h-10 gap-1 text-sm">
+                  <FileCheck className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Result</span>
                 </Button>
               </div>
             </CardTitle>
@@ -514,6 +500,12 @@ function AdminEventDetails() {
                 <File className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only">Export</span>
               </Button>
+              {event.data.eventType > EVENT_TYPE.FIRST && (
+                <Button size="sm" className=" h-10 gap-1 text-sm">
+                  <Cctv className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Supervisor</span>
+                </Button>
+              )}
             </div>
           </div>
           <TabsContent value="all">
@@ -618,6 +610,15 @@ function AdminEventDetails() {
                 <File className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only">Export</span>
               </Button> */}
+
+              <Button size="sm" className="h-10 gap-1 text-sm" asChild>
+                <Link
+                  to={`/${ROLES_LIST.admin}/defense/new?id=${event.data._id}`}
+                >
+                  <PlusCircle className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only">Defense</span>
+                </Link>
+              </Button>
             </div>
           </div>
           <TabsContent value="active">

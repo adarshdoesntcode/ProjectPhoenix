@@ -129,9 +129,7 @@ function AdminEvents() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{events.data.length}</div>
-                <p className="text-xs text-gray-500 text-right">
-                  events have been hosted
-                </p>
+                <p className="text-xs text-gray-500 text-right">all events</p>
               </CardContent>
             </Card>
             <Card>
@@ -144,7 +142,7 @@ function AdminEvents() {
               <CardContent>
                 <div className="text-2xl font-bold">{numberOfActiveEvents}</div>
                 <p className="text-xs text-gray-500 text-right">
-                  since last year
+                  running events
                 </p>
               </CardContent>
             </Card>
@@ -160,7 +158,7 @@ function AdminEvents() {
                   {noOfDevelopingProjects}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  from last year
+                  enrolled projects
                 </p>
               </CardContent>
             </Card>
@@ -176,7 +174,7 @@ function AdminEvents() {
                   {numberOfCompleteEvents}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  from last year
+                  successful events
                 </p>
               </CardContent>
             </Card>

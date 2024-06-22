@@ -43,6 +43,7 @@ import {
   ShieldAlert,
   ChevronsUpDown,
   UserX,
+  BadgeCheck,
 } from "lucide-react";
 
 import {
@@ -382,12 +383,13 @@ function TargetedEvent() {
                 )}
 
                 {user.isAssociated && (
-                  <Button asChild>
-                    <Link to={`/${ROLES_LIST.student}/project`}>
-                      Go to Project
-                      <ArrowUpRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <Badge
+                    variant="outline"
+                    className="bg-white font-medium text-lg px-3 pr-2"
+                  >
+                    Enrolled
+                    <BadgeCheck className="w-5 h-5 ml-1" />
+                  </Badge>
                 )}
               </div>
             </CardTitle>

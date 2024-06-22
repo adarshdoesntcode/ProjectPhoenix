@@ -37,6 +37,7 @@ import {
 import Countdown from "react-countdown";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import ProjectEvaluations from "./ProjectEvaluations";
 
 const renderer = ({ hours, minutes, seconds, completed }) => {
   const formatTime = (time) => time.toString().padStart(2, "0");
@@ -70,7 +71,6 @@ function StudentProject() {
 
   let content;
 
-  console.log(project);
   if (user.isAssociated === false) {
     content = (
       <div className="flex flex-1 items-center justify-center bg-slate-50 ">
@@ -594,21 +594,7 @@ function StudentProject() {
               </ConfigProvider>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="flex flex-row rounded-t-md border-b py-4 bg-slate-100 justify-between items-center">
-              <div>
-                <CardTitle className="text-lg">Defense Feedbacks</CardTitle>
-                <CardDescription className="text-xs">
-                  Feedbacks provided by the evaluators
-                </CardDescription>
-              </div>
-
-              <BookCheck className="text-slate-500" />
-            </CardHeader>
-            <CardContent className="text-sm pt-6 max-h-[548px] overflow-x-scroll">
-              No Feedbacks Available
-            </CardContent>
-          </Card>
+          <ProjectEvaluations project={project} />
         </div>
       </motion.main>
     );
