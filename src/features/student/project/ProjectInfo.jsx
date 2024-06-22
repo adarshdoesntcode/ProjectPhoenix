@@ -8,6 +8,14 @@ import {
 } from "@/components/ui/card";
 
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+import {
+  ArrowRight,
+  ArrowUpRight,
   BookmarkCheck,
   ChevronLeft,
   Loader2,
@@ -21,6 +29,22 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+
+function findDefenseInfoByProjectId(defenseArray, projectId) {
+  for (const defenseObject of defenseArray) {
+    const defense = defenseObject.defense;
+    for (const room of defense.rooms) {
+      if (room.projects.includes(projectId)) {
+        return {
+          defenseDate: defense.defenseDate,
+          defenseTime: defense.defenseTime,
+          room: room.room,
+        };
+      }
+    }
+  }
+  return null;
+}
 
 function ProjectInfo({ project, isLoading, isSuccess, user }) {
   const navigate = useNavigate();
@@ -57,6 +81,37 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       </CardContent>
     );
   } else if (isSuccess) {
+    const proposalDefenses = project.data.proposal.defenses || [];
+    const midDefenses = project.data.mid.defenses || [];
+    const finalDefenses = project.data.final.defenses || [];
+
+    const notGradedProposal = proposalDefenses.filter(
+      (defense) => defense.isGraded === false
+    );
+
+    const notGradedMid = midDefenses.filter(
+      (defense) => defense.isGraded === false
+    );
+
+    const notGradedFinal = finalDefenses.filter(
+      (defense) => defense.isGraded === false
+    );
+
+    const proposalSchedule = findDefenseInfoByProjectId(
+      notGradedProposal,
+      project.data._id
+    );
+
+    const midSchedule = findDefenseInfoByProjectId(
+      notGradedMid,
+      project.data._id
+    );
+
+    const finalSchedule = findDefenseInfoByProjectId(
+      notGradedFinal,
+      project.data._id
+    );
+
     const members = project.data.teamMembers;
     teamContent = members.map((member) => {
       return (
@@ -88,7 +143,9 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       <>
         <div className=" flex items-center justify-between gap-2 mb-3">
           <div className="font-semibold ">Code: {project.data.projectCode}</div>
-          <Badge>{getEventTypeByCode(project.data.projectType)}</Badge>
+          <Badge variant="secondary">
+            {getEventTypeByCode(project.data.projectType)}
+          </Badge>
         </div>
         <Separator className="mb-3" />
 
@@ -114,24 +171,123 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
           {project.data.event.proposal.defense && (
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Proposal Defense</div>
-              <div className="font-semibold">
-                <Badge variant="secondary">Not Graded</Badge>
+              <div>
+                {proposalSchedule ? (
+                  <HoverCard openDelay={50} closeDelay={50}>
+                    <HoverCardTrigger>
+                      <Badge className="cursor-pointer flex items-center gap-1">
+                        {format(proposalSchedule.defenseDate, "PPP")}
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Badge>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="top" className="text-sm">
+                      <div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Room</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {proposalSchedule.room}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Time</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(proposalSchedule.defenseTime, "HH:mm a")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Date</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(proposalSchedule.defenseDate, "PPP")}
+                          </span>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                ) : (
+                  <Badge variant="outline">Not Selected</Badge>
+                )}
               </div>
             </div>
           )}
           {project.data.event.mid.defense && (
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Mid Defense</div>
-              <div className="font-semibold">
-                <Badge variant="secondary">Not Graded</Badge>
+              <div>
+                {midSchedule ? (
+                  <HoverCard openDelay={50} closeDelay={50}>
+                    <HoverCardTrigger>
+                      <Badge className="cursor-pointer flex items-center gap-1">
+                        {format(midSchedule.defenseDate, "PPP")}
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Badge>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="top" className="text-sm">
+                      <div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Room</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {midSchedule.room}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Time</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(midSchedule.defenseTime, "HH:mm a")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Date</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(midSchedule.defenseDate, "PPP")}
+                          </span>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                ) : (
+                  <Badge variant="outline">Not Selected</Badge>
+                )}
               </div>
             </div>
           )}
           {project.data.event.final.defense && (
             <div className="flex items-center justify-between">
               <div className="text-sm text-slate-500">Final Defense</div>
-              <div className="font-semibold">
-                <Badge variant="secondary">Not Graded</Badge>
+              <div>
+                {finalSchedule ? (
+                  <HoverCard openDelay={50} closeDelay={50}>
+                    <HoverCardTrigger>
+                      <Badge className="cursor-pointer flex items-center gap-1">
+                        {format(finalSchedule.defenseDate, "PPP")}
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Badge>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="top" className="text-sm">
+                      <div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Room</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {finalSchedule.room}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Time</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(finalSchedule.defenseTime, "HH:mm a")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Date</span>{" "}
+                          <span className="text-slate-700 font-semibold">
+                            {format(finalSchedule.defenseDate, "PPP")}
+                          </span>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                ) : (
+                  <Badge variant="outline">Not Selected</Badge>
+                )}
               </div>
             </div>
           )}
@@ -182,7 +338,9 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               <div className="flex flex-col gap-3">
                 <div className=" flex items-center justify-between gap-2">
                   <div className="font-semibold ">Team Members</div>
-                  <Badge>{project.data.teamMembers.length}</Badge>
+                  <Badge variant="outline">
+                    {project.data.teamMembers.length}
+                  </Badge>
                 </div>
                 <Separator />
                 {teamContent}

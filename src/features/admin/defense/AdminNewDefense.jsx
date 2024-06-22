@@ -531,7 +531,7 @@ function AdminNewDefense() {
                               setNewRoom((prev) => {
                                 return {
                                   ...prev,
-                                  block: e.target.value,
+                                  block: e.target.value.toUpperCase(),
                                 };
                               })
                             }

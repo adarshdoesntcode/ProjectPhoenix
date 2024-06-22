@@ -22,27 +22,6 @@ import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const DefenseColumn = [
-  // {
-  //   accessorKey: "eventCode",
-  //   header: ({ column }) => {
-  //     return (
-  //       <TableHead
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //         className="cursor-pointer"
-  //       >
-  //         <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-  //           For Event
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       </TableHead>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     const eventCode = row.original.event.eventCode;
-
-  //     return <TableCell className="text-gray-700"> {eventCode}</TableCell>;
-  //   },
-  // },
   {
     accessorKey: "serialNumber",
     header: () => <TableHead>SN</TableHead>,
