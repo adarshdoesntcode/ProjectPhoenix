@@ -465,7 +465,7 @@ function TargetedEvent() {
               <>
                 <Separator />
                 <div className="font-medium">
-                  Mid (Phase {targetedEvent.data.mid.phase})
+                  Mid Term (Phase {targetedEvent.data.mid.phase})
                 </div>
                 <div className="flex justify-between">
                   <div className="text-xs sm:text-sm text-slate-500">

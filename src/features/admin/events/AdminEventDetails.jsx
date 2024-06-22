@@ -511,6 +511,9 @@ function AdminEventDetails() {
                     {event.data.projects.length} project(s)
                   </div>
                 </CardTitle>
+                <CardDescription>
+                  All active and complete projects
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <DataTable
@@ -530,6 +533,9 @@ function AdminEventDetails() {
                     {proposalTable.length} project(s)
                   </div>
                 </CardTitle>
+                <CardDescription>
+                  All active projects eligible for proposal defense
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <DataTable
@@ -550,6 +556,9 @@ function AdminEventDetails() {
                       {midTable.length} project(s)
                     </div>
                   </CardTitle>
+                  <CardDescription>
+                    All active projects eligible for mid term
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
@@ -571,6 +580,9 @@ function AdminEventDetails() {
                     {finalTable.length} project(s)
                   </div>
                 </CardTitle>
+                <CardDescription>
+                  All active projects eligible for final defense
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <DataTable
