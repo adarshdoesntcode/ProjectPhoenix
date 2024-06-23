@@ -138,6 +138,8 @@ function AdminDefenseDetails() {
 
                   <div className="mt-2">
                     <DataTable
+                      defenseId={defense.data._id}
+                      defenseType={defense.data.defenseType}
                       key={room._id}
                       data={room.projects}
                       columns={DefenseProjectColumn}

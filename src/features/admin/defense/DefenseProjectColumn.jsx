@@ -146,16 +146,31 @@ export const DefenseProjectColumn = [
   {
     accessorKey: "gradedBy",
     header: () => (
-      <TableHead className="hidden xl:table-cell">Members</TableHead>
+      <TableHead className="hidden xl:table-cell">Graded By</TableHead>
     ),
-    cell: ({ row }) => {
-      const teamMembers = row.original.teamMembers;
+    cell: ({ row, table }) => {
+      const original = row.original;
 
-      const formatted = teamMembers.length;
+      const defenseType = table.options.meta.defenseType;
+      const defenseId = table.options.meta.defenseId;
+      const defense =
+        original[defenseType].defenses.filter(
+          (defense) => defense.defense === defenseId
+        ) || [];
+
+      const evaluators =
+        defense[0].evaluators?.filter(
+          (evaluator) => evaluator.hasEvaluated === true
+        ) || [];
+
+      console.log(evaluators);
+      const joinedEvaluators = evaluators.map(
+        (evaluator) => evaluator.evaluator.fullname
+      ) || ["None"];
 
       return (
         <TableCell className="font-semibold hidden xl:table-cell">
-          {formatted}
+          {joinedEvaluators.join(", ")}
         </TableCell>
       );
     },

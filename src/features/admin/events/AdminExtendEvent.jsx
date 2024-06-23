@@ -31,10 +31,15 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { useExtendDeadlineMutation } from "../adminApiSlice";
 
+const initialState = {
+  reportDeadline: undefined,
+  defenseDate: undefined,
+};
+
 function AdminExtendEvent({ event }) {
   const {
     handleSubmit,
-    register,
+    reset,
     setError,
     watch,
     control,
@@ -43,17 +48,12 @@ function AdminExtendEvent({ event }) {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const [subEvent, setSubEvent] = useState({
-    reportDeadline: undefined,
-    defenseDate: undefined,
-  });
+  const [subEvent, setSubEvent] = useState(initialState);
   const [modal, setModal] = useState(false);
 
   const [extendDeadline, { isLoading }] = useExtendDeadlineMutation();
 
   const defenseType = watch("defenseType");
-
-  console.log(defenseType);
 
   async function onSubmit(data) {
     if (!subEvent.reportDeadline || !subEvent.defenseDate) {
@@ -71,6 +71,8 @@ function AdminExtendEvent({ event }) {
         event: event.data._id,
       };
       const res = await extendDeadline(newPatch);
+
+      console.log(res);
       if (res.error) {
         throw new Error("Try Again");
       }
@@ -80,7 +82,8 @@ function AdminExtendEvent({ event }) {
           title: "Deadline Extended",
           description: "New phase started",
         });
-
+        reset();
+        setSubEvent(initialState);
         setModal(false);
       }
     } catch (error) {
