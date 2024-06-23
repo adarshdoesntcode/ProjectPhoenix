@@ -272,12 +272,12 @@ function FinalEvaluationForm({ project, defenseType }) {
       <CardHeader className="bg-slate-100 rounded-t-md border-b">
         <CardTitle className="text-xl flex gap-4 items-center justify-between">
           <div>
-            <div>Proposal Defense</div>
+            <div>Final Defense</div>
             <div className="text-sm text-slate-600 font-normal">
               {getOrdinal(attempt)} Attempt
             </div>
           </div>
-          <Button onClick={() => setHideMarks(!hideMarks)}>
+          <Button variant="outline" onClick={() => setHideMarks(!hideMarks)}>
             Marks
             {hideMarks ? (
               <Eye className="ml-1 w-4 h-4" />

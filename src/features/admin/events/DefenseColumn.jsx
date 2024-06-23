@@ -13,6 +13,7 @@ import { TableCell, TableHead } from "@/components/ui/table";
 import {
   EVENT_TYPE,
   PROGRESS_STATUS,
+  ROLES_LIST,
   getEventStatusByCode,
   getEventTypeByCode,
 } from "@/lib/config";
@@ -134,7 +135,9 @@ export const DefenseColumn = [
                   e.stopPropagation();
                 }}
               >
-                <Link to={`${row.original._id}`}>View Defense</Link>
+                <Link to={`/${ROLES_LIST.admin}/defense/${row.original._id}`}>
+                  View Defense
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {

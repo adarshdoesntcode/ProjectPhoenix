@@ -88,7 +88,7 @@ export const DataTable = ({ columns, data }) => {
                   className="cursor-pointer"
                   onClick={() =>
                     navigate(
-                      `/${ROLES_LIST.defense}/evaluate/${row.original._id}`
+                      `/${ROLES_LIST.defense}/dashboard/${row.original._id}`
                     )
                   }
                 >

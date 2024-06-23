@@ -278,7 +278,7 @@ function AdminNewDefense() {
         navigate(`/${ROLES_LIST.admin}/defense`);
         toast({
           title: "Defense created successfully!",
-          description: "Projects will be evaluataed",
+          description: "Projects will be evaluated",
         });
       }
     } catch (error) {

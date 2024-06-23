@@ -12,6 +12,7 @@ import AdminNewEvent from "@/features/admin/events/AdminNewEvent";
 import { Navigate } from "react-router-dom";
 import AdminDefense from "@/features/admin/defense/AdminDefense";
 import AdminNewDefense from "@/features/admin/defense/AdminNewDefense";
+import AdminDefenseDetails from "@/features/admin/defense/AdminDefenseDetails";
 
 const AdminRoutes = [
   {
@@ -38,6 +39,10 @@ const AdminRoutes = [
   {
     path: "defense",
     element: <AdminDefense />,
+  },
+  {
+    path: "defense/:id",
+    element: <AdminDefenseDetails />,
   },
   {
     path: "defense/new",

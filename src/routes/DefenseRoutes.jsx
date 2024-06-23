@@ -13,7 +13,7 @@ const DefenseRoutes = [
     element: <DefenseDashboard />,
   },
   {
-    path: "evaluate/:id",
+    path: "dashboard/:id",
     element: <DefenseEvaluation />,
   },
 ];

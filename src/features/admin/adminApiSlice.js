@@ -54,6 +54,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Defenses"],
     }),
+    getDefense: builder.query({
+      query: (credentials) => ({
+        url: `/event/defense/${credentials}`,
+        method: "GET",
+      }),
+      providesTags: ["Defense"],
+    }),
     createDefense: builder.mutation({
       query: (credentials) => ({
         url: "/event/defense/create",
@@ -81,4 +88,5 @@ export const {
   useCreateDefenseDataQuery,
   useCreateDefenseMutation,
   useExtendDeadlineMutation,
+  useGetDefenseQuery,
 } = adminApiSlice;
