@@ -82,9 +82,9 @@ const projectEvaluationConfig = [
 ];
 
 const judgementConfig = {
-  0: "Progress Satisfactory",
-  1: "Progress Seen",
-  2: "Progress Not Satisfactory",
+  10: "Progress Satisfactory",
+  11: "Progress Seen",
+  12: "Progress Not Satisfactory",
   "-1": "Absent",
 };
 
@@ -396,9 +396,9 @@ function MidEvaluationForm({ project, defenseType }) {
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">Progress Satisfactory</SelectItem>
-                      <SelectItem value="1">Progress Seen</SelectItem>
-                      <SelectItem value="2">
+                      <SelectItem value="10">Progress Satisfactory</SelectItem>
+                      <SelectItem value="11">Progress Seen</SelectItem>
+                      <SelectItem value="12">
                         Progress Not Satisfactory
                       </SelectItem>
                     </SelectContent>

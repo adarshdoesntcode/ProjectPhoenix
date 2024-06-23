@@ -104,7 +104,7 @@ export const DefenseColumn = [
     accessorKey: "defenseTime",
     header: () => <TableHead className="hidden lg:table-cell">Time</TableHead>,
     cell: ({ row }) => {
-      const defenseTime = format(row.original.defenseTime, "HH:mm a");
+      const defenseTime = format(row.original.defenseTime, "hh:mm a");
 
       return (
         <TableCell className="hidden  lg:table-cell">

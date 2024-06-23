@@ -83,7 +83,7 @@ function SupervisorLogin() {
 
       <Tabs
         defaultValue="login"
-        value={searchParams.get("tab")}
+        value={searchParams.get("tab") || "login"}
         onValueChange={(value) => {
           navigate(`/${ROLES_LIST.supervisor}/login?tab=${value}`);
         }}

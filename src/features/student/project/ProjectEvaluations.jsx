@@ -19,25 +19,25 @@ import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 
 const proposalJudgementConfig = {
-  0: "Accepted",
-  1: "Accepted Conditionally",
-  2: "Re-Defense",
-  3: "Rejected",
+  "00": "Accepted",
+  "01": "Accepted Conditionally",
+  "02": "Re-Defense",
+  "03": "Rejected",
   "-1": "Absent",
 };
 
 const midJudgementConfig = {
-  0: "Progress Satisfactory",
-  1: "Progress Seen",
-  2: "Progress Not Satisfactory",
+  10: "Progress Satisfactory",
+  11: "Progress Seen",
+  12: "Progress Not Satisfactory",
   "-1": "Absent",
 };
 
 const finalJudgementConfig = {
-  0: "Accepted",
-  1: "Accepted Conditionally",
-  2: "Re-Demo",
-  3: "Re-Defend",
+  20: "Accepted",
+  21: "Accepted Conditionally",
+  22: "Re-Demo",
+  23: "Re-Defend",
   "-1": "Absent",
 };
 
@@ -73,7 +73,7 @@ function ProjectEvaluations({ project }) {
 
   const proposalItems = proposal.map((proposalEval, index) => {
     const judgement = proposalEval[0].projectEvaluation.judgement;
-    let color = judgement === "0" || judgement === "1" ? "black" : "grey";
+    let color = judgement === "00" || judgement === "01" ? "black" : "grey";
 
     return {
       color: color,
@@ -120,12 +120,14 @@ function ProjectEvaluations({ project }) {
                           {evaluation.evaluator.institution}
                         </span>
                       </div>
-                      <div
-                        className="p-4 border text-sm rounded-md text-slate-600"
-                        dangerouslySetInnerHTML={{
-                          __html: evaluation.projectEvaluation.feedback,
-                        }}
-                      ></div>
+                      <div className="p-4 border rounded-md text-sm text-slate-600">
+                        <div
+                          className="no-tailwind"
+                          dangerouslySetInnerHTML={{
+                            __html: evaluation.projectEvaluation.feedback,
+                          }}
+                        ></div>
+                      </div>
                     </div>
                   );
                 })}
@@ -139,7 +141,7 @@ function ProjectEvaluations({ project }) {
 
   const midItems = mid.map((midEval, index) => {
     const judgement = midEval[0].projectEvaluation.judgement;
-    let color = judgement === "0" || judgement === "1" ? "black" : "grey";
+    let color = judgement === "10" || judgement === "11" ? "black" : "grey";
 
     return {
       color: color,
@@ -186,12 +188,14 @@ function ProjectEvaluations({ project }) {
                           {evaluation.evaluator.institution}
                         </span>
                       </div>
-                      <div
-                        className="p-4 border rounded-md text-sm text-slate-600"
-                        dangerouslySetInnerHTML={{
-                          __html: evaluation.projectEvaluation.feedback,
-                        }}
-                      ></div>
+                      <div className="p-4 border rounded-md text-sm text-slate-600">
+                        <div
+                          className="no-tailwind"
+                          dangerouslySetInnerHTML={{
+                            __html: evaluation.projectEvaluation.feedback,
+                          }}
+                        ></div>
+                      </div>
                     </div>
                   );
                 })}
@@ -205,7 +209,7 @@ function ProjectEvaluations({ project }) {
 
   const finalItems = final.map((finalEval, index) => {
     const judgement = finalEval[0].projectEvaluation.judgement;
-    let color = judgement === "0" || judgement === "1" ? "black" : "grey";
+    let color = judgement === "20" || judgement === "21" ? "black" : "grey";
 
     return {
       color: color,
@@ -252,12 +256,14 @@ function ProjectEvaluations({ project }) {
                           {evaluation.evaluator.institution}
                         </span>
                       </div>
-                      <div
-                        className="p-4 border rounded-md text-sm text-slate-600 "
-                        dangerouslySetInnerHTML={{
-                          __html: evaluation.projectEvaluation.feedback,
-                        }}
-                      ></div>
+                      <div className="p-4 border rounded-md text-sm text-slate-600">
+                        <div
+                          className="no-tailwind"
+                          dangerouslySetInnerHTML={{
+                            __html: evaluation.projectEvaluation.feedback,
+                          }}
+                        ></div>
+                      </div>
                     </div>
                   );
                 })}

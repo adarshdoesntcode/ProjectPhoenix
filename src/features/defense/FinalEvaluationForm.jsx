@@ -120,10 +120,10 @@ const projectEvaluationConfig = [
 ];
 
 const judgementConfig = {
-  0: "Accepted",
-  1: "Accepted Conditionally",
-  2: "Re-Demo",
-  3: "Re-Defend",
+  20: "Accepted",
+  21: "Accepted Conditionally",
+  22: "Re-Demo",
+  23: "Re-Defend",
   "-1": "Absent",
 };
 
@@ -488,10 +488,10 @@ function FinalEvaluationForm({ project, defenseType }) {
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">Accepted</SelectItem>
-                      <SelectItem value="1">Accepted Conditionally</SelectItem>
-                      <SelectItem value="2">Re-Demo</SelectItem>
-                      <SelectItem value="3">Re-Defend</SelectItem>
+                      <SelectItem value="20">Accepted</SelectItem>
+                      <SelectItem value="21">Accepted Conditionally</SelectItem>
+                      <SelectItem value="22">Re-Demo</SelectItem>
+                      <SelectItem value="23">Re-Defend</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

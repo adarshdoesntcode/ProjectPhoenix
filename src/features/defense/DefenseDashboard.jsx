@@ -160,7 +160,7 @@ function DefenseDashboard() {
 
         {showProjects && (
           <>
-            <Card className="max-w-[450px] mt-4">
+            <Card className="max-w-full md:max-w-md mt-4">
               <CardHeader>
                 <CardTitle className="flex items-center gap-4">
                   {room.room}

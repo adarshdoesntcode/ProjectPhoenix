@@ -48,7 +48,7 @@ function AdminDefenseDetails() {
           </Button>
           Defense Details
         </div>
-        <Card className="max-w-[450px] mt-4">
+        <Card className="max-w-full md:max-w-md mt-4">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center justify-between gap-4">
               <div className="text-xl">
@@ -97,9 +97,6 @@ function AdminDefenseDetails() {
               </CardHeader>
               <CardContent>
                 <div>
-                  {/* <span className="text-semibold text-sm text-slate-500">
-                    Evaluators
-                  </span> */}
                   <div className="flex gap-2 items-center justify-end flex-wrap">
                     {room.evaluators.map((evaluator) => {
                       return (

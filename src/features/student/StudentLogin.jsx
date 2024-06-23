@@ -90,7 +90,7 @@ function StudentLogin() {
 
       <Tabs
         defaultValue="login"
-        value={searchParams.get("tab")}
+        value={searchParams.get("tab") || "login"}
         onValueChange={(value) => {
           navigate(`/${ROLES_LIST.student}/login?tab=${value}`);
         }}

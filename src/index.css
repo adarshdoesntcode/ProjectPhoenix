@@ -29,3 +29,15 @@
 .ql-tooltip {
   display: none !important;
 }
+
+.no-tailwind {
+  all: initial; /* Reset all properties, but only for this class */
+  display: block; /* Override "all: initial" reset for display */
+  font-family: "Inter", "Geist", sans-serif;
+  font-size: 0.9rem;
+}
+.no-tailwind * {
+  all: revert; /* Revert all properties to user-agent styles */
+  font-family: "Inter", "Geist", sans-serif;
+  font-size: 0.9rem;
+}

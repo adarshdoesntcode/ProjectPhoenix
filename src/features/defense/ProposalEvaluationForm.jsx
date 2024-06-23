@@ -98,10 +98,10 @@ const projectEvaluationConfig = [
 ];
 
 const judgementConfig = {
-  0: "Accepted",
-  1: "Accepted Conditionally",
-  2: "Re-Defense",
-  3: "Rejected",
+  "00": "Accepted",
+  "01": "Accepted Conditionally",
+  "02": "Re-Defense",
+  "03": "Rejected",
   "-1": "Absent",
 };
 
@@ -422,10 +422,10 @@ function ProposalEvaluationForm({ project, defenseType }) {
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">Accepted</SelectItem>
-                      <SelectItem value="1">Accepted Conditionally</SelectItem>
-                      <SelectItem value="2">Re-Defense</SelectItem>
-                      <SelectItem value="3">Rejected</SelectItem>
+                      <SelectItem value="00">Accepted</SelectItem>
+                      <SelectItem value="01">Accepted Conditionally</SelectItem>
+                      <SelectItem value="02">Re-Defense</SelectItem>
+                      <SelectItem value="03">Rejected</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -563,12 +563,14 @@ function ProposalEvaluationForm({ project, defenseType }) {
                     <div className="border rounded-lg p-4">
                       {projectPresent ? (
                         <div
+                          className="no-tailwind"
                           dangerouslySetInnerHTML={{
                             __html: projectEvaluation.feedback,
                           }}
                         />
                       ) : (
                         <div
+                          className="no-tailwind"
                           dangerouslySetInnerHTML={{
                             __html: projectAbsentInitalState.feedback,
                           }}

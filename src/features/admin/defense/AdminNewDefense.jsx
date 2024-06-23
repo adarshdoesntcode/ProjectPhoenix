@@ -60,7 +60,7 @@ import {
   getEvaluatorTypeByCode,
 } from "@/lib/config";
 import { toast } from "@/components/ui/use-toast";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -132,7 +132,7 @@ const newRoomInitialState = {
 
 function AdminNewDefense() {
   const navigate = useNavigate();
-
+  const [searchParams] = useSearchParams();
   const [rooms, setRooms] = useState([]);
   const [newEvaluatorInput, setNewEvaluatorInput] = useState(false);
   const [newRoom, setNewRoom] = useState(newRoomInitialState);
@@ -144,9 +144,18 @@ function AdminNewDefense() {
   const {
     handleSubmit,
     watch,
+    setValue,
     control,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const id = searchParams.get("id");
+
+  // useEffect(() => {
+  //   if (searchParams.get("id")) {
+  //     setValue("event", id);
+  //   }
+  // }, []);
 
   const activeEvents = response?.data?.events || [];
   let evaluators = response?.data?.evaluators || [];
@@ -275,7 +284,11 @@ function AdminNewDefense() {
         }
       }
       if (!res.error) {
-        navigate(`/${ROLES_LIST.admin}/defense`);
+        if (id) {
+          navigate(`/${ROLES_LIST.admin}/events/${id}`);
+        } else {
+          navigate(`/${ROLES_LIST.admin}/defense`);
+        }
         toast({
           title: "Defense created successfully!",
           description: "Projects will be evaluated",
@@ -446,12 +459,12 @@ function AdminNewDefense() {
                             theme={{
                               components: {
                                 DatePicker: {
-                                  activeBorderColor: "gray",
-                                  hoverBorderColor: "gray",
+                                  activeBorderColor: "#94a3b8",
+                                  hoverBorderColor: "#94a3b8",
                                 },
                               },
                               token: {
-                                colorPrimary: "gray",
+                                colorPrimary: "#94a3b8",
                               },
                             }}
                           >
