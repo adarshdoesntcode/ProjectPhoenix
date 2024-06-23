@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetDefenseQuery } from "../adminApiSlice";
+
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,11 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useGetDefenseDetailQuery } from "../adminApiSlice";
 
 function AdminDefenseDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: defense, isLoading, isSuccess } = useGetDefenseQuery(id);
+  const { data: defense, isLoading, isSuccess } = useGetDefenseDetailQuery(id);
   let content;
   console.log(defense);
 
