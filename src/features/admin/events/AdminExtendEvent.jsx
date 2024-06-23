@@ -65,7 +65,7 @@ function AdminExtendEvent({ event }) {
     }
     try {
       const newPatch = {
-        for: data.defenseType,
+        subEventType: data.defenseType,
         reportDeadline: subEvent.reportDeadline,
         defenseDate: subEvent.defenseDate,
         event: event.data._id,
