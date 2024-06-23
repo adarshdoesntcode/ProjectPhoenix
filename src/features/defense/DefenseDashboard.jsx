@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2 } from "lucide-react";
+import { Check, CheckCheck, Loader2 } from "lucide-react";
 import { useGetDefenseQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -25,6 +25,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
+import useLogout from "@/hooks/useLogout";
+import { toast } from "@/components/ui/use-toast";
 
 const seprateProjects = (
   projects,
@@ -87,6 +91,9 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
 
 function DefenseDashboard() {
   const [showProjects, setShowProjects] = useState(false);
+  const [logoutLoader, setLogoutLoader] = useState(false);
+  const logout = useLogout();
+
   const user = useSelector(selectCurrentUser);
 
   const {
@@ -94,6 +101,20 @@ function DefenseDashboard() {
     isLoading,
     isSuccess,
   } = useGetDefenseQuery(user.currentDefense);
+
+  const handlelogout = async () => {
+    try {
+      setLogoutLoader(true);
+      await logout();
+      setLogoutLoader(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!!",
+        description: error.message,
+      });
+    }
+  };
 
   let content,
     room,
@@ -203,22 +224,45 @@ function DefenseDashboard() {
                 <div className="ml-auto flex items-center gap-2"></div>
               </div>
               <TabsContent value="notgraded">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-4">
-                      Not Graded Project
-                    </CardTitle>
-                    <CardDescription>
-                      Remaining projects to be graded by you in this defense
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <DataTable
-                      columns={DefenseProjectColumn}
-                      data={notGradedProjects}
-                    />
-                  </CardContent>
-                </Card>
+                {notGradedProjects.length === 0 ? (
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-1 items-center justify-center my-14">
+                        <div className="flex flex-col items-center gap-1 text-center">
+                          <h3 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                            All Projects Graded <CheckCheck />
+                          </h3>
+
+                          <p className="text-sm text-gray-500">
+                            You can now resign as an evaluator from this defense
+                            by logging out
+                          </p>
+
+                          <Button className="mt-4" onClick={handlelogout}>
+                            Logout
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-4">
+                        Not Graded Project
+                      </CardTitle>
+                      <CardDescription>
+                        Remaining projects to be graded by you in this defense
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <DataTable
+                        columns={DefenseProjectColumn}
+                        data={notGradedProjects}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
               <TabsContent value="graded">
                 <Card>
@@ -242,6 +286,14 @@ function DefenseDashboard() {
             </Tabs>
           </>
         )}
+        <AlertDialog open={logoutLoader} onOpenChange={setLogoutLoader}>
+          <AlertDialogContent className="w-[200px]">
+            <div className="flex justify-center items-center text-gray-600">
+              <Loader2 className="h-6 w-6 animate-spin mr-4" />
+              <span>Logging Out</span>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       </>
     );
   }

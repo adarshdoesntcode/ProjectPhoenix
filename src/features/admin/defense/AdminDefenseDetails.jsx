@@ -74,7 +74,7 @@ function AdminDefenseDetails() {
             <div className="text-sm flex items-center justify-between gap-4">
               <div className="text-slate-500 font-semibold">Defense Time</div>
               <Badge variant="outline">
-                {format(defense.data.defenseTime, "HH:mm aa")}
+                {format(defense.data.defenseTime, "hh:mm aa")}
               </Badge>
             </div>
           </CardContent>

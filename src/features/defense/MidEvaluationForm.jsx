@@ -198,7 +198,7 @@ function MidEvaluationForm({ project, defenseType }) {
       }
       if (!res.error) {
         toast({
-          title: "Project Evaluation !",
+          title: "Project Evaluation",
           description: "Successful",
         });
         navigate(`/${ROLES_LIST.defense}/dashboard`);
