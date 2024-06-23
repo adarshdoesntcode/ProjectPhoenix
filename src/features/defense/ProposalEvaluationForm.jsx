@@ -157,7 +157,7 @@ function ProposalEvaluationForm({ project, defenseType }) {
     defenseTypeString = "proposal";
   } else if (defenseType === 1) {
     defenseTypeString = "mid";
-  } else {
+  } else if (defenseType === 2) {
     defenseTypeString = "final";
   }
 
@@ -165,7 +165,6 @@ function ProposalEvaluationForm({ project, defenseType }) {
 
   const attempt =
     evaluations.filter((item) => item.evaluationType === "proposal").length + 1;
-  console.log("🚀 ~ ProposalEvaluationForm ~ attempt:", attempt);
 
   const [studentEvaluation, setStudentEvaluation] = useState(
     studentEvaluationInitalState

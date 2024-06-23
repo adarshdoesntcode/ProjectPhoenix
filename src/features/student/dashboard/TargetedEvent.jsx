@@ -1,4 +1,17 @@
-import { Button } from "@/components/ui/button";
+import {
+  getEventStatusByCode,
+  getEventTypeByCode,
+  getProgramByCode,
+} from "@/lib/config";
+import { CalendarHeart, Loader2 } from "lucide-react";
+
+import { useGetTargetedEventQuery } from "../studentApiSlice";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { Separator } from "@/components/ui/separator";
+import { daysFromToday, formatDays } from "@/lib/utils";
+
+import StudentCreateProject from "./StudentCreateProject";
 import {
   Card,
   CardContent,
@@ -7,67 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  ROLES_LIST,
-  getEventStatusByCode,
-  getEventTypeByCode,
-  getProgramByCode,
-} from "@/lib/config";
-import {
-  ArrowUpRight,
-  CalendarHeart,
-  CirclePlus,
-  Loader2,
-  ShieldAlert,
-  ChevronsUpDown,
-  UserX,
-  BadgeCheck,
-} from "lucide-react";
-
-import {
-  useCreateProjectMutation,
-  useGetSelectionStudentsQuery,
-  useGetTargetedEventQuery,
-} from "../studentApiSlice";
-import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-import { Separator } from "@/components/ui/separator";
-import { daysFromToday, formatDays, getInitials } from "@/lib/utils";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/features/auth/authSlice";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "@/components/ui/use-toast";
-import useRefreshUser from "@/hooks/useRefreshUser";
-import StudentCreateProject from "./StudentCreateProject";
 
 function TargetedEvent() {
   const {

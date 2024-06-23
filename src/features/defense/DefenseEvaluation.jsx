@@ -2,15 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetDefenseProjectQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
-import {
-  ArrowUpRight,
-  BadgeCheck,
-  CheckCheck,
-  ChevronLeft,
-  CloudFog,
-  FileCheck,
-  Loader2,
-} from "lucide-react";
+import { ArrowUpRight, ChevronLeft, FileCheck, Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -69,8 +61,6 @@ function DefenseEvaluation() {
 
   const navigate = useNavigate();
 
-  console.log(id);
-
   const {
     data: project,
     isLoading,
@@ -88,10 +78,16 @@ function DefenseEvaluation() {
 
   if (project) {
     defenseType = checkDefenseId(user.currentDefense, project);
-    // defenseType = 1;
 
-    const defenseTypeString =
-      defenseType === 0 ? "proposal" : defenseType === 1 ? "mid" : "final";
+    let defenseTypeString = "";
+
+    if (defenseType === 0) {
+      defenseTypeString = "proposal";
+    } else if (defenseType === 1) {
+      defenseTypeString = "mid";
+    } else if (defenseType === 2) {
+      defenseTypeString = "final";
+    }
 
     hasEvaluated = hasEvaluatorEvaluated(
       project.data[defenseTypeString].defenses || [],
@@ -99,8 +95,6 @@ function DefenseEvaluation() {
       user._id
     );
   }
-
-  console.log(hasEvaluated);
 
   if (isLoading) {
     content = (

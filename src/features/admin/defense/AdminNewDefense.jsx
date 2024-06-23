@@ -19,6 +19,7 @@ import {
 import {
   ArrowBigDown,
   ChevronsUpDown,
+  CloudFog,
   PlusCircle,
   Trash,
   UserX,
@@ -93,8 +94,10 @@ const populateProjects = (
           );
         }
       } else if (selectedDefenseType === "final") {
-        project.teamMembers[0].progressStatus ===
-          PROGRESS_STATUS()[project.projectType].ELIGIBLE_FOR_FINAL_DEFENSE[1];
+        return (
+          project.teamMembers[0].progressStatus ===
+          PROGRESS_STATUS()[project.projectType].ELIGIBLE_FOR_FINAL_DEFENSE[1]
+        );
       }
     });
     return projects;
@@ -174,6 +177,7 @@ function AdminNewDefense() {
   let eligibaleProjects = [];
 
   const selectedDefenseType = watch("defenseType");
+
   const selectedEventId = watch("event");
 
   const selectedEvent = activeEvents.find(
