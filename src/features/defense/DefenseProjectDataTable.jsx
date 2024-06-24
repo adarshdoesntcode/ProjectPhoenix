@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
 
-export const DataTable = ({ columns, data }) => {
+export const DataTable = ({ columns, data, roomID }) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -88,7 +88,7 @@ export const DataTable = ({ columns, data }) => {
                   className="cursor-pointer"
                   onClick={() =>
                     navigate(
-                      `/${ROLES_LIST.defense}/dashboard/${row.original._id}`
+                      `/${ROLES_LIST.defense}/dashboard/${row.original._id}?id=${roomID}`
                     )
                   }
                 >

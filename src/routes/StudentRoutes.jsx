@@ -1,5 +1,5 @@
 import StudentDashboard from "@/features/student/dashboard/StudentDashboard";
-import StudentArchive from "@/features/student/StudentArchive";
+import StudentArchive from "@/features/student/archive/StudentArchive";
 import StudentGuidelines from "@/features/student/StudentGuidelines";
 import StudentProject from "@/features/student/project/StudentProject";
 

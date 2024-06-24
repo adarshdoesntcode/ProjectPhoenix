@@ -133,6 +133,7 @@ function DefenseDashboard() {
     room,
     gradedProjects = [],
     notGradedProjects = [];
+
   if (defense) {
     room = findRoomByEvaluatorId(defense.data, user._id);
     seprateProjects(
@@ -278,6 +279,7 @@ function DefenseDashboard() {
                       <DataTable
                         columns={DefenseProjectColumn}
                         data={notGradedProjects}
+                        roomID={room._id}
                       />
                     </CardContent>
                   </Card>
@@ -298,6 +300,7 @@ function DefenseDashboard() {
                     <DataTable
                       columns={DefenseProjectColumn}
                       data={gradedProjects}
+                      roomID={room._id}
                     />
                   </CardContent>
                 </Card>

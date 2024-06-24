@@ -237,23 +237,7 @@ function AdminEvents() {
                 </CardContent>
               </Card>
             </TabsContent>
-            {/* <TabsContent value="archive">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Archived Events</CardTitle>
-                  <CardDescription>
-                    All the achived events on the system
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DataTable
-                    ref={tableRef}
-                    columns={EventColumns}
-                    data={archiveEvents}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent> */}
+
             <TabsContent value="all">
               <Card>
                 <CardHeader>

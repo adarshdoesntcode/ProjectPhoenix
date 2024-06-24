@@ -38,6 +38,12 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getArchive: builder.query({
+      query: () => ({
+        url: "/student/archive",
+        method: "GET",
+      }),
+    }),
     getArchiveProject: builder.query({
       query: (credentials) => ({
         url: `/student/associatedProjects/${credentials}`,
@@ -77,4 +83,5 @@ export const {
   useGetSelectionStudentsQuery,
   useCreateProjectMutation,
   useSubmitReportMutation,
+  useGetArchiveQuery,
 } = studentApiSlice;

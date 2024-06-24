@@ -119,7 +119,7 @@ const groupByDefenseId = (data) => {
   return Object.values(grouped);
 };
 
-function MidEvaluationForm({ project, defenseType }) {
+function MidEvaluationForm({ project, defenseType, roomID }) {
   const user = useSelector(selectCurrentUser);
   const [defenseEvaluation, { isLoading }] = useDefenseEvaluationMutation();
   const navigate = useNavigate();
@@ -184,6 +184,7 @@ function MidEvaluationForm({ project, defenseType }) {
           individualEvaluation: studentEvaluation,
           projectEvaluation,
           projectId: project.data._id,
+          roomId: roomID,
           evaluatorId: user._id,
           defenseId: user.currentDefense,
           eventId: project.data.event._id,
@@ -194,6 +195,7 @@ function MidEvaluationForm({ project, defenseType }) {
           individualEvaluation: studenAbsentInitalState,
           projectEvaluation: projectAbsentInitalState,
           projectId: project.data._id,
+          roomId: roomID,
           evaluatorId: user._id,
           defenseId: user.currentDefense,
           eventId: project.data.event._id,

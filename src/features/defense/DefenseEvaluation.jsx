@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useGetDefenseProjectQuery } from "./defenseApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -60,6 +60,8 @@ function hasEvaluatorEvaluated(defenses, defenseId, evaluatorId) {
 function DefenseEvaluation() {
   const user = useSelector(selectCurrentUser);
   const { id } = useParams();
+  const [searchParam] = useSearchParams();
+  const roomID = searchParam.get("id");
 
   const navigate = useNavigate();
 
@@ -73,6 +75,8 @@ function DefenseEvaluation() {
     forceRefetch: true,
     refetchOnMountOrArgChange: 1,
   });
+
+  console.log(project);
 
   let defenseType,
     content,
@@ -280,15 +284,21 @@ function DefenseEvaluation() {
               <ProposalEvaluationForm
                 project={project}
                 defenseType={defenseType}
+                roomID={roomID}
               />
             )}
             {defenseType === 1 && !hasEvaluated && (
-              <MidEvaluationForm project={project} defenseType={defenseType} />
+              <MidEvaluationForm
+                project={project}
+                defenseType={defenseType}
+                roomID={roomID}
+              />
             )}
             {defenseType === 2 && !hasEvaluated && (
               <FinalEvaluationForm
                 project={project}
                 defenseType={defenseType}
+                roomID={roomID}
               />
             )}
 
