@@ -32,6 +32,8 @@ function StudentInfo() {
     data: project,
     isLoading,
     isSuccess,
+    isError,
+    error,
   } = useGetProjectQuery(user.project, { skip: !user.isAssociated });
 
   let projectContent, profileContent;
@@ -173,6 +175,18 @@ function StudentInfo() {
           </div>
         </div>
       </>
+    );
+  } else if (isError) {
+    projectContent = (
+      <CardContent className="flex items-center  rounded-md justify-center h-[190px]">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h3 className="text-lg font-semibold ">Something went wrong.</h3>
+          <p className="text-sm text-muted-foreground">
+            {error.status || `STATUS ${error.originalStatus}`}
+          </p>
+          <div className="mt-4"> {JSON.stringify(error.data)}</div>
+        </div>
+      </CardContent>
     );
   }
 

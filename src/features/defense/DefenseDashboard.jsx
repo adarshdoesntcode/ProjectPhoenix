@@ -94,6 +94,8 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
 function DefenseDashboard() {
   const [showProjects, setShowProjects] = useState(false);
   const [logoutLoader, setLogoutLoader] = useState(false);
+  const [openCards, setOpenCards] = useState({});
+
   const logout = useLogout();
 
   const user = useSelector(selectCurrentUser);
@@ -105,6 +107,13 @@ function DefenseDashboard() {
     error,
     isError,
   } = useGetDefenseQuery(user.currentDefense);
+
+  const handleOpenChange = (evaluatorId, isOpen) => {
+    setOpenCards((prevState) => ({
+      ...prevState,
+      [evaluatorId]: isOpen,
+    }));
+  };
 
   const handlelogout = async () => {
     try {
@@ -183,11 +192,21 @@ function DefenseDashboard() {
                           : "Co Evaluator"}
                       </div>
 
-                      <HoverCard openDelay={50} closeDelay={50}>
+                      <HoverCard
+                        openDelay={50}
+                        closeDelay={50}
+                        open={openCards[evaluator._id] || false}
+                        onOpenChange={(isOpen) =>
+                          handleOpenChange(evaluator._id, isOpen)
+                        }
+                      >
                         <HoverCardTrigger>
                           <Badge
                             variant="outline"
                             className="flex items-center gap-2 cursor-pointer pr-1 py-1"
+                            onClick={(isOpen) =>
+                              handleOpenChange(evaluator._id, isOpen)
+                            }
                           >
                             <div>{evaluator.fullname}</div>
                             <Badge variant="secondary">

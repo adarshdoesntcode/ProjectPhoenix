@@ -20,12 +20,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import ApiError from "@/components/error/ApiError";
 
 function TargetedEvent() {
   const {
     data: targetedEvent,
     isLoading,
     isSuccess,
+    isError,
+    error,
   } = useGetTargetedEventQuery(undefined, {
     forceRefetch: true,
   });
@@ -214,6 +217,18 @@ function TargetedEvent() {
         </div>
       );
     }
+  } else if (isError) {
+    targetedEventContent = (
+      <CardContent className="flex items-center border rounded-md justify-center h-[300px]">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h3 className="text-xl font-semibold ">Something went wrong.</h3>
+          <p className="text-sm text-muted-foreground">
+            {error.status || `STATUS ${error.originalStatus}`}
+          </p>
+          <div className="mt-4"> {JSON.stringify(error.data)}</div>
+        </div>
+      </CardContent>
+    );
   }
   return (
     <Card>

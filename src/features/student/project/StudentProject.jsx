@@ -38,6 +38,8 @@ import Countdown from "react-countdown";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ProjectEvaluations from "./ProjectEvaluations";
+import Loader from "@/components/Loader";
+import ApiError from "@/components/error/ApiError";
 
 const renderer = ({ hours, minutes, seconds, completed }) => {
   const formatTime = (time) => time.toString().padStart(2, "0");
@@ -67,6 +69,8 @@ function StudentProject() {
     data: project,
     isLoading,
     isSuccess,
+    isError,
+    error,
   } = useGetProjectQuery(user.project, { skip: !user.isAssociated });
 
   let content;
@@ -92,11 +96,7 @@ function StudentProject() {
   }
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     const rank = getRankbyStatus(user.progressStatus);
     const proposalReportDeadlineDays = daysFromToday(
@@ -598,6 +598,8 @@ function StudentProject() {
         </div>
       </motion.main>
     );
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
   return content;
 }

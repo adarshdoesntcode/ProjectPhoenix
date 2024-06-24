@@ -22,8 +22,10 @@ import { DataTable } from "./DefenseProjectDataTable";
 import { DefenseProjectColumn } from "./DefenseProjectColumn";
 import Loader from "@/components/Loader";
 import ApiError from "@/components/error/ApiError";
+import { useState } from "react";
 
 function AdminDefenseDetails() {
+  const [openCards, setOpenCards] = useState({});
   const navigate = useNavigate();
   const { id } = useParams();
   const {
@@ -33,6 +35,13 @@ function AdminDefenseDetails() {
     isError,
     error,
   } = useGetDefenseDetailQuery(id);
+
+  const handleOpenChange = (evaluatorId, isOpen) => {
+    setOpenCards((prevState) => ({
+      ...prevState,
+      [evaluatorId]: isOpen,
+    }));
+  };
   let content;
 
   if (isLoading) {
@@ -104,11 +113,21 @@ function AdminDefenseDetails() {
                     {room.evaluators.map((evaluator) => {
                       return (
                         <div key={evaluator._id}>
-                          <HoverCard openDelay={50} closeDelay={50}>
+                          <HoverCard
+                            openDelay={50}
+                            closeDelay={50}
+                            open={openCards[evaluator._id] || false}
+                            onOpenChange={(isOpen) =>
+                              handleOpenChange(evaluator._id, isOpen)
+                            }
+                          >
                             <HoverCardTrigger>
                               <Badge
                                 variant="outline"
                                 className="flex items-center gap-2 cursor-pointer pr-1 py-1 max-w-max"
+                                onClick={(isOpen) =>
+                                  handleOpenChange(evaluator._id, isOpen)
+                                }
                               >
                                 <div>{evaluator.fullname}</div>
                                 <Badge variant="secondary">

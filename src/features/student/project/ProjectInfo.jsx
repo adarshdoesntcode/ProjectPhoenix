@@ -29,6 +29,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function findDefenseInfoByProjectId(defenseArray, projectId) {
   for (const defenseObject of defenseArray) {
@@ -48,6 +49,7 @@ function findDefenseInfoByProjectId(defenseArray, projectId) {
 
 function ProjectInfo({ project, isLoading, isSuccess, user }) {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   let projectContent, teamContent;
 
   if (!user.isAssociated) {
@@ -173,9 +175,17 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               <div className="text-sm text-slate-500">Proposal Defense</div>
               <div>
                 {proposalSchedule ? (
-                  <HoverCard openDelay={50} closeDelay={50}>
+                  <HoverCard
+                    openDelay={50}
+                    open={open}
+                    onOpenChange={setOpen}
+                    closeDelay={50}
+                  >
                     <HoverCardTrigger>
-                      <Badge className="cursor-pointer flex items-center gap-1">
+                      <Badge
+                        className="cursor-pointer flex items-center gap-1"
+                        onClick={() => setOpen(!open)}
+                      >
                         {format(proposalSchedule.defenseDate, "PPP")}
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>
@@ -214,9 +224,17 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               <div className="text-sm text-slate-500">Mid Defense</div>
               <div>
                 {midSchedule ? (
-                  <HoverCard openDelay={50} closeDelay={50}>
+                  <HoverCard
+                    openDelay={50}
+                    open={open}
+                    onOpenChange={setOpen}
+                    closeDelay={50}
+                  >
                     <HoverCardTrigger>
-                      <Badge className="cursor-pointer flex items-center gap-1">
+                      <Badge
+                        className="cursor-pointer flex items-center gap-1"
+                        onClick={() => setOpen(!open)}
+                      >
                         {format(midSchedule.defenseDate, "PPP")}
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>
@@ -255,9 +273,17 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               <div className="text-sm text-slate-500">Final Defense</div>
               <div>
                 {finalSchedule ? (
-                  <HoverCard openDelay={50} closeDelay={50}>
+                  <HoverCard
+                    openDelay={50}
+                    open={open}
+                    onOpenChange={setOpen}
+                    closeDelay={50}
+                  >
                     <HoverCardTrigger>
-                      <Badge className="cursor-pointer flex items-center gap-1">
+                      <Badge
+                        className="cursor-pointer flex items-center gap-1"
+                        onClick={() => setOpen(!open)}
+                      >
                         {format(finalSchedule.defenseDate, "PPP")}
                         <ArrowUpRight className="w-4 h-4" />
                       </Badge>

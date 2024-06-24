@@ -7,7 +7,13 @@ import { format } from "date-fns";
 import { cn, daysFromToday, formatDays } from "@/lib/utils";
 
 function StudentEventsTimeline() {
-  const { data: events, isLoading, isSuccess } = useGetEventsQuery();
+  const {
+    data: events,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetEventsQuery();
 
   let activeEvents, content, flattenEvents, sortedEvents, render;
 
@@ -96,6 +102,18 @@ function StudentEventsTimeline() {
     } else {
       content = <Timeline className="w-[95%]" mode="left" items={render} />;
     }
+  } else if (isError) {
+    content = (
+      <CardContent className="flex items-center justify-center h-[200px]">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h3 className="text-lg font-semibold ">Something went wrong.</h3>
+          <p className="text-sm text-muted-foreground">
+            {error.status || `STATUS ${error.originalStatus}`}
+          </p>
+          <div className="mt-4"> {JSON.stringify(error.data)}</div>
+        </div>
+      </CardContent>
+    );
   }
 
   return content;
