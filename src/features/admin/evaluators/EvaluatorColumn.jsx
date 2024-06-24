@@ -74,23 +74,23 @@ export const EvaluatorColumn = [
     },
   },
 
-  {
-    accessorKey: "isAssociated",
-    header: () => (
-      <TableHead className="hidden lg:table-cell">Association</TableHead>
-    ),
-    cell: ({ row }) => {
-      const isAssociated = row.getValue("isAssociated");
+  // {
+  //   accessorKey: "isAssociated",
+  //   header: () => (
+  //     <TableHead className="hidden lg:table-cell">Association</TableHead>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const isAssociated = row.getValue("isAssociated");
 
-      return (
-        <TableCell className="hidden lg:table-cell">
-          <Badge variant="outline">
-            {isAssociated ? "Associated" : "Not Associated"}
-          </Badge>
-        </TableCell>
-      );
-    },
-  },
+  //     return (
+  //       <TableCell className="hidden lg:table-cell">
+  //         <Badge variant="outline">
+  //           {isAssociated ? "Associated" : "Not Associated"}
+  //         </Badge>
+  //       </TableCell>
+  //     );
+  //   },
+  // },
 
   {
     accessorKey: "evaluatorType",

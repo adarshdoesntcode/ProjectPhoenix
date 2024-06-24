@@ -27,6 +27,8 @@ import { File } from "lucide-react";
 import { DataTable } from "./EventDataTable";
 import { numberOfDevelopingProjects, numberOfValues } from "@/lib/utils";
 import { useRef } from "react";
+import ApiError from "@/components/error/ApiError";
+import Loader from "@/components/Loader";
 
 function AdminEvents() {
   const tableRef = useRef();
@@ -44,8 +46,8 @@ function AdminEvents() {
     numberOfCompleteEvents,
     noOfDevelopingProjects,
     activeEvents,
-    completeEvents,
-    archiveEvents;
+    completeEvents;
+  // archiveEvents;
 
   if (events) {
     numberOfActiveEvents = numberOfValues(
@@ -73,17 +75,13 @@ function AdminEvents() {
     completeEvents = events.data.filter(
       (event) => event.eventStatus === EVENT_STATUS.Complete
     );
-    archiveEvents = events.data.filter(
-      (event) => event.eventStatus === EVENT_STATUS.Archive
-    );
+    // archiveEvents = events.data.filter(
+    //   (event) => event.eventStatus === EVENT_STATUS.Archive
+    // );
   }
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     if (!events) {
       content = (
@@ -186,9 +184,9 @@ function AdminEvents() {
                 <TabsTrigger value="complete" className="hidden lg:inline-flex">
                   Complete
                 </TabsTrigger>
-                <TabsTrigger value="archive" className="hidden lg:inline-flex">
+                {/* <TabsTrigger value="archive" className="hidden lg:inline-flex">
                   Archive
-                </TabsTrigger>
+                </TabsTrigger> */}
                 <TabsTrigger value="all">All</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
@@ -243,7 +241,7 @@ function AdminEvents() {
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="archive">
+            {/* <TabsContent value="archive">
               <Card>
                 <CardHeader>
                   <CardTitle>Archived Events</CardTitle>
@@ -259,7 +257,7 @@ function AdminEvents() {
                   />
                 </CardContent>
               </Card>
-            </TabsContent>
+            </TabsContent> */}
             <TabsContent value="all">
               <Card>
                 <CardHeader>
@@ -281,6 +279,8 @@ function AdminEvents() {
         </div>
       );
     }
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

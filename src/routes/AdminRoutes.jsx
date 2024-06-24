@@ -2,7 +2,7 @@ import AdminDashboard from "@/features/admin/AdminDashboard";
 import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
 
 import AdminNotices from "@/features/admin/AdminNotices";
-import AdminProjects from "@/features/admin/AdminProjects";
+import AdminProjects from "@/features/admin/projects/AdminProjects";
 import AdminStudents from "@/features/admin/AdminStudents";
 import AdminSupervisors from "@/features/admin/AdminSupervisors";
 import AdminEventDetails from "@/features/admin/events/AdminEventDetails";
@@ -13,60 +13,74 @@ import { Navigate } from "react-router-dom";
 import AdminDefense from "@/features/admin/defense/AdminDefense";
 import AdminNewDefense from "@/features/admin/defense/AdminNewDefense";
 import AdminDefenseDetails from "@/features/admin/defense/AdminDefenseDetails";
+import Error from "@/components/error/Error";
 
 const AdminRoutes = [
   {
     index: true,
     element: <Navigate replace to="dashboard" />,
+    errorElement: <Error />,
   },
   {
     path: "dashboard",
     element: <AdminDashboard />,
+    errorElement: <Error />,
   },
   {
     path: "events",
     element: <AdminEvents />,
+    errorElement: <Error />,
   },
   {
     path: "events/:id",
     element: <AdminEventDetails />,
+    errorElement: <Error />,
   },
 
   {
     path: "events/new",
     element: <AdminNewEvent />,
+    errorElement: <Error />,
   },
   {
     path: "defense",
     element: <AdminDefense />,
+    errorElement: <Error />,
   },
   {
     path: "defense/:id",
     element: <AdminDefenseDetails />,
+    errorElement: <Error />,
   },
   {
     path: "defense/new",
     element: <AdminNewDefense />,
+    errorElement: <Error />,
   },
   {
     path: "projects",
     element: <AdminProjects />,
+    errorElement: <Error />,
   },
   {
     path: "supervisors",
     element: <AdminSupervisors />,
+    errorElement: <Error />,
   },
   {
     path: "students",
     element: <AdminStudents />,
+    errorElement: <Error />,
   },
   {
     path: "notices",
     element: <AdminNotices />,
+    errorElement: <Error />,
   },
   {
     path: "evaluators",
     element: <AdminEvaluators />,
+    errorElement: <Error />,
   },
 ];
 

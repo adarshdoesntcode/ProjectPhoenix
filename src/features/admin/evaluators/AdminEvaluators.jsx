@@ -61,7 +61,7 @@ function AdminEvaluators() {
   let content;
   let internalEvaluators,
     externalEvaluators,
-    numberOfAssociatedEvaluators,
+    // numberOfAssociatedEvaluators,
     numberOfInternalEvaluators,
     numberOfExternalEvaluators;
 
@@ -91,11 +91,11 @@ function AdminEvaluators() {
   };
 
   if (evaluators) {
-    numberOfAssociatedEvaluators = numberOfValues(
-      evaluators?.data,
-      "isAssociated",
-      true
-    );
+    // numberOfAssociatedEvaluators = numberOfValues(
+    //   evaluators?.data,
+    //   "isAssociated",
+    //   true
+    // );
     numberOfInternalEvaluators = numberOfValues(
       evaluators?.data,
       "evaluatorType",
@@ -177,7 +177,7 @@ function AdminEvaluators() {
                 <p className="text-xs text-gray-500 text-right">total</p>
               </CardContent>
             </Card>
-            <Card>
+            {/* <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Associated Evaluators
@@ -195,7 +195,7 @@ function AdminEvaluators() {
                   associated / total
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">

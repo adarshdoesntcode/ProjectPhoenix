@@ -76,7 +76,7 @@ function AdminMobileSideBar() {
               </Badge>
             </Link>
           </SheetClose>
-          <SheetClose>
+          <SheetClose asChild>
             <Link
               to={`/${ROLES_LIST.admin}/defense`}
               className={`mx-[-0.65rem]  flex items-center ${

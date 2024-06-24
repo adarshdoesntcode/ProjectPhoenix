@@ -169,32 +169,29 @@ export const EventColumns = [
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent
+              align="end"
+              onClick={(e) => e.stopPropagation()}
+            >
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   navigator.clipboard.writeText(event.eventCode);
                 }}
               >
                 Copy Event ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
+              <DropdownMenuItem>
                 <Link to={`/${ROLES_LIST.admin}/events/${row.original._id}`}>
                   View Event
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
+                onClick={() => {}}
+                disabled={event.projects.length > 0 ? true : false}
               >
-                Archive
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

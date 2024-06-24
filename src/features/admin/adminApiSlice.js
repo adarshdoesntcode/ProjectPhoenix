@@ -74,6 +74,12 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getAllProjects: builder.query({
+      query: () => ({
+        url: "/event/event/projects",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -88,4 +94,5 @@ export const {
   useCreateDefenseMutation,
   useExtendDeadlineMutation,
   useGetDefenseDetailQuery,
+  useGetAllProjectsQuery,
 } = adminApiSlice;
