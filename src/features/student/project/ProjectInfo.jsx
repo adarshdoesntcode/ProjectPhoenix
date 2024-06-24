@@ -24,7 +24,7 @@ import {
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
+import { getEventTypeByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -204,7 +204,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                     </HoverCardContent>
                   </HoverCard>
                 ) : (
-                  <Badge variant="outline">Not Selected</Badge>
+                  <Badge variant="outline">Not Allocated</Badge>
                 )}
               </div>
             </div>
@@ -245,7 +245,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                     </HoverCardContent>
                   </HoverCard>
                 ) : (
-                  <Badge variant="outline">Not Selected</Badge>
+                  <Badge variant="outline">Not Allocated</Badge>
                 )}
               </div>
             </div>
@@ -286,7 +286,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                     </HoverCardContent>
                   </HoverCard>
                 ) : (
-                  <Badge variant="outline">Not Selected</Badge>
+                  <Badge variant="outline">Not Allocated</Badge>
                 )}
               </div>
             </div>

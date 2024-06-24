@@ -47,7 +47,6 @@ function AdminEvents() {
     noOfDevelopingProjects,
     activeEvents,
     completeEvents;
-  // archiveEvents;
 
   if (events) {
     numberOfActiveEvents = numberOfValues(
@@ -75,9 +74,6 @@ function AdminEvents() {
     completeEvents = events.data.filter(
       (event) => event.eventStatus === EVENT_STATUS.Complete
     );
-    // archiveEvents = events.data.filter(
-    //   (event) => event.eventStatus === EVENT_STATUS.Archive
-    // );
   }
 
   if (isLoading) {

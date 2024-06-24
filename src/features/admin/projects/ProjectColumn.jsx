@@ -10,17 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableHead } from "@/components/ui/table";
-import {
-  EVENT_TYPE,
-  PROGRESS_STATUS,
-  getEventStatusByCode,
-  getEventTypeByCode,
-} from "@/lib/config";
+import { getEventStatusByCode, getEventTypeByCode } from "@/lib/config";
 import { format } from "date-fns";
+
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const DefenseProjectColumn = [
+export const ProjectColumn = [
   {
     accessorKey: "projectCode",
     header: () => <TableHead>Project Code</TableHead>,
@@ -88,89 +84,19 @@ export const DefenseProjectColumn = [
     },
   },
 
-  // {
-  //   accessorKey: "eligibleFor",
-  //   header: () => (
-  //     <TableHead className="hidden lg:table-cell">Eligible For</TableHead>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const progressStatus = row.original.teamMembers[0].progressStatus;
-  //     let formatted = "-";
-
-  //     if (
-  //       progressStatus ===
-  //       PROGRESS_STATUS()[row.original.projectType]
-  //         .ELIGIBLE_FOR_PROPOSAL_DEFENSE[1]
-  //     ) {
-  //       formatted = "Proposal";
-  //     } else if (
-  //       progressStatus ===
-  //       PROGRESS_STATUS()[row.original.projectType]
-  //         .ELIGIBLE_FOR_FINAL_DEFENSE[1]
-  //     ) {
-  //       formatted = "Final";
-  //     } else if (row.original.projectType !== EVENT_TYPE.FIRST) {
-  //       if (
-  //         progressStatus ===
-  //         PROGRESS_STATUS()[row.original.projectType]
-  //           .ELIGIBLE_FOR_MID_DEFENSE[1]
-  //       ) {
-  //         formatted = "Mid";
-  //       }
-  //     }
-
-  //     return (
-  //       <TableCell className="hidden  lg:table-cell">
-  //         <Badge variant="outline">{formatted}</Badge>
-  //       </TableCell>
-  //     );
-  //   },
-  // },
-  // {
-  //   accessorKey: "members",
-  //   header: () => (
-  //     <TableHead className="hidden xl:table-cell">Members</TableHead>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const teamMembers = row.original.teamMembers;
-
-  //     const formatted = teamMembers.length;
-
-  //     return (
-  //       <TableCell className="font-semibold hidden xl:table-cell">
-  //         {formatted}
-  //       </TableCell>
-  //     );
-  //   },
-  // },
   {
-    accessorKey: "gradedBy",
+    accessorKey: "members",
     header: () => (
-      <TableHead className="hidden xl:table-cell">Graded By</TableHead>
+      <TableHead className="hidden xl:table-cell">Members</TableHead>
     ),
-    cell: ({ row, table }) => {
-      const original = row.original;
+    cell: ({ row }) => {
+      const teamMembers = row.original.teamMembers;
 
-      const defenseType = table.options.meta.defenseType;
-      const defenseId = table.options.meta.defenseId;
-      const defense =
-        original[defenseType].defenses.filter(
-          (defense) => defense.defense === defenseId
-        ) || [];
-
-      const evaluators =
-        defense[0].evaluators?.filter(
-          (evaluator) => evaluator.hasEvaluated === true
-        ) || [];
-
-      console.log(evaluators);
-      const joinedEvaluators = evaluators.map(
-        (evaluator) => evaluator.evaluator.fullname
-      );
+      const formatted = teamMembers.length;
 
       return (
         <TableCell className="font-semibold hidden xl:table-cell">
-          {joinedEvaluators.length > 0 ? joinedEvaluators.join(", ") : "None"}
+          {formatted}
         </TableCell>
       );
     },
@@ -199,31 +125,31 @@ export const DefenseProjectColumn = [
       );
     },
   },
-  // {
-  //   accessorKey: "createdAt",
-  //   header: ({ column }) => (
-  //     <TableHead
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       className="cursor-pointer hidden xl:table-cell"
-  //     >
-  //       <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-  //         Created On
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     </TableHead>
-  //   ),
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <TableHead
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="cursor-pointer hidden xl:table-cell"
+      >
+        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+          Created On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </TableHead>
+    ),
 
-  //   cell: ({ row }) => {
-  //     const createdAt = row.getValue("createdAt");
-  //     const formatted = format(createdAt, "PPP");
+    cell: ({ row }) => {
+      const createdAt = row.getValue("createdAt");
+      const formatted = format(createdAt, "PPP");
 
-  //     return (
-  //       <TableCell className="text-gray-500 hidden xl:table-cell">
-  //         {formatted}
-  //       </TableCell>
-  //     );
-  //   },
-  // },
+      return (
+        <TableCell className="text-gray-500 hidden xl:table-cell">
+          {formatted}
+        </TableCell>
+      );
+    },
+  },
 
   // {
   //   id: "actions",

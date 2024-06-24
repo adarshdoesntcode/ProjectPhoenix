@@ -95,7 +95,7 @@ export const ProjectColumn = [
     ),
     cell: ({ row }) => {
       const progressStatus = row.original.teamMembers[0].progressStatus;
-      let formatted = "-";
+      let formatted = "None";
 
       if (
         progressStatus ===
@@ -193,52 +193,52 @@ export const ProjectColumn = [
   //   },
   // },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const project = row.original;
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const project = row.original;
 
-      return (
-        <TableCell className="hidden md:table-cell">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigator.clipboard.writeText(project.projectCode);
-                }}
-              >
-                Copy Project Code
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  to={`${row.original._id}`}
-                >
-                  View Project
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                Archive
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TableCell>
-      );
-    },
-  },
+  //     return (
+  //       <TableCell className="hidden md:table-cell">
+  //         <DropdownMenu>
+  //           <DropdownMenuTrigger asChild>
+  //             <Button variant="ghost" className="h-8 w-8 p-0">
+  //               <span className="sr-only">Open menu</span>
+  //               <MoreHorizontal className="h-4 w-4" />
+  //             </Button>
+  //           </DropdownMenuTrigger>
+  //           <DropdownMenuContent align="end">
+  //             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //             <DropdownMenuItem
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //                 navigator.clipboard.writeText(project.projectCode);
+  //               }}
+  //             >
+  //               Copy Project Code
+  //             </DropdownMenuItem>
+  //             <DropdownMenuSeparator />
+  //             <DropdownMenuItem>
+  //               <Link
+  //                 onClick={(e) => {
+  //                   e.stopPropagation();
+  //                 }}
+  //                 to={`${row.original._id}`}
+  //               >
+  //                 View Project
+  //               </Link>
+  //             </DropdownMenuItem>
+  //             <DropdownMenuItem
+  //               onClick={(e) => {
+  //                 e.stopPropagation();
+  //               }}
+  //             >
+  //               Archive
+  //             </DropdownMenuItem>
+  //           </DropdownMenuContent>
+  //         </DropdownMenu>
+  //       </TableCell>
+  //     );
+  //   },
+  // },
 ];

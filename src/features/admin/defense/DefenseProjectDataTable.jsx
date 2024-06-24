@@ -123,7 +123,11 @@ export const DataTable = forwardRef(
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className="cursor-pointer"
-                    onClick={() => navigate(`${row.original._id}`)}
+                    onClick={() =>
+                      navigate(
+                        `/${ROLES_LIST.admin}/projects/${row.original._id}`
+                      )
+                    }
                   >
                     {row.getVisibleCells().map((cell) => (
                       <React.Fragment key={cell.id}>

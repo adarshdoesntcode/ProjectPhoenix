@@ -502,7 +502,7 @@ function AdminEventDetails() {
           </div>
           <TabsContent value="all">
             <Card>
-              <CardHeader className="pb-2">
+              <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div>Enrolled Projects</div>
                   <div className="text-sm font-semibold text-slate-500">
@@ -524,7 +524,7 @@ function AdminEventDetails() {
           </TabsContent>
           <TabsContent value="proposal">
             <Card>
-              <CardHeader className="pb-2">
+              <CardHeader>
                 <CardTitle className="flex items-center justify-between ">
                   <div>Eligible for Proposal</div>
                   <div className="text-sm font-semibold text-slate-500">
@@ -547,7 +547,7 @@ function AdminEventDetails() {
           {event.data.eventType != EVENT_TYPE.FIRST && (
             <TabsContent value="mid">
               <Card>
-                <CardHeader className="pb-2">
+                <CardHeader>
                   <CardTitle className="flex items-center justify-between ">
                     <div>Eligible for Mid</div>
                     <div className="text-sm font-semibold text-slate-500">
@@ -571,7 +571,7 @@ function AdminEventDetails() {
 
           <TabsContent value="final">
             <Card>
-              <CardHeader className="pb-2">
+              <CardHeader>
                 <CardTitle className="flex items-center justify-between ">
                   <div>Eligible for Final</div>
                   <div className="text-sm font-semibold text-slate-500">
