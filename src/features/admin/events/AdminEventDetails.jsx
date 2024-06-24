@@ -46,6 +46,8 @@ import { Separator } from "@/components/ui/separator";
 import { DefenseColumn } from "./DefenseColumn";
 import { DefenseDataTable } from "./DefenseDataTable";
 import AdminExtendEvent from "./AdminExtendEvent";
+import ApiError from "@/components/error/ApiError";
+import Loader from "@/components/Loader";
 
 function getTotalNumberOfAssociatedStudents(event) {
   if (event.data && Array.isArray(event.data.projects)) {
@@ -106,7 +108,7 @@ function AdminEventDetails() {
     error,
   } = useGetEventQuery(id);
 
-  console.log(event);
+  console.log(error);
   const navigate = useNavigate();
 
   const tableRef = useRef();
@@ -173,11 +175,7 @@ function AdminEventDetails() {
   }
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     content = (
       <>
@@ -695,23 +693,7 @@ function AdminEventDetails() {
       </>
     );
   } else if (isError) {
-    content = (
-      <div className="flex flex-1 items-center justify-center bg-slate-50 ">
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h3 className="text-2xl font-bold tracking-tight">
-            Error Status {error.status} !!
-          </h3>
-
-          <p className="text-sm text-gray-500">
-            {error.data.message || "Error"}
-          </p>
-
-          <Button className="mt-4" onClick={() => navigate(-1)}>
-            Go Back
-          </Button>
-        </div>
-      </div>
-    );
+    content = <ApiError error={error} />;
   }
 
   return content;

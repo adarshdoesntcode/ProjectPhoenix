@@ -37,6 +37,13 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getArchiveProject: builder.query({
+      query: (credentials) => ({
+        url: `/student/associatedProjects/${credentials}`,
+        method: "GET",
+      }),
+    }),
     createProject: builder.mutation({
       query: (credentials) => ({
         url: `/student/team/create`,
@@ -44,6 +51,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+
     submitReport: builder.mutation({
       query: ({ file, userProject, submittedBy, submittedOn }) => {
         const formData = new FormData();

@@ -166,11 +166,11 @@ export const DefenseProjectColumn = [
       console.log(evaluators);
       const joinedEvaluators = evaluators.map(
         (evaluator) => evaluator.evaluator.fullname
-      ) || ["None"];
+      );
 
       return (
         <TableCell className="font-semibold hidden xl:table-cell">
-          {joinedEvaluators.join(", ")}
+          {joinedEvaluators.length > 0 ? joinedEvaluators.join(", ") : "None"}
         </TableCell>
       );
     },

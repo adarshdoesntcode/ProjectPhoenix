@@ -20,20 +20,23 @@ import {
 } from "@/components/ui/hover-card";
 import { DataTable } from "./DefenseProjectDataTable";
 import { DefenseProjectColumn } from "./DefenseProjectColumn";
+import Loader from "@/components/Loader";
+import ApiError from "@/components/error/ApiError";
 
 function AdminDefenseDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: defense, isLoading, isSuccess } = useGetDefenseDetailQuery(id);
+  const {
+    data: defense,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetDefenseDetailQuery(id);
   let content;
-  console.log(defense);
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center text-gray-600  bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     content = (
       <div>
@@ -54,7 +57,7 @@ function AdminDefenseDetails() {
               <div className="text-xl">
                 {defense.data.defenseType.toUpperCase()} DEFENSE
               </div>
-              <Badge variant="secondary">
+              <Badge variant={defense.data.status == 101 ? "" : "secondary"}>
                 {getEventStatusByCode(defense.data.status)}
               </Badge>
             </CardTitle>
@@ -87,7 +90,7 @@ function AdminDefenseDetails() {
                 <CardTitle className="flex items-center justify-between gap-4">
                   {room.room}
 
-                  <Badge variant={room.isCompleted ? "" : "secondary"}>
+                  <Badge variant={room.isCompleted ? "secondary" : ""}>
                     {room.isCompleted ? "Complete" : "Active"}
                   </Badge>
                 </CardTitle>
@@ -149,6 +152,8 @@ function AdminDefenseDetails() {
         })}
       </div>
     );
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

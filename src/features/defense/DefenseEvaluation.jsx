@@ -22,6 +22,8 @@ import ProposalEvaluationForm from "./ProposalEvaluationForm";
 import MidEvaluationForm from "./MidEvaluationForm";
 import FinalEvaluationForm from "./FinalEvaluationForm";
 import PreviousEvaluation from "./PreviousEvaluation";
+import Loader from "@/components/Loader";
+import ApiError from "@/components/error/ApiError";
 
 function checkDefenseId(defenseId, data) {
   const proposalIds =
@@ -65,6 +67,8 @@ function DefenseEvaluation() {
     data: project,
     isLoading,
     isSuccess,
+    error,
+    isError,
   } = useGetDefenseProjectQuery(id, {
     forceRefetch: true,
     refetchOnMountOrArgChange: 1,
@@ -97,11 +101,7 @@ function DefenseEvaluation() {
   }
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     const members = project.data.teamMembers;
     teamContent = members.map((member) => {
@@ -308,6 +308,8 @@ function DefenseEvaluation() {
         </div>
       </>
     );
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

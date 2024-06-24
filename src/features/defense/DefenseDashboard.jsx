@@ -29,6 +29,8 @@ import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
 import useLogout from "@/hooks/useLogout";
 import { toast } from "@/components/ui/use-toast";
+import Loader from "@/components/Loader";
+import ApiError from "@/components/error/ApiError";
 
 const seprateProjects = (
   projects,
@@ -100,6 +102,8 @@ function DefenseDashboard() {
     data: defense,
     isLoading,
     isSuccess,
+    error,
+    isError,
   } = useGetDefenseQuery(user.currentDefense);
 
   const handlelogout = async () => {
@@ -133,11 +137,7 @@ function DefenseDashboard() {
   }
 
   if (isLoading) {
-    content = (
-      <div className="flex flex-1 items-center justify-center bg-slate-50 ">
-        <Loader2 className="h-6 w-6 animate-spin mr-4" />
-      </div>
-    );
+    content = <Loader />;
   } else if (isSuccess) {
     content = (
       <>
@@ -296,6 +296,8 @@ function DefenseDashboard() {
         </AlertDialog>
       </>
     );
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

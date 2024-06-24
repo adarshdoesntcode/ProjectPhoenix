@@ -23,6 +23,15 @@ const QuillEditor = ({ setProjectEvaluation }) => {
       },
     });
 
+    quillRef.current.clipboard.dangerouslyPasteHTML(
+      '<p><strong>Comments</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol><p><strong>Feedbacks</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol>'
+    );
+
+    const commentIndex =
+      quillRef.current.getText().indexOf("Comments") + "Comments".length + 1;
+
+    quillRef.current.setSelection(commentIndex, 0);
+
     quillRef.current.on("text-change", () => {
       setProjectEvaluation((prev) => {
         return {

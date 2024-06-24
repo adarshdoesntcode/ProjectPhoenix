@@ -191,7 +191,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                         <div className="flex justify-between">
                           <span className="text-slate-500">Time</span>{" "}
                           <span className="text-slate-700 font-semibold">
-                            {format(proposalSchedule.defenseTime, "HH:mm a")}
+                            {format(proposalSchedule.defenseTime, "hh:mm a")}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -232,7 +232,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                         <div className="flex justify-between">
                           <span className="text-slate-500">Time</span>{" "}
                           <span className="text-slate-700 font-semibold">
-                            {format(midSchedule.defenseTime, "HH:mm a")}
+                            {format(midSchedule.defenseTime, "hh:mm a")}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -273,7 +273,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
                         <div className="flex justify-between">
                           <span className="text-slate-500">Time</span>{" "}
                           <span className="text-slate-700 font-semibold">
-                            {format(finalSchedule.defenseTime, "HH:mm a")}
+                            {format(finalSchedule.defenseTime, "hh:mm a")}
                           </span>
                         </div>
                         <div className="flex justify-between">

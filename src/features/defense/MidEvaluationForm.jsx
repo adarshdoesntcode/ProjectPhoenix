@@ -93,7 +93,7 @@ const projectEvaluationInitalState = {
   workProgress: "",
   documentation: "",
   judgement: "",
-  feedback: "<p>No Feedback</p>",
+  feedback: "<p>No Comments or Feedback</p>",
   outstanding: false,
 };
 
@@ -102,8 +102,21 @@ const projectAbsentInitalState = {
   workProgress: "0",
   documentation: "0",
   judgement: "-1",
-  feedback: "<p>No Feedback</p>",
+  feedback: "<p>No Comments or Feedback</p>",
   outstanding: false,
+};
+
+const groupByDefenseId = (data) => {
+  const grouped = data.reduce((acc, item) => {
+    const defenseId = item.defense;
+    if (!acc[defenseId]) {
+      acc[defenseId] = [];
+    }
+    acc[defenseId].push(item);
+    return acc;
+  }, {});
+
+  return Object.values(grouped);
 };
 
 function MidEvaluationForm({ project, defenseType }) {
@@ -138,8 +151,7 @@ function MidEvaluationForm({ project, defenseType }) {
     defenseTypeString = "final";
   }
   const evaluations = project.data[defenseTypeString].evaluations;
-  const attempt =
-    evaluations.filter((item) => item.evaluationType === "proposal").length + 1;
+  const attempt = groupByDefenseId(evaluations).length + 1;
 
   const [studentEvaluation, setStudentEvaluation] = useState(
     studentEvaluationInitalState
