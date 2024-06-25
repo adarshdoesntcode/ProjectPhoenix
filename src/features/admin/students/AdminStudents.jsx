@@ -1,8 +1,9 @@
-import Loader from "@/components/Loader";
-import { useGetAllProjectsQuery } from "../adminApiSlice";
 import ApiError from "@/components/error/ApiError";
-import { Button } from "@/components/ui/button";
+import { useGetAllStudentsQuery } from "../adminApiSlice";
+import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Activity,
   Archive,
@@ -10,6 +11,9 @@ import {
   CheckCheck,
   ChevronLeft,
   File,
+  FileQuestion,
+  Handshake,
+  UserCheck,
 } from "lucide-react";
 import {
   Card,
@@ -19,49 +23,46 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRef } from "react";
-import { DataTable } from "./ProjectDataTable";
-import { ProjectColumn } from "./ProjectColumn";
-import { EVENT_STATUS } from "@/lib/config";
+import { DataTable } from "./StudentDataTable";
+import { StudentColumn } from "./StudentColumn";
 
-function AdminProjects() {
+function AdminStudents() {
   const {
-    data: projects,
+    data: students,
     isSuccess,
     isLoading,
     isError,
     error,
-  } = useGetAllProjectsQuery();
+  } = useGetAllStudentsQuery();
 
   const navigate = useNavigate();
   const tableRef = useRef();
 
   let content;
-  let activeProjects, completeProjects, archiveProjects;
+  let assocaiatedStudents, notAssociatedStudents;
 
-  if (projects) {
-    activeProjects = projects.data.filter(
-      (project) => project.status === EVENT_STATUS.Active
+  console.log(students);
+
+  if (students) {
+    assocaiatedStudents = students.data.filter(
+      (student) => student.isAssociated === true
     );
-    completeProjects = projects.data.filter(
-      (project) => project.status === EVENT_STATUS.Complete
-    );
-    archiveProjects = projects.data.filter(
-      (project) => project.status === EVENT_STATUS.Archive
+    notAssociatedStudents = students.data.filter(
+      (student) => student.isAssociated === false
     );
   }
 
   if (isLoading) {
     content = <Loader />;
   } else if (isSuccess) {
-    if (!projects) {
+    if (!students) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">No Projects</h3>
+            <h3 className="text-2xl font-bold tracking-tight">No Students</h3>
 
             <p className="text-sm text-gray-500">
-              Projects will appear when students create them
+              Students will appear as soon as they sign up
             </p>
           </div>
         </div>
@@ -78,68 +79,53 @@ function AdminProjects() {
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            Projects
+            Students
           </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Registered Projects
+                  All Students
                 </CardTitle>
-                <CalendarCheck2 className="h-4 w-4 text-gray-500" />
+                <UserCheck className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{projects.data.length}</div>
+                <div className="text-2xl font-bold">{students.data.length}</div>
                 <p className="text-xs text-gray-500 text-right">
-                  all the projects
+                  all signed up students
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Active Projects
+                  Associated Students
                 </CardTitle>
-                <Activity className="h-4 w-4 text-gray-500" />
+                <Handshake className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {activeProjects.length}
+                  {assocaiatedStudents.length}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  running projects
+                  part of a project
                 </p>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Complete Projects
+                  Not Associated Students
                 </CardTitle>
-                <CheckCheck className="h-4 w-4 text-gray-500" />
+                <FileQuestion className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {completeProjects.length}
+                  {notAssociatedStudents.length}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  successful projects
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Archived Projects
-                </CardTitle>
-                <Archive className="h-4 w-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {archiveProjects.length}
-                </div>
-                <p className="text-xs text-gray-500 text-right">
-                  unsucessful projects
+                  not part of a projects
                 </p>
               </CardContent>
             </Card>
@@ -148,11 +134,8 @@ function AdminProjects() {
             <div className="flex items-center">
               <TabsList>
                 <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="complete">Complete</TabsTrigger>
-                <TabsTrigger value="archive" className="hidden lg:inline-flex">
-                  Archive
-                </TabsTrigger>
+                <TabsTrigger value="associated">Associated</TabsTrigger>
+                <TabsTrigger value="notassociated">Not Associated</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <Button
@@ -169,68 +152,50 @@ function AdminProjects() {
             <TabsContent value="all">
               <Card>
                 <CardHeader>
-                  <CardTitle>All Projects</CardTitle>
+                  <CardTitle>Associated</CardTitle>
                   <CardDescription>
-                    All the registered projects on the system
+                    Stuednts that are currently part of project
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={ProjectColumn}
-                    data={projects.data}
+                    columns={StudentColumn}
+                    data={students.data}
                   />
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="active">
+            <TabsContent value="associated">
               <Card>
                 <CardHeader>
-                  <CardTitle>Active Projects</CardTitle>
+                  <CardTitle>Associated</CardTitle>
                   <CardDescription>
-                    Currently active projects in the system
+                    Stuednts that are currently part of project
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={ProjectColumn}
-                    data={activeProjects}
+                    columns={StudentColumn}
+                    data={assocaiatedStudents}
                   />
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="complete">
+            <TabsContent value="notassociated">
               <Card>
                 <CardHeader>
-                  <CardTitle>Complete Projects</CardTitle>
+                  <CardTitle>Not Associated</CardTitle>
                   <CardDescription>
-                    All the successfully graded projects
+                    Students that are currently not part of a project
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={ProjectColumn}
-                    data={completeProjects}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="archive">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Archive Projects</CardTitle>
-                  <CardDescription>
-                    All the archived projects on the system
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DataTable
-                    ref={tableRef}
-                    columns={ProjectColumn}
-                    data={archiveProjects}
+                    columns={StudentColumn}
+                    data={notAssociatedStudents}
                   />
                 </CardContent>
               </Card>
@@ -242,8 +207,7 @@ function AdminProjects() {
   } else if (isError) {
     content = <ApiError error={error} />;
   }
-
   return content;
 }
 
-export default AdminProjects;
+export default AdminStudents;

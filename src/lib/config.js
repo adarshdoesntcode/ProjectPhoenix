@@ -27,7 +27,8 @@ export const PROGRAM_CODE = {
 };
 
 export function getProgramByCode(value) {
-  return Object.keys(PROGRAM_CODE).find((key) => PROGRAM_CODE[key] === value);
+  const input = value.toString();
+  return Object.keys(PROGRAM_CODE).find((key) => PROGRAM_CODE[key] === input);
 }
 
 export const EVENT_TYPE = {
