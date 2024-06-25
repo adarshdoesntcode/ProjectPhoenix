@@ -24,7 +24,7 @@ const QuillEditor = ({ setProjectEvaluation }) => {
     });
 
     quillRef.current.clipboard.dangerouslyPasteHTML(
-      '<p><strong>Comments</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol><p><strong>Feedbacks</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol>'
+      '<p><strong>Comments</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol><p><strong>Feedback</strong></p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span><br></li></ol>'
     );
 
     const commentIndex =

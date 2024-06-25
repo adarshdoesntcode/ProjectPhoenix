@@ -340,7 +340,7 @@ function StudentCreateProject({ targetedEvent }) {
           className="bg-white font-medium text-lg px-3 pr-2"
         >
           Enrolled
-          <BadgeCheck className="w-5 h-5 ml-1" />
+          <BadgeCheck className="w-5 h-5 ml-2" />
         </Badge>
       )}
     </>

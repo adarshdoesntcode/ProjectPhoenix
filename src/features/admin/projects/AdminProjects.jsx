@@ -59,7 +59,7 @@ function AdminProjects() {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">No projects</h3>
+            <h3 className="text-2xl font-bold tracking-tight">No Projects</h3>
 
             <p className="text-sm text-gray-500">
               Projects will appear when students create them
@@ -140,7 +140,7 @@ function AdminProjects() {
                   {archiveProjects.length}
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  unsucessfull projects
+                  unsucessful projects
                 </p>
               </CardContent>
             </Card>

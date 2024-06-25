@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 import { Input } from "@/components/ui/input";
@@ -215,6 +215,10 @@ function FinalEvaluationForm({ project, defenseType, roomID }) {
   const [projectPresent, setProjectPresent] = useState(false);
   const [hideMarks, setHideMarks] = useState(false);
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectPresent]);
 
   let disabled = true;
 

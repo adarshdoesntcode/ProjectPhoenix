@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 
@@ -161,6 +161,10 @@ function MidEvaluationForm({ project, defenseType, roomID }) {
     projectEvaluationInitalState
   );
   const [projectPresent, setProjectPresent] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectPresent]);
 
   const [modal, setModal] = useState(false);
 
