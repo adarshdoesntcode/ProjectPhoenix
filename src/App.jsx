@@ -6,15 +6,17 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { ROLES_LIST } from "./lib/config";
 import NotFound from "./components/NotFound";
-import AdminLayout from "./components/layouts/AdminLayout";
+
 import AdminRoutes from "./routes/AdminRoutes";
 import Unauthorized from "./components/Unauthorized";
-import StudentLayout from "./components/layouts/StudentLayout";
+
 import StudentRoutes from "./routes/StudentRoutes";
 import SupervisorLayout from "./components/layouts/SupervisorLayout";
 import SupervisorRoutes from "./routes/SupervisorRoutes";
 import DefenseLayout from "./components/layouts/DefenseLayout";
 import DefenseRoutes from "./routes/DefenseRoutes";
+import StudentLayout from "./components/layouts/StudentLayout";
+import AdminLayout from "./components/layouts/AdminLayout";
 
 const router = createBrowserRouter([
   {

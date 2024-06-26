@@ -51,7 +51,7 @@ import {
 import { Button } from "../ui/button";
 import { useUpdateStudentMutation } from "@/features/student/studentApiSlice";
 
-function AdminLayout() {
+function StudentLayout() {
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -280,4 +280,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout;
+export default StudentLayout;
