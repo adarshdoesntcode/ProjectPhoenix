@@ -45,6 +45,7 @@ const getGreeting = () => {
 
 const DefenseLayout = () => {
   const [logoutLoader, setLogoutLoader] = useState(false);
+
   const location = useLocation();
   const logout = useLogout();
 
@@ -80,8 +81,8 @@ const DefenseLayout = () => {
       </Helmet>
 
       <div className="grid min-h-screen w-full bg-slate-100/40">
-        <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-white sm:flex">
-          <nav className="flex flex-col items-center gap-4 px-2 py-3">
+        <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col justify-between border-r bg-white sm:flex">
+          <nav className="flex flex-col justify-between items-center gap-4 px-2 py-3">
             <Link
               to={`/${ROLES_LIST.defense}/dashboard`}
               className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
@@ -89,6 +90,9 @@ const DefenseLayout = () => {
               <Origami />
             </Link>
           </nav>
+          <div className="-rotate-90 flex whitespace-nowrap tracking-wide uppercase font-semibold w-full text-lg gap-4 pl-8">
+            {user.fullname}
+          </div>
         </aside>
         <div className="flex flex-col sm:pl-14">
           <header className="flex sticky top-0 h-14 items-center gap-4  z-50 bg-slate-50   border-b  px-4  lg:px-6">
@@ -104,8 +108,8 @@ const DefenseLayout = () => {
               </BreadcrumbList>
             </Breadcrumb>
             <div className=" ml-auto  flex md:grow-0">
-              <span className="text-slate-600 font-base leading-6 text-sm">
-                {getGreeting()}, {user.fullname}
+              <span className="font-semibold text-slate-500">
+                {getGreeting()}
               </span>
             </div>
             <DropdownMenu>
