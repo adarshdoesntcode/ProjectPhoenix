@@ -117,3 +117,22 @@ export const animationProps = () => {
     },
   };
 };
+
+export const DESCRIPTION_CATEGORY_SET = [
+  { id: 1, category: "Web Dev", selected: false },
+  { id: 2, category: "Mobile Dev", selected: false },
+  { id: 3, category: "AI/ML", selected: false },
+  { id: 4, category: "Data Science", selected: false },
+  { id: 5, category: "Cybersecurity", selected: false },
+  { id: 6, category: "SQL/NoSQL", selected: false },
+  { id: 7, category: "IoT", selected: false },
+  { id: 8, category: "Blockchain", selected: false },
+  { id: 9, category: "Game Dev", selected: false },
+  { id: 10, category: "AR/VR", selected: false },
+  { id: 11, category: "Robotics", selected: false },
+  { id: 12, category: "NLP", selected: false },
+  { id: 13, category: "E-commerce", selected: false },
+  { id: 14, category: "Financial", selected: false },
+  { id: 15, category: "Health", selected: false },
+  { id: 16, category: "Education", selected: false },
+];

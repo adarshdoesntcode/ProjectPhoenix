@@ -31,6 +31,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
+  DESCRIPTION_CATEGORY_SET,
   ROLES_LIST,
   getEventStatusByCode,
   getEventTypeByCode,
@@ -78,9 +79,20 @@ function StudentCreateProject({ targetedEvent }) {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
+  const [step, setStep] = useState(1);
   const refreshUser = useRefreshUser();
+  const [categories, setCategories] = useState(DESCRIPTION_CATEGORY_SET);
+  const selectedCategories = categories.filter(
+    (category) => category.selected === true
+  );
+
+  console.log(selectedCategories);
+
+  const projectName = watch("projectName");
+  const projectDescription = watch("projectDescription");
 
   let content;
   let selectionStudentsList = [];
@@ -92,11 +104,15 @@ function StudentCreateProject({ targetedEvent }) {
         projectName: data.projectName,
         teamMembers,
         projectDescription: data.projectDescription,
+        categories: selectedCategories.map((category) => category.category),
         eventId: targetedEvent.data._id,
       });
 
       if (res.error) {
         reset();
+        setCategories(DESCRIPTION_CATEGORY_SET);
+        setSelectedMembers([{ ...user }]);
+        setStep(1);
         setModal(false);
         throw new Error("Try Again");
       }
@@ -146,9 +162,13 @@ function StudentCreateProject({ targetedEvent }) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create Project</DialogTitle>
+              <DialogTitle>
+                {step === 1 ? "Create Project" : "Describe Project"}
+              </DialogTitle>
               <DialogDescription>
-                Project Description and Team Members cannot be changed after
+                {step === 1
+                  ? "Team Members cannot be changed afterwards"
+                  : "This information will be used to select your supervisor"}
               </DialogDescription>
             </DialogHeader>
             {isLoading ? (
@@ -157,177 +177,291 @@ function StudentCreateProject({ targetedEvent }) {
               </div>
             ) : (
               isSuccess && (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="grid gap-4 p-2 max-h-[70vh] overflow-scroll">
-                    <div className="grid gap-3">
-                      <Label htmlFor="projectName">
-                        {errors.projectName ? (
-                          <span className="text-red-500">
-                            {errors.projectName.message}
-                          </span>
-                        ) : (
-                          <span>Project Name</span>
-                        )}
-                      </Label>
-                      <Input
-                        id="projectName"
-                        type="text"
-                        {...register("projectName", {
-                          required: "Project Name is required",
-                        })}
-                        className={errors.projectName ? "border-red-500" : ""}
-                      />
-                    </div>
-                    <div className="grid gap-3">
-                      <Label htmlFor="projectDescription">
-                        Project Description
-                      </Label>
-                      <Textarea
-                        id="projectDescription"
-                        placeholder="Describe your Project"
-                        className="min-h-12"
-                        {...register("projectDescription")}
-                      />
-                    </div>
-                    <div className="grid gap-3">
-                      <Label htmlFor="projectDescription">Select Members</Label>
-                      {selectedMembers.map((member) => {
-                        return (
-                          <div
-                            key={member._id}
-                            className="flex items-center justify-between"
-                          >
-                            <div className="flex">
-                              <div className="flex flex-row items-center gap-3">
-                                <Avatar>
-                                  <AvatarImage src={member.photo} />
-                                  <AvatarFallback className="bg-slate-200">
-                                    {getInitials(member.fullname)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div className="text-sm text-slate-500">
-                                  <div className="text-slate-950 font-medium">
-                                    {member.fullname}
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") e.preventDefault();
+                  }}
+                >
+                  {step === 1 && (
+                    <div className="grid gap-4 p-2 max-h-[75vh] overflow-scroll">
+                      <div className="grid gap-3">
+                        <Label htmlFor="projectName">
+                          {errors.projectName ? (
+                            <span className="text-red-500">
+                              {errors.projectName.message}
+                            </span>
+                          ) : (
+                            <span>Project Name</span>
+                          )}
+                        </Label>
+                        <Input
+                          id="projectName"
+                          type="text"
+                          {...register("projectName", {
+                            required: "Project Name is required",
+                          })}
+                          className={errors.projectName ? "border-red-500" : ""}
+                        />
+                      </div>
+
+                      <div className="grid gap-3">
+                        <Label htmlFor="projectDescription">
+                          Select Members
+                        </Label>
+                        {selectedMembers.map((member) => {
+                          return (
+                            <div
+                              key={member._id}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex">
+                                <div className="flex flex-row items-center gap-3">
+                                  <Avatar>
+                                    <AvatarImage src={member.photo} />
+                                    <AvatarFallback className="bg-slate-200">
+                                      {getInitials(member.fullname)}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div className="text-sm text-slate-500">
+                                    <div className="text-slate-950 font-medium">
+                                      {member.fullname}
+                                    </div>
+                                    <div className="text-xs">
+                                      {member.email}
+                                    </div>
                                   </div>
-                                  <div className="text-xs">{member.email}</div>
                                 </div>
                               </div>
+                              {user.email === member.email ? (
+                                <Badge variant="secondary">Yourself</Badge>
+                              ) : (
+                                <UserX
+                                  onClick={() =>
+                                    handleRemoveMember(member.email)
+                                  }
+                                  className="text-slate-500 hover:text-slate-950 transition-all cursor-pointer w-5 h-5"
+                                />
+                              )}
                             </div>
-                            {user.email === member.email ? (
-                              <Badge variant="secondary">Yourself</Badge>
-                            ) : (
-                              <UserX
-                                onClick={() => handleRemoveMember(member.email)}
-                                className="text-slate-500 hover:text-slate-950 transition-all cursor-pointer w-5 h-5"
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
-                      {newMemberInput && (
-                        <div>
-                          <Popover
-                            modal={true}
-                            open={open}
-                            onOpenChange={setOpen}
-                          >
-                            <PopoverTrigger asChild>
-                              <div className="flex justify-center">
-                                <Button
-                                  variant="outline"
-                                  type="button"
-                                  role="combobox"
-                                  aria-expanded={open}
-                                  className="w-full justify-between"
+                          );
+                        })}
+                        {newMemberInput && (
+                          <div>
+                            <Popover
+                              modal={true}
+                              open={open}
+                              onOpenChange={setOpen}
+                            >
+                              <PopoverTrigger asChild>
+                                <div className="flex justify-center">
+                                  <Button
+                                    variant="outline"
+                                    type="button"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="w-full justify-between"
+                                  >
+                                    Search Students...
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </div>
+                              </PopoverTrigger>
+                              <PopoverContent className=" p-0">
+                                <ScrollArea
+                                  className="flex max-h-[200px] flex-col"
+                                  type="always"
                                 >
-                                  Search Students...
-                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                              </div>
-                            </PopoverTrigger>
-                            <PopoverContent className=" p-0">
-                              <ScrollArea
-                                className="flex max-h-[200px] flex-col"
-                                type="always"
-                              >
-                                <Command>
-                                  <CommandInput placeholder="Search Rollno..." />
-                                  <CommandEmpty>No Student found.</CommandEmpty>
-                                  <CommandGroup>
-                                    {selectionStudentsList.map((student) => {
-                                      return (
-                                        <CommandItem
-                                          key={student.value}
-                                          value={student.value}
-                                          onSelect={(currentValue) => {
-                                            const match =
-                                              currentValue.match(regex);
-                                            const roll = match[1];
-                                            setSelectedMembers((prev) => {
-                                              const find =
-                                                selectionStudents.data.filter(
-                                                  (student) =>
-                                                    student.rollNumber == roll
-                                                );
+                                  <Command>
+                                    <CommandInput placeholder="Search Rollno..." />
+                                    <CommandEmpty>
+                                      No Student found.
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                      {selectionStudentsList.map((student) => {
+                                        return (
+                                          <CommandItem
+                                            key={student.value}
+                                            value={student.value}
+                                            onSelect={(currentValue) => {
+                                              const match =
+                                                currentValue.match(regex);
+                                              const roll = match[1];
+                                              setSelectedMembers((prev) => {
+                                                const find =
+                                                  selectionStudents.data.filter(
+                                                    (student) =>
+                                                      student.rollNumber == roll
+                                                  );
 
-                                              return [...prev, find[0]];
-                                            });
-                                            setOpen(false);
-                                            setNewMemberInput(false);
-                                          }}
-                                        >
-                                          {student.label}
-                                        </CommandItem>
-                                      );
-                                    })}
-                                  </CommandGroup>
-                                </Command>
-                              </ScrollArea>
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                      )}
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        className="mt-2"
-                        onClick={() => setNewMemberInput(true)}
-                      >
-                        <CirclePlus className="w-4 h-5 mr-2" />
-                        Add Member
-                      </Button>
+                                                return [...prev, find[0]];
+                                              });
+                                              setOpen(false);
+                                              setNewMemberInput(false);
+                                            }}
+                                          >
+                                            {student.label}
+                                          </CommandItem>
+                                        );
+                                      })}
+                                    </CommandGroup>
+                                  </Command>
+                                </ScrollArea>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        )}
+                        <Button
+                          variant="secondary"
+                          type="button"
+                          className="mt-2"
+                          onClick={() => setNewMemberInput(true)}
+                        >
+                          <CirclePlus className="w-4 h-5 mr-2" />
+                          Add Member
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {step === 2 && (
+                    <div className="grid gap-4 p-2 max-h-[75vh] overflow-scroll">
+                      <div className="grid gap-3">
+                        <Label htmlFor="projectDescription">
+                          {errors.projectDescription ? (
+                            <span className="text-red-500">
+                              {errors.projectDescription.message}
+                            </span>
+                          ) : (
+                            <span>Project Description</span>
+                          )}
+                        </Label>
+                        <Textarea
+                          id="projectDescription"
+                          placeholder="Describe your Project"
+                          className={
+                            errors.projectName
+                              ? "border-red-500 m-h-16"
+                              : "m-h-16"
+                          }
+                          {...register("projectDescription", {
+                            required: "Project Description is required",
+                          })}
+                        />
+                      </div>
+                      <div className="grid gap-4">
+                        <Label htmlFor="projectDescription">
+                          Project Categories
+                          <span className="text-xs text-slate-400">
+                            {" "}
+                            (select atleast 3)
+                          </span>
+                        </Label>
+                        <div className="flex flex-wrap gap-1">
+                          {categories.map((category) => {
+                            return (
+                              <Badge
+                                variant={category.selected ? "" : "outline"}
+                                key={category.id}
+                                size="sm "
+                                className="cursor-pointer"
+                                onClick={() =>
+                                  setCategories((prev) => {
+                                    return prev.map((p) => {
+                                      if (p.id === category.id) {
+                                        return {
+                                          ...p,
+                                          selected: !p.selected,
+                                        };
+                                      } else {
+                                        return {
+                                          ...p,
+                                        };
+                                      }
+                                    });
+                                  })
+                                }
+                              >
+                                {category.category}
+                              </Badge>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-                  <DialogFooter className="mt-4 flex items-center justify-end">
-                    {selectedMembers.length >= 2 &&
-                    selectedMembers.length <= 5 ? (
-                      ""
-                    ) : (
-                      <p className="flex items-center gap-1 mr-2 text-xs text-slate-400">
-                        <span>
-                          <ShieldAlert className="w-4 h-4" />
-                        </span>
-                        <span>Allowed range of team members is (2-5)</span>
-                      </p>
-                    )}
-                    {isSubmitting ? (
-                      <Button variant="secondary" disabled>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating...
-                      </Button>
-                    ) : (
+                  {step === 1 && (
+                    <DialogFooter className="mt-4 flex justify-between items-center ">
+                      {selectedMembers.length >= 2 &&
+                      selectedMembers.length <= 5 ? (
+                        ""
+                      ) : (
+                        <p className="flex items-center gap-1 mr-auto text-xs text-slate-400">
+                          <span>
+                            <ShieldAlert className="w-4 h-4" />
+                          </span>
+                          <span>Allowed range of team members is (2-5)</span>
+                        </p>
+                      )}
+
                       <Button
                         disabled={
                           selectedMembers.length < 2 ||
-                          selectedMembers.length > 5
+                          selectedMembers.length > 5 ||
+                          !projectName
                         }
-                        type="submit"
+                        onClick={() => setStep(2)}
+                        type="button"
                       >
-                        Create Project
+                        Next
                       </Button>
-                    )}
-                  </DialogFooter>
+                    </DialogFooter>
+                  )}
+                  {step === 2 && (
+                    <DialogFooter className="mt-4 flex justify-between items-center ">
+                      <div className="mr-auto">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          type="button"
+                          onClick={() => setStep(1)}
+                        >
+                          Back
+                        </Button>
+                      </div>
+                      <div>
+                        {selectedMembers.length >= 2 &&
+                        selectedMembers.length <= 5 ? (
+                          ""
+                        ) : (
+                          <p className="flex items-center gap-1 mr-2 text-xs text-slate-400">
+                            <span>
+                              <ShieldAlert className="w-4 h-4" />
+                            </span>
+                            <span>Allowed range of team members is (2-5)</span>
+                          </p>
+                        )}
+                        {isSubmitting ? (
+                          <Button variant="secondary" disabled>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Creating...
+                          </Button>
+                        ) : (
+                          <Button
+                            disabled={
+                              selectedMembers.length < 2 ||
+                              selectedMembers.length > 5 ||
+                              selectedCategories.length < 3 ||
+                              !projectDescription
+                            }
+                            type="submit"
+                          >
+                            Create
+                          </Button>
+                        )}
+                      </div>
+                    </DialogFooter>
+                  )}
                 </form>
               )
             )}
