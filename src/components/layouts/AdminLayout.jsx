@@ -31,7 +31,7 @@ import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import { toast } from "../ui/use-toast";
 import ScrollToTop from "../ScrollToTop";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 function AdminLayout() {
   const [logoutLoader, setLogoutLoader] = useState(false);

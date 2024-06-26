@@ -4,7 +4,7 @@ import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
 import AdminNotices from "@/features/admin/AdminNotices";
 import AdminProjects from "@/features/admin/projects/AdminProjects";
 import AdminStudents from "@/features/admin/students/AdminStudents";
-import AdminSupervisors from "@/features/admin/AdminSupervisors";
+import AdminSupervisors from "@/features/admin/supervisors/AdminSupervisors";
 import AdminEventDetails from "@/features/admin/events/AdminEventDetails";
 import AdminEvents from "@/features/admin/events/AdminEvents";
 import AdminNewEvent from "@/features/admin/events/AdminNewEvent";

@@ -36,6 +36,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import ApiError from "@/components/error/ApiError";
 
 function AdminEvaluators() {
   const tableRef = useRef();
@@ -44,7 +45,6 @@ function AdminEvaluators() {
     data: evaluators,
     isLoading,
     isSuccess,
-
     isError,
     error,
   } = useGetAllEvaluatorQuery();
@@ -61,7 +61,6 @@ function AdminEvaluators() {
   let content;
   let internalEvaluators,
     externalEvaluators,
-    // numberOfAssociatedEvaluators,
     numberOfInternalEvaluators,
     numberOfExternalEvaluators;
 
@@ -91,11 +90,6 @@ function AdminEvaluators() {
   };
 
   if (evaluators) {
-    // numberOfAssociatedEvaluators = numberOfValues(
-    //   evaluators?.data,
-    //   "isAssociated",
-    //   true
-    // );
     numberOfInternalEvaluators = numberOfValues(
       evaluators?.data,
       "evaluatorType",
@@ -177,25 +171,7 @@ function AdminEvaluators() {
                 <p className="text-xs text-gray-500 text-right">total</p>
               </CardContent>
             </Card>
-            {/* <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Associated Evaluators
-                </CardTitle>
-                <Handshake className="h-4 w-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  <span>{numberOfAssociatedEvaluators}</span> /{" "}
-                  <span className="text-sm font-normal">
-                    {evaluators.data.length}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 text-right">
-                  associated / total
-                </p>
-              </CardContent>
-            </Card> */}
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -266,8 +242,8 @@ function AdminEvaluators() {
             </div>
             <TabsContent value="all">
               <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">All Evaluators</CardTitle>
+                <CardHeader>
+                  <CardTitle>All Evaluators</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <DataTable
@@ -280,8 +256,8 @@ function AdminEvaluators() {
             </TabsContent>
             <TabsContent value="internal">
               <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">Internal Evaluators</CardTitle>
+                <CardHeader>
+                  <CardTitle>Internal Evaluators</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <DataTable
@@ -294,8 +270,8 @@ function AdminEvaluators() {
             </TabsContent>
             <TabsContent value="external">
               <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl">External Evaluators</CardTitle>
+                <CardHeader>
+                  <CardTitle>External Evaluators</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <DataTable
@@ -310,6 +286,8 @@ function AdminEvaluators() {
         </>
       );
     }
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

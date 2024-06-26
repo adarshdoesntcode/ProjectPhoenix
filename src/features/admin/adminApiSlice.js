@@ -40,14 +40,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Evaluators"],
     }),
-    createSupervisor: builder.mutation({
-      query: (credentials) => ({
-        url: "/event/supervisor/create",
-        method: "POST",
-        body: { ...credentials },
-      }),
-      invalidatesTags: ["Supervisors"],
-    }),
+
     getAllEvaluator: builder.query({
       query: () => ({
         url: "/event/evaluators",
@@ -55,9 +48,10 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Evaluators"],
     }),
+
     getAllSupervisors: builder.query({
       query: () => ({
-        url: "/event/supervisors",
+        url: "/event/event/supervisors",
         method: "GET",
       }),
       providesTags: ["Supervisors"],
@@ -118,5 +112,4 @@ export const {
   useGetAllProjectsQuery,
   useGetAllStudentsQuery,
   useGetAllSupervisorsQuery,
-  useCreateSupervisorMutation,
 } = adminApiSlice;

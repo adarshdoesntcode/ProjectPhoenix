@@ -50,7 +50,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useUpdateStudentMutation } from "@/features/student/studentApiSlice";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 function StudentLayout() {
   const navigate = useNavigate();

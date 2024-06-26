@@ -26,6 +26,7 @@ import { File } from "lucide-react";
 import { DataTable } from "./DefenseDataTable";
 import { numberOfValues } from "@/lib/utils";
 import { useRef } from "react";
+import ApiError from "@/components/error/ApiError";
 
 function AdminDefense() {
   const navigate = useNavigate();
@@ -251,7 +252,7 @@ function AdminDefense() {
             <TabsContent value="archive">
               <Card>
                 <CardHeader>
-                  <CardTitle>Archived defenses</CardTitle>
+                  <CardTitle>Archived Defenses</CardTitle>
                   <CardDescription>
                     All the achived defenses on the system
                   </CardDescription>
@@ -286,6 +287,8 @@ function AdminDefense() {
         </>
       );
     }
+  } else if (isError) {
+    content = <ApiError error={error} />;
   }
 
   return content;

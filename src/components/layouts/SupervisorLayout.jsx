@@ -59,7 +59,7 @@ import { Badge } from "../ui/badge";
 import { useUpdateSupervisorMutation } from "@/features/supervisor/supervisorApiSlice";
 import SupervisorSideBar from "@/features/supervisor/SupervisorSideBar";
 import SupervisorMobileSideBar from "@/features/supervisor/SupervisorMobileSideBar";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 function SupervisorLayout() {
   const navigate = useNavigate();

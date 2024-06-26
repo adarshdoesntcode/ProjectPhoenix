@@ -1,75 +1,94 @@
-import ApiError from "@/components/error/ApiError";
-import { useGetAllStudentsQuery } from "../adminApiSlice";
-import Loader from "@/components/Loader";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { EVALUATOR_TYPE, ROLES_LIST } from "@/lib/config";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  Activity,
-  Archive,
-  CalendarCheck2,
-  CheckCheck,
-  ChevronLeft,
-  File,
-  FileQuestion,
+  useCreateEvaluatorMutation,
+  useGetAllEvaluatorQuery,
+  useGetAllSupervisorsQuery,
+} from "../adminApiSlice";
+
+import {
+  ArrowBigDown,
+  ArrowBigUp,
+  BookCheck,
+  CirclePlus,
   Handshake,
-  UserCheck,
+  Loader2,
+  File,
+  ChevronLeft,
+  Cctv,
+  Dot,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "./StudentDataTable";
-import { StudentColumn } from "./StudentColumn";
 
-function AdminStudents() {
-  const {
-    data: students,
-    isSuccess,
-    isLoading,
-    isError,
-    error,
-  } = useGetAllStudentsQuery();
+import { numberOfValues } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/use-toast";
 
-  const navigate = useNavigate();
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import ApiError from "@/components/error/ApiError";
+import Loader from "@/components/Loader";
+import { DataTable } from "./SupervisorDataTable";
+import { SupervisorColumn } from "./SupervisorColumn";
+
+function AdminSupervisors() {
   const tableRef = useRef();
 
+  const {
+    data: supervisors,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetAllSupervisorsQuery();
+
+  const navigate = useNavigate();
+
   let content;
-  let assocaiatedStudents, notAssociatedStudents;
+  let available, unavailable;
 
-  console.log(students);
-
-  if (students) {
-    assocaiatedStudents = students.data.filter(
-      (student) => student.isAssociated === true
+  if (supervisors) {
+    available = supervisors.data.filter(
+      (supervisor) => supervisor.isAvailable === true
     );
-    notAssociatedStudents = students.data.filter(
-      (student) => student.isAssociated === false
+
+    unavailable = supervisors.data.filter(
+      (supervisor) => supervisor.isAvailable === false
     );
   }
 
   if (isLoading) {
     content = <Loader />;
   } else if (isSuccess) {
-    if (!students) {
+    if (!supervisors) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">No Students</h3>
-
+            <h3 className="text-2xl font-bold tracking-tight">
+              No Supervisors
+            </h3>
             <p className="text-sm text-gray-500">
-              Students will appear as soon as they sign up
+              Supervisors will appear as they sign up
             </p>
           </div>
         </div>
       );
     } else {
       content = (
-        <div>
+        <>
           <div className="text-xl font-semibold tracking-tight flex items-center gap-4 mb-4">
             <Button
               variant="outline"
@@ -79,63 +98,69 @@ function AdminStudents() {
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            Students
+            Supervisors
           </div>
           <div className="grid gap-4 grid-cols-2 md:gap-8 xl:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  All Students
+                  Total Supervisors
                 </CardTitle>
-                <UserCheck className="h-4 w-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{students.data.length}</div>
-                <p className="text-xs text-gray-500 text-right">
-                  all signed up students
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Associated Students
-                </CardTitle>
-                <Handshake className="h-4 w-4 text-gray-500" />
+                <Cctv className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {assocaiatedStudents.length}
+                  {supervisors.data.length}
                 </div>
-                <p className="text-xs text-gray-500 text-right">
-                  part of a project
-                </p>
+                <p className="text-xs text-gray-500 text-right">total</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Not Associated Students
+                  Available Supervisors
                 </CardTitle>
-                <FileQuestion className="h-4 w-4 text-gray-500" />
+                <Dot strokeWidth={8} className="text-green-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {notAssociatedStudents.length}
+                  <span>{available.length}</span> /{" "}
+                  <span className="text-sm font-normal">
+                    {supervisors.data.length}
+                  </span>
                 </div>
                 <p className="text-xs text-gray-500 text-right">
-                  not part of a projects
+                  available / total
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Unavailable Supervisors
+                </CardTitle>
+                <Dot strokeWidth={8} className="text-red-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  <span>{unavailable.length}</span> /{" "}
+                  <span className="text-sm font-normal">
+                    {supervisors.data.length}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 text-right">
+                  unavailable / total
                 </p>
               </CardContent>
             </Card>
           </div>
-          <Tabs className="mt-4" defaultValue="all">
+          <Tabs className="mt-4" defaultValue="available">
             <div className="flex items-center">
               <TabsList>
+                <TabsTrigger value="available">Available</TabsTrigger>
+                <TabsTrigger value="unavailable">Unavailable</TabsTrigger>
                 <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="associated">Associated</TabsTrigger>
-                <TabsTrigger value="notassociated">Not Associated</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
                 <Button
@@ -149,65 +174,57 @@ function AdminStudents() {
                 </Button>
               </div>
             </div>
+            <TabsContent value="available">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Available Supervisors</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <DataTable
+                    ref={tableRef}
+                    columns={SupervisorColumn}
+                    data={available}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="unavailable">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Unavailable Supervisors</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <DataTable
+                    ref={tableRef}
+                    columns={SupervisorColumn}
+                    data={unavailable}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
             <TabsContent value="all">
               <Card>
                 <CardHeader>
-                  <CardTitle>All Students</CardTitle>
-                  <CardDescription>
-                    Stuednts that are currently part of project
-                  </CardDescription>
+                  <CardTitle>All Supervisors</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <DataTable
                     ref={tableRef}
-                    columns={StudentColumn}
-                    data={students.data}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="associated">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Associated Students</CardTitle>
-                  <CardDescription>
-                    Stuednts that are currently part of project
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DataTable
-                    ref={tableRef}
-                    columns={StudentColumn}
-                    data={assocaiatedStudents}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="notassociated">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Not Associated Students</CardTitle>
-                  <CardDescription>
-                    Students that are currently not part of a project
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <DataTable
-                    ref={tableRef}
-                    columns={StudentColumn}
-                    data={notAssociatedStudents}
+                    columns={SupervisorColumn}
+                    data={supervisors.data}
                   />
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
+        </>
       );
     }
   } else if (isError) {
     content = <ApiError error={error} />;
   }
+
   return content;
 }
 
-export default AdminStudents;
+export default AdminSupervisors;

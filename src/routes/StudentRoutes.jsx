@@ -5,6 +5,7 @@ import StudentProject from "@/features/student/project/StudentProject";
 
 import { Navigate } from "react-router-dom";
 import Error from "@/components/error/Error";
+import ProjectProgress from "@/features/student/project/ProjectProgress";
 
 const StudentRoutes = [
   {
@@ -20,6 +21,11 @@ const StudentRoutes = [
   {
     path: "project",
     element: <StudentProject />,
+    errorElement: <Error />,
+  },
+  {
+    path: "project/progress",
+    element: <ProjectProgress />,
     errorElement: <Error />,
   },
   {

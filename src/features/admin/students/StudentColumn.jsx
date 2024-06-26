@@ -51,12 +51,12 @@ export const StudentColumn = [
     cell: ({ row }) => {
       const fullname = row.original.fullname;
       const email = row.original.email;
-      const contact = row.original.contact;
+      const contact = row.original.phoneNumber;
 
       return (
         <TableCell className="text-gray-950">
           <div className="font-semibold">{fullname}</div>
-          <div className=" text-sm text-slate-500 lg:hidden block">{email}</div>
+          <div className=" text-xs text-slate-500 ">{email}</div>
           <div className="text-xs text-slate-500 lg:hidden block">
             {contact}
           </div>
@@ -74,9 +74,8 @@ export const StudentColumn = [
       const contact = row.original.phoneNumber;
 
       return (
-        <TableCell className="text-gray-500 hidden lg:block">
-          <div>{email}</div>
-          <div>{contact}</div>
+        <TableCell className="text-gray-500 hidden lg:block ">
+          <div className="text-xs">{contact}</div>
         </TableCell>
       );
     },
@@ -92,7 +91,9 @@ export const StudentColumn = [
 
       return (
         <TableCell className="hidden lg:table-cell">
-          <Badge variant="secondary">{isAssociated ? "Yes" : "No"}</Badge>
+          <Badge variant={isAssociated ? "" : "secondary"}>
+            {isAssociated ? "Yes" : "No"}
+          </Badge>
         </TableCell>
       );
     },

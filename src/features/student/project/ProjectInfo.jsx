@@ -24,11 +24,11 @@ import {
 
 import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getEventTypeByCode } from "@/lib/config";
+import { EVENT_TYPE, ROLES_LIST, getEventTypeByCode } from "@/lib/config";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function findDefenseInfoByProjectId(defenseArray, projectId) {
@@ -51,6 +51,8 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   let projectContent, teamContent;
+
+  console.log(user);
 
   if (!user.isAssociated) {
     projectContent = (
@@ -113,6 +115,9 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       notGradedFinal,
       project.data._id
     );
+
+    console.log(project);
+    console.log(project.data.projectType < EVENT_TYPE.MINOR);
 
     const members = project.data.teamMembers;
     teamContent = members.map((member) => {
@@ -221,7 +226,7 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
           )}
           {project.data.event.mid.defense && (
             <div className="flex items-center justify-between">
-              <div className="text-sm text-slate-500">Mid Defense</div>
+              <div className="text-sm text-slate-500">Mid-Term Defense</div>
               <div>
                 {midSchedule ? (
                   <HoverCard
@@ -347,11 +352,16 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
               </CardDescription>
             </div>
           </div>
+
           <div className="flex gap-4">
-            <Button size="sm" className="flex items-center gap-1">
-              <span className="sr-only sm:not-sr-only">Progress</span>
-              <MessageSquareCode className="h-4 w-4" />
-            </Button>
+            {project.data.projectType >= EVENT_TYPE.MINOR && (
+              <Button size="sm" className="flex items-center gap-1" asChild>
+                <Link to={`/${ROLES_LIST.student}/project/progress`}>
+                  <span className="sr-only sm:not-sr-only">Progress</span>
+                  <MessageSquareCode className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
           </div>
         </CardHeader>
         <CardContent>
