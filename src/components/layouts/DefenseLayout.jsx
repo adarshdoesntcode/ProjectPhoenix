@@ -27,6 +27,7 @@ import { ROLES_LIST } from "@/lib/config";
 import { toast } from "../ui/use-toast";
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import BreadCrumbGenerator from "../BreadCrumbGenerator";
+import { Helmet } from "react-helmet";
 
 const getGreeting = () => {
   const currentHour = new Date().getHours();
@@ -74,6 +75,9 @@ const DefenseLayout = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Phoenix | Defense</title>
+      </Helmet>
       <div className="grid min-h-screen w-full bg-slate-100/40">
         <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-white sm:flex">
           <nav className="flex flex-col items-center gap-4 px-2 py-3">

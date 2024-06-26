@@ -50,6 +50,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useUpdateStudentMutation } from "@/features/student/studentApiSlice";
+import { Helmet } from "react-helmet";
 
 function StudentLayout() {
   const navigate = useNavigate();
@@ -219,6 +220,9 @@ function StudentLayout() {
 
   return (
     <>
+      <Helmet>
+        <title>Phoenix | Student</title>
+      </Helmet>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <StudentSideBar />
         <div className="flex flex-col">
@@ -227,7 +231,7 @@ function StudentLayout() {
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  {user.fullname ? user.fullname.split(" ")[0] : "Student"}
+                  {user.fullname ? user.fullname : "Student"}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadCrumbGenerator role={"student"} crumbs={crumbs} />

@@ -31,6 +31,7 @@ import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import { toast } from "../ui/use-toast";
 import ScrollToTop from "../ScrollToTop";
+import { Helmet } from "react-helmet";
 
 function AdminLayout() {
   const [logoutLoader, setLogoutLoader] = useState(false);
@@ -64,6 +65,9 @@ function AdminLayout() {
   };
   return (
     <>
+      <Helmet>
+        <title>Phoenix | Admin</title>
+      </Helmet>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <AdminSideBar />
         <div className="flex flex-col">
@@ -72,7 +76,7 @@ function AdminLayout() {
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden lg:block">
-                  {user.fullname ? user.fullname.split(" ")[0] : "Admin"}
+                  {user.fullname ? user.fullname : "Admin"}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden lg:block" />
                 <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />

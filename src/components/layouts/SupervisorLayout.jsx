@@ -6,6 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +16,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { Loader2, Search } from "lucide-react";
+import { Dot, Loader2, Search } from "lucide-react";
 
 import useLogout from "@/hooks/useLogout";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +29,7 @@ import BreadCrumbGenerator from "../BreadCrumbGenerator";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { getInitials } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 
 import { useEffect, useState } from "react";
 
@@ -58,6 +59,7 @@ import { Badge } from "../ui/badge";
 import { useUpdateSupervisorMutation } from "@/features/supervisor/supervisorApiSlice";
 import SupervisorSideBar from "@/features/supervisor/SupervisorSideBar";
 import SupervisorMobileSideBar from "@/features/supervisor/SupervisorMobileSideBar";
+import { Helmet } from "react-helmet";
 
 function SupervisorLayout() {
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ function SupervisorLayout() {
   }, [location]);
 
   const crumbs = location.pathname.split("/").filter((crumb) => {
-    if (crumb !== "" && crumb != ROLES_LIST.student) {
+    if (crumb !== "" && crumb != ROLES_LIST.supervisor) {
       return crumb;
     }
   });
@@ -287,6 +289,9 @@ function SupervisorLayout() {
 
   return (
     <>
+      <Helmet>
+        <title>Phoenix | Supervisor</title>
+      </Helmet>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <SupervisorSideBar />
         <div className="flex flex-col">
@@ -295,7 +300,7 @@ function SupervisorLayout() {
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden lg:block">
-                  {user.fullname ? user.fullname.split(" ")[0] : "Supervisor"}
+                  {user.fullname ? user.fullname : "Supervisor"}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden lg:block" />
                 <BreadCrumbGenerator role={"supervisor"} crumbs={crumbs} />
@@ -303,12 +308,27 @@ function SupervisorLayout() {
             </Breadcrumb>
 
             <div className="relative ml-auto flex-1 md:grow-0">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4" />
-              <Input
-                type="search"
-                placeholder="Search Projects, Students, .."
-                className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-              />
+              <Select>
+                <SelectTrigger className="md:w-[200px] lg:w-[236px] ">
+                  <div className="flex items-center gap-2">
+                    <Dot
+                      strokeWidth={8}
+                      className={cn(
+                        "w-5 h-5" && user.isAvailable
+                          ? "text-green-500"
+                          : "text-red-500"
+                      )}
+                    />
+                    {user.isAvailable ? "Available" : "Unavailable"}{" "}
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex">Available</div>
+                  </SelectItem>
+                  <SelectItem value="dark">Unavailable</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
