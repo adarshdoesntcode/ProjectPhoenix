@@ -116,7 +116,7 @@ function ProjectEvaluations({ project }) {
                       <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
                         {evaluation.evaluator.fullname}
 
-                        <span>
+                        <span className="text-xs text-slate-500">
                           {evaluation.evaluator.designation},{" "}
                           {evaluation.evaluator.institution}
                         </span>
@@ -185,7 +185,7 @@ function ProjectEvaluations({ project }) {
                       <div className="flex items-center justify-between text-sm text-slate-700 font-semibold">
                         {evaluation.evaluator.fullname}
 
-                        <span>
+                        <span className="text-xs text-slate-500">
                           {evaluation.evaluator.designation},{" "}
                           {evaluation.evaluator.institution}
                         </span>
@@ -254,7 +254,7 @@ function ProjectEvaluations({ project }) {
                       <div className="flex items-center text-sm justify-between text-slate-700 font-semibold">
                         {evaluation.evaluator.fullname}
 
-                        <span>
+                        <span className="text-xs text-slate-500">
                           {evaluation.evaluator.designation},{" "}
                           {evaluation.evaluator.institution}
                         </span>

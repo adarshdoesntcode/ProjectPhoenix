@@ -151,12 +151,6 @@ function AdminNewDefense() {
 
   const id = searchParams.get("id");
 
-  // useEffect(() => {
-  //   if (searchParams.get("id")) {
-  //     setValue("event", id);
-  //   }
-  // }, []);
-
   const activeEvents = response?.data?.events || [];
   let evaluators = response?.data?.evaluators || [];
 

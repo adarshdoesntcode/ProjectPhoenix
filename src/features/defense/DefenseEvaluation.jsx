@@ -238,7 +238,7 @@ function DefenseEvaluation() {
           </div>
           <DefenseStopwatch />
         </div>
-        <div className="min-[1500px]:px-16 grid flex-1 items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-12 mt-1">
+        <div className="min-[1500px]:px-16 grid  items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-12 mt-1">
           <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-8">
             <div className="grid gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
               <Card className="col-span-4">

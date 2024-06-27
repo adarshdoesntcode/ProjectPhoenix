@@ -279,7 +279,9 @@ function MidEvaluationForm({ project, defenseType, roomID }) {
                             key={member._id}
                             className="hover:bg-inherit"
                           >
-                            <TableCell>{member.fullname}</TableCell>
+                            <TableCell className="font-semibold">
+                              {member.fullname}
+                            </TableCell>
                             <TableCell className="text-center">
                               <ToggleGroup
                                 variant="outline"
@@ -523,7 +525,7 @@ function MidEvaluationForm({ project, defenseType, roomID }) {
 
                   <div>
                     <p className="font-semibold text-slate-500">
-                      Project Marking
+                      Project Evaluation
                     </p>
                     <Separator className="my-2" />
                     {projectEvaluationConfig.map((config, index) => {

@@ -338,7 +338,9 @@ function FinalEvaluationForm({ project, defenseType, roomID }) {
                       {project.data.teamMembers.map((member) => {
                         return (
                           <TableRow key={member._id}>
-                            <TableCell>{member.fullname}</TableCell>
+                            <TableCell className="font-semibold">
+                              {member.fullname}
+                            </TableCell>
                             <TableCell>
                               <Input
                                 onWheel={(e) => e.target.blur()}
@@ -623,7 +625,7 @@ function FinalEvaluationForm({ project, defenseType, roomID }) {
 
                   <div>
                     <p className="font-semibold text-slate-500">
-                      Project Marking
+                      Project Evaluation
                     </p>
                     <Separator className="my-2" />
                     {projectEvaluationConfig.map((config, index) => {

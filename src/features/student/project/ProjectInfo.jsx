@@ -52,8 +52,6 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
   const [open, setOpen] = useState(false);
   let projectContent, teamContent;
 
-  console.log(user);
-
   if (!user.isAssociated) {
     projectContent = (
       <div className="flex flex-col items-center justify-center gap-1  rounded-md h-[150px] text-center">
@@ -115,9 +113,6 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
       notGradedFinal,
       project.data._id
     );
-
-    console.log(project);
-    console.log(project.data.projectType < EVENT_TYPE.MINOR);
 
     const members = project.data.teamMembers;
     teamContent = members.map((member) => {
@@ -355,12 +350,25 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
 
           <div className="flex gap-4">
             {project.data.projectType >= EVENT_TYPE.MINOR && (
-              <Button size="sm" className="flex items-center gap-1" asChild>
-                <Link to={`/${ROLES_LIST.student}/project/progress`}>
-                  <span className="sr-only sm:not-sr-only">Progress</span>
-                  <MessageSquareCode className="h-4 w-4" />
-                </Link>
-              </Button>
+              <>
+                {project.data.supervisor.supervisorId ? (
+                  <Button size="sm" className="flex items-center gap-1" asChild>
+                    <Link to={`/${ROLES_LIST.student}/project/progress`}>
+                      <span className="sr-only sm:not-sr-only">Progress</span>
+                      <MessageSquareCode className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    className="flex items-center gap-1"
+                    disabled
+                  >
+                    <span className="sr-only sm:not-sr-only">Progress</span>
+                    <MessageSquareCode className="h-4 w-4" />
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </CardHeader>

@@ -76,7 +76,7 @@ function AdminLayout() {
             <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden lg:block">
-                  {user.fullname ? user.fullname : "Admin"}
+                  {user.fullname ? user.fullname.split(" ")[0] : "Admin"}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden lg:block" />
                 <BreadCrumbGenerator role={"admin"} crumbs={crumbs} />
