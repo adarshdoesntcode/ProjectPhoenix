@@ -142,7 +142,7 @@ const DefenseLayout = () => {
         <AlertDialogContent className="w-[200px]">
           <div className="flex justify-center items-center text-gray-600">
             <Loader2 className="h-6 w-6 animate-spin mr-4" />
-            <span>Logging Out</span>
+            <span className="text-sm whitespace-nowrap">Logging Out</span>
           </div>
         </AlertDialogContent>
       </AlertDialog>

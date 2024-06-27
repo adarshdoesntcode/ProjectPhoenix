@@ -73,7 +73,8 @@ function PreviousEvaluation({ project }) {
 
   const proposalItems = proposal.map((proposalEval, index) => {
     const judgement = proposalEval[0].projectEvaluation.judgement;
-    let color = judgement === "00" || judgement === "01" ? "black" : "grey";
+    let color =
+      judgement === "00" || judgement === "01" ? "#22c55e" : "#ef4444";
 
     return {
       color: color,
@@ -141,7 +142,8 @@ function PreviousEvaluation({ project }) {
 
   const midItems = mid.map((midEval, index) => {
     const judgement = midEval[0].projectEvaluation.judgement;
-    let color = judgement === "10" || judgement === "11" ? "black" : "grey";
+    let color =
+      judgement === "10" || judgement === "11" ? "#22c55e" : "#ef4444";
 
     return {
       color: color,
@@ -209,7 +211,8 @@ function PreviousEvaluation({ project }) {
 
   const finalItems = final.map((finalEval, index) => {
     const judgement = finalEval[0].projectEvaluation.judgement;
-    let color = judgement === "20" || judgement === "21" ? "black" : "grey";
+    let color =
+      judgement === "20" || judgement === "21" ? "#22c55e" : "#ef4444";
 
     return {
       color: color,

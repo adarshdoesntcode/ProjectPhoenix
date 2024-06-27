@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ChevronRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -561,7 +561,10 @@ function FinalEvaluationForm({ project, defenseType, roomID }) {
           </div>
           <Dialog open={modal} onOpenChange={setModal}>
             <DialogTrigger asChild>
-              <Button disabled={disabled}>Next</Button>
+              <Button disabled={disabled}>
+                Next
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

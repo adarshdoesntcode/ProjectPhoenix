@@ -14,6 +14,7 @@ import AdminDefense from "@/features/admin/defense/AdminDefense";
 import AdminNewDefense from "@/features/admin/defense/AdminNewDefense";
 import AdminDefenseDetails from "@/features/admin/defense/AdminDefenseDetails";
 import Error from "@/components/error/Error";
+import AssignSupervisor from "@/features/admin/events/AssignSupervisor";
 
 const AdminRoutes = [
   {
@@ -36,7 +37,11 @@ const AdminRoutes = [
     element: <AdminEventDetails />,
     errorElement: <Error />,
   },
-
+  {
+    path: "events/:id/supervisor",
+    element: <AssignSupervisor />,
+    errorElement: <Error />,
+  },
   {
     path: "events/new",
     element: <AdminNewEvent />,

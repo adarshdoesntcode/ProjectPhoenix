@@ -37,7 +37,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useDefenseEvaluationMutation } from "./defenseApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
-import { Loader2 } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { getOrdinal } from "@/lib/utils";
 import {
   Select,
@@ -471,7 +471,10 @@ function MidEvaluationForm({ project, defenseType, roomID }) {
           </div>
           <Dialog open={modal} onOpenChange={setModal}>
             <DialogTrigger asChild>
-              <Button disabled={disabled}>Next</Button>
+              <Button disabled={disabled}>
+                Next
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

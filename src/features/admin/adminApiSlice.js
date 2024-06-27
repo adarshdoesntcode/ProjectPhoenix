@@ -77,6 +77,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Defenses", "Events", "Event"],
     }),
+    matchProjects: builder.mutation({
+      query: (credentials) => ({
+        url: "event/event/matchProjects",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     createDefenseData: builder.query({
       query: () => ({
         url: "/event/defense/create",
@@ -112,4 +119,5 @@ export const {
   useGetAllProjectsQuery,
   useGetAllStudentsQuery,
   useGetAllSupervisorsQuery,
+  useMatchProjectsMutation,
 } = adminApiSlice;

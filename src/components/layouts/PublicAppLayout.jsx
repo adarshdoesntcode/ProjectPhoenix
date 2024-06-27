@@ -14,7 +14,7 @@ function PublicAppLayout() {
 
   return (
     <div className="grid grid-cols-12 max-w-7xl mx-auto">
-      <div className="col-span-12  self-center p-2 lg:p-4 flex justify-between">
+      <div className="col-span-12  self-center p-2 lg:p-4 flex h-14 justify-between">
         <Link to={"/"} className="flex items-center  gap-2">
           <h1 className="hidden lg:flex items-center gap-1 text-sm lg:text-base transition-all hover:pl-3  tracking-tight font-semibold leading-none p-2">
             <Origami />
