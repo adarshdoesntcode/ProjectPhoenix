@@ -160,8 +160,12 @@ function AssignSupervisor() {
         throw new Error("Could not assign supervisors");
       }
       if (!res.error) {
-        setMatchedProjects(res.data.matches || []);
-        setStep(2);
+        if (res.data) {
+          setMatchedProjects(res.data.matches || []);
+          setStep(2);
+        } else {
+          throw new Error("No projects to assign supervisor");
+        }
       }
     } catch (error) {
       toast({

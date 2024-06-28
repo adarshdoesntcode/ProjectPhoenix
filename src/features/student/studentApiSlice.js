@@ -45,7 +45,14 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Progress"],
     }),
-
+    createProgress: builder.mutation({
+      query: (credentials) => ({
+        url: `/student/progress-log/create`,
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["Progress", "Project"],
+    }),
     getArchive: builder.query({
       query: () => ({
         url: "/student/archive",
@@ -93,4 +100,5 @@ export const {
   useSubmitReportMutation,
   useGetArchiveQuery,
   useGetProjectProgressQuery,
+  useCreateProgressMutation,
 } = studentApiSlice;

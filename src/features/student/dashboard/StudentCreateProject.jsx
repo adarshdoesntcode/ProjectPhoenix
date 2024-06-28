@@ -339,7 +339,7 @@ function StudentCreateProject({ targetedEvent }) {
                           id="projectDescription"
                           placeholder="Describe your Project"
                           className={
-                            errors.projectName
+                            errors.projectDescription
                               ? "border-red-500 m-h-16"
                               : "m-h-16"
                           }

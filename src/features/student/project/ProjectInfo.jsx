@@ -165,9 +165,15 @@ function ProjectInfo({ project, isLoading, isSuccess, user }) {
           </div>
           <div className="flex items-center justify-between">
             <div className="text-sm text-slate-500">Supervisor</div>
-            <div className="font-semibold">
-              <Badge variant="secondary">Not Assigned</Badge>
-            </div>
+            {project.data.supervisor?.supervisorId?.fullname ? (
+              <div className="text-sm font-semibold">
+                {project.data.supervisor.supervisorId.fullname}
+              </div>
+            ) : (
+              <div className="font-semibold">
+                <Badge variant="secondary">Not Assigned</Badge>
+              </div>
+            )}
           </div>
           <Separator className="my-2" />
           {project.data.event.proposal.defense && (

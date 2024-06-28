@@ -1,6 +1,7 @@
 import { selectCurrentUser } from "@/features/auth/authSlice";
 import { useSelector } from "react-redux";
 import {
+  useCreateProgressMutation,
   useGetProjectProgressQuery,
   useGetProjectQuery,
 } from "../studentApiSlice";
@@ -19,10 +20,31 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import {
   ArchiveRestore,
   Cctv,
   ChevronLeft,
+  ChevronRight,
+  CircleAlert,
+  CircleCheck,
+  Dot,
   Footprints,
+  Loader2,
   Mail,
   PlusCircle,
 } from "lucide-react";
@@ -31,8 +53,15 @@ import { getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
 function ProjectProgress() {
+  const [open, setOpen] = useState(false);
   const user = useSelector(selectCurrentUser);
   const {
     data: project,
@@ -50,12 +79,56 @@ function ProjectProgress() {
     error,
   } = useGetProjectProgressQuery(user.project);
 
+  const [createProgress] = useCreateProgressMutation();
+  const {
+    handleSubmit,
+    register,
+    reset,
+
+    formState: { errors, isSubmitting },
+  } = useForm();
+
   const navigate = useNavigate();
 
-  console.log("🚀 ~ ProjectProgress ~ progress:", progress);
-  console.log("🚀 ~ ProjectProgress ~ project:", project);
+  let content, logItems;
 
-  let content;
+  if (progress) {
+    logItems = progress.data.map((log) => {
+      return {
+        dot: <DotSymbol approved={log.approved} />,
+        children: <Children progress={log} />,
+      };
+    });
+  }
+  async function onPost(data) {
+    try {
+      const newLog = {
+        title: data.progressTitle,
+        description: data.progressDescription,
+        logDate: new Date(),
+        projectId: project.data._id,
+      };
+      const res = await createProgress(newLog);
+
+      if (res.error) {
+        throw new Error("Could not post progress");
+      }
+      if (!res.error) {
+        setOpen(false);
+        reset();
+        toast({
+          title: "Progress posted successfully",
+          description: "Supervisor can now verify",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  }
 
   if (isLoading || projectLoading) {
     content = <Loader />;
@@ -75,7 +148,7 @@ function ProjectProgress() {
               You can start as soon as you enroll in an event.
             </p>
 
-            <Button className="mt-4">
+            <Button className="mt-4" onClick={() => setOpen(true)}>
               Log <PlusCircle className="w-4 h-4 ml-2" />
             </Button>
           </div>
@@ -109,29 +182,17 @@ function ProjectProgress() {
                     </CardDescription>
                   </div>
 
-                  <Button className="flex items-center gap-1">
+                  <Button
+                    className="flex items-center gap-1"
+                    onClick={() => setOpen(true)}
+                  >
                     <span className="sr-only sm:not-sr-only">Log</span>
                     <PlusCircle className="w-4 h-4" />
                   </Button>
                 </CardHeader>
 
-                <CardContent className="text-sm px-12 mt-6">
-                  <Timeline
-                    items={[
-                      {
-                        children: <Children progress={progress.data[0]} />,
-                      },
-                      {
-                        children: "Solve initial network problems 2015-09-01",
-                      },
-                      {
-                        children: "Technical testing 2015-09-01",
-                      },
-                      {
-                        children: "Network problems being solved 2015-09-01",
-                      },
-                    ]}
-                  />
+                <CardContent className="text-sm pl-8 pt-4  mt-6">
+                  <Timeline items={logItems} />
                 </CardContent>
               </Card>
             </div>
@@ -167,13 +228,6 @@ function ProjectProgress() {
                             <div className="text-slate-950 flex items-center font-medium ">
                               <span>
                                 {project.data.supervisor.supervisorId.fullname}{" "}
-                              </span>
-                              <span className="font-xs text-slate-500 ">
-                                ,{" "}
-                                {
-                                  project.data.supervisor.supervisorId
-                                    .designation
-                                }{" "}
                               </span>
                             </div>
                             <div className="text-xs">
@@ -212,6 +266,70 @@ function ProjectProgress() {
                     )}
                   </div>
                   <Separator />
+                  <div className="my-4 font-semibold">Supervisor Approvals</div>
+                  <div className="grid gap-2 border rounded-md p-4 mb-4">
+                    <div className="text-sm font-medium text-slate-600">
+                      Mid Term Defense
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className=" text-slate-500">Approval</div>
+                      <Badge
+                        variant={
+                          project.data.supervisor.mid.approved
+                            ? ""
+                            : "secondary"
+                        }
+                      >
+                        {project.data.supervisor.mid.approved
+                          ? "Granted"
+                          : "Not Granted"}
+                      </Badge>
+                    </div>
+                    {project.data.supervisor.mid.approved && (
+                      <div className="flex items-center justify-between">
+                        <div className=" text-slate-500">Approved On</div>
+                        <Badge variant="outline">
+                          {format(
+                            project.data.supervisor.mid.approvedDate,
+                            "PPP"
+                          )}
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid gap-2 border rounded-md p-4">
+                    <div className="text-sm font-medium text-slate-600">
+                      Final Defense
+                    </div>
+
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className=" text-slate-500">Approval</div>
+                      <Badge
+                        variant={
+                          project.data.supervisor.final.approved
+                            ? ""
+                            : "secondary"
+                        }
+                      >
+                        {project.data.supervisor.final.approved
+                          ? "Granted"
+                          : "Not Granted"}
+                      </Badge>
+                    </div>
+                    {project.data.supervisor.final.approved && (
+                      <div className="flex items-center justify-between">
+                        <div className=" text-slate-500">Approved On</div>
+                        <Badge variant="outline">
+                          {format(
+                            project.data.supervisor.final.approvedDate,
+                            "PPP"
+                          )}
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -223,19 +341,102 @@ function ProjectProgress() {
     content = <ApiError error={error || projectError} />;
   }
 
-  return content;
+  return (
+    <>
+      {content}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Progress Log</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(onPost)} className="grid gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="progressTitle">
+                {errors.progressTitle ? (
+                  <span className="text-red-500">
+                    {errors.progressTitle.message}
+                  </span>
+                ) : (
+                  <span>Title</span>
+                )}
+              </Label>
+              <Input
+                id="progressTitle"
+                type="text"
+                placeholder=""
+                {...register("progressTitle", {
+                  required: "Title is required",
+                })}
+                className={errors.progressTitle ? "border-red-500" : ""}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="progressDescription">
+                {errors.progressDescription ? (
+                  <span className="text-red-500">
+                    {errors.progressDescription.message}
+                  </span>
+                ) : (
+                  <span>Description</span>
+                )}
+              </Label>
+              <Textarea
+                id="projectDescription"
+                placeholder="Describe your Project"
+                className={
+                  errors.progressDescription
+                    ? "border-red-500 m-h-16"
+                    : "m-h-16"
+                }
+                {...register("progressDescription", {
+                  required: "Description is required",
+                })}
+              />
+            </div>
+            <div className="flex items-center justify-end">
+              {isSubmitting ? (
+                <Button variant="secondary" disabled>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Posting...
+                </Button>
+              ) : (
+                <Button type="submit">
+                  Post <ChevronRight className="ml-2 w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 }
 
 const Children = ({ progress }) => {
   return (
     <Card>
       <CardHeader className=" p-4 pb-1">
-        <CardDescription className="text-slate-800 font-semibold flex items-center justify-between">
+        <div className="text-slate-800 font-semibold flex items-center justify-between">
           <span>{progress.title}</span>
-          <Badge variant={progress.approved ? "" : "secondary"}>
-            {progress.approved ? "Verified" : "Unverified"}
-          </Badge>
-        </CardDescription>
+          <div className="flex items-center gap-2">
+            {progress.approved && (
+              <TooltipProvider delayDuration="50">
+                <Tooltip>
+                  <TooltipTrigger>
+                    <CircleAlert className="w-4 text-slate-500 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{format(progress.approvedDate, "PPP")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            <Badge variant={progress.approved ? "" : "secondary"}>
+              {progress.approved ? "Verified" : "Unverified"}
+            </Badge>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="p-4 pt-1 text-slate-600">
         {progress.description}
@@ -243,7 +444,7 @@ const Children = ({ progress }) => {
       <CardFooter className="text-slate-500 border-t text-xs p-4 py-2 flex items-center justify-between">
         <span>{progress.author.fullname}</span>
         <span>
-          {format(progress.logDate, "PPP")},{" "}
+          {format(progress.logDate, "PP")},{" "}
           {format(progress.logDate, "hh:mm aa")}
         </span>
       </CardFooter>
@@ -251,4 +452,19 @@ const Children = ({ progress }) => {
   );
 };
 
+const DotSymbol = ({ approved }) => {
+  if (approved) {
+    return (
+      <div className="text-green-500">
+        <CircleCheck strokeWidth={2} />
+      </div>
+    );
+  } else {
+    return (
+      <div className="text-slate-500">
+        <CircleAlert strokeWidth={2} />
+      </div>
+    );
+  }
+};
 export default ProjectProgress;
