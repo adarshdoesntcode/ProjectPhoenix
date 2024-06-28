@@ -2,6 +2,7 @@ import Loader from "@/components/Loader";
 import {
   useGetAllSupervisorsQuery,
   useMatchProjectsMutation,
+  useSubmitMatchedProjectsMutation,
 } from "../adminApiSlice";
 import ApiError from "@/components/error/ApiError";
 import React, { Fragment, useEffect, useState } from "react";
@@ -47,6 +48,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { ROLES_LIST } from "@/lib/config";
 
 function AssignSupervisor() {
   const {
@@ -58,6 +60,8 @@ function AssignSupervisor() {
   } = useGetAllSupervisorsQuery();
   const { id } = useParams();
   const [matchProject, { isLoading: isAssigning }] = useMatchProjectsMutation();
+  const [submitMatchedProjects, { isLoading: isSubmitting }] =
+    useSubmitMatchedProjectsMutation();
 
   let content, available;
 
@@ -153,10 +157,35 @@ function AssignSupervisor() {
       });
 
       if (res.error) {
+        throw new Error("Could not assign supervisors");
+      }
+      if (!res.error) {
+        setMatchedProjects(res.data.matches || []);
+        setStep(2);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something Went Wrong!!",
+        description: error.message,
+      });
+    }
+  };
+  const handleSubmitMatched = async () => {
+    try {
+      const res = await submitMatchedProjects({
+        matchedProjects,
+      });
+
+      if (res.error) {
         throw new Error("Could not assign projects");
       }
       if (!res.error) {
-        setMatchedProjects(res.data.matches);
+        toast({
+          title: "Supervisor Assigned",
+          description: "Succesful",
+        });
+        navigate(`/${ROLES_LIST.admin}/events/${id}`);
         setStep(2);
       }
     } catch (error) {
@@ -295,103 +324,120 @@ function AssignSupervisor() {
               </CardHeader>
 
               <CardContent className="grid gap-2">
-                {matchedProjects.map((match, index) => {
-                  if (match.projects.length > 0)
-                    return (
-                      <Fragment key={index}>
-                        <Separator />
-                        <div className="flex flex-col items-start gap-1 justify-between">
-                          <div className="text-sm mt-2">
-                            <span className="font-medium text-lg">
-                              {match.supervisor.fullname}
-                            </span>
-                            <span className="font-xs text-slate-500">
-                              , {match.supervisor.designation}
-                            </span>
+                {matchedProjects.length < 1 && (
+                  <div className="h-24 flex items-center justify-center">
+                    Nothing to show
+                  </div>
+                )}
+                {matchedProjects.length > 0 &&
+                  matchedProjects.map((match, index) => {
+                    if (match.projects.length > 0)
+                      return (
+                        <Fragment key={index}>
+                          <Separator />
+                          <div className="flex flex-col items-start gap-1 justify-between">
+                            <div className="text-sm mt-2">
+                              <span className="font-medium text-lg">
+                                {match.supervisor.fullname}
+                              </span>
+                              <span className="font-xs text-slate-500">
+                                , {match.supervisor.designation}
+                              </span>
+                            </div>
+                            <div>
+                              {match.supervisor.skillSet.map((skill, index) => (
+                                <Badge
+                                  size="sm"
+                                  variant=""
+                                  className="mr-1 mb-1 font-normal"
+                                  key={index}
+                                >
+                                  {skill}
+                                </Badge>
+                              ))}
+                            </div>
                           </div>
-                          <div>
-                            {match.supervisor.skillSet.map((skill, index) => (
-                              <Badge
-                                size="sm"
-                                variant=""
-                                className="mr-1 mb-1 font-normal"
-                                key={index}
-                              >
-                                {skill}
-                              </Badge>
-                            ))}
+                          <div className="mb-6 mt-1 border rounded-md">
+                            <Table>
+                              <TableHeader className="bg-slate-50">
+                                <TableRow>
+                                  <TableHead className="hidden md:table-cell">
+                                    SN
+                                  </TableHead>
+                                  <TableHead>Project Code</TableHead>
+                                  <TableHead>Name</TableHead>
+                                  <TableHead className="hidden md:table-cell">
+                                    Categories
+                                  </TableHead>
+                                  <TableHead></TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {match.projects.map((project, index) => {
+                                  return (
+                                    <TableRow key={project._id}>
+                                      <TableCell className="text-slate-700 hidden md:table-cell">
+                                        {index + 1}
+                                      </TableCell>
+                                      <TableCell className="text-sm text-slate-500">
+                                        {project.projectCode}
+                                      </TableCell>
+                                      <TableCell className="text-sm text-semibold">
+                                        {project.projectName}
+                                      </TableCell>
+                                      <TableCell className="text-xs text-slate-500 hidden md:table-cell">
+                                        {project.categories.map(
+                                          (caetrgory, index) => (
+                                            <Badge
+                                              size="sm"
+                                              variant="outline"
+                                              className="mr-1 mb-1 font-normal"
+                                              key={index}
+                                            >
+                                              {caetrgory}
+                                            </Badge>
+                                          )
+                                        )}
+                                      </TableCell>
+                                      <TableCell>
+                                        <Button
+                                          size="icon"
+                                          variant="secondary"
+                                          className="text-xs h-8 w-8"
+                                          onClick={() => {
+                                            setSelectedToMove(project);
+                                            setOpen(true);
+                                          }}
+                                        >
+                                          <ArrowDownUp className="h-3 w-3" />
+                                        </Button>
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
                           </div>
-                        </div>
-                        <div className="mb-6 mt-1 border rounded-md">
-                          <Table>
-                            <TableHeader className="bg-slate-50">
-                              <TableRow>
-                                <TableHead className="hidden md:table-cell">
-                                  SN
-                                </TableHead>
-                                <TableHead>Project Code</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead className="hidden md:table-cell">
-                                  Categories
-                                </TableHead>
-                                <TableHead></TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {match.projects.map((project, index) => {
-                                return (
-                                  <TableRow key={project._id}>
-                                    <TableCell className="text-slate-700 hidden md:table-cell">
-                                      {index + 1}
-                                    </TableCell>
-                                    <TableCell className="text-sm text-slate-500">
-                                      {project.projectCode}
-                                    </TableCell>
-                                    <TableCell className="text-sm text-semibold">
-                                      {project.projectName}
-                                    </TableCell>
-                                    <TableCell className="text-xs text-slate-500 hidden md:table-cell">
-                                      {project.categories.map(
-                                        (caetrgory, index) => (
-                                          <Badge
-                                            size="sm"
-                                            variant="outline"
-                                            className="mr-1 mb-1 font-normal"
-                                            key={index}
-                                          >
-                                            {caetrgory}
-                                          </Badge>
-                                        )
-                                      )}
-                                    </TableCell>
-                                    <TableCell>
-                                      <Button
-                                        size="icon"
-                                        variant="secondary"
-                                        className="text-xs h-8 w-8"
-                                        onClick={() => {
-                                          setSelectedToMove(project);
-                                          setOpen(true);
-                                        }}
-                                      >
-                                        <ArrowDownUp className="h-3 w-3" />
-                                      </Button>
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              })}
-                            </TableBody>
-                          </Table>
-                        </div>
-                      </Fragment>
-                    );
-                })}
+                        </Fragment>
+                      );
+                  })}
               </CardContent>
               <CardFooter>
-                <Button className="ml-auto">
-                  Submit
-                  <CheckCheck className="w-4 h-4 ml-2" />
-                </Button>
+                {isSubmitting ? (
+                  <Button variant="secondary" className="ml-auto" disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </Button>
+                ) : (
+                  <Button
+                    className="ml-auto"
+                    disabled={matchedProjects.length < 1}
+                    onClick={handleSubmitMatched}
+                  >
+                    Submit
+                    <CheckCheck className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           )}
@@ -403,6 +449,7 @@ function AssignSupervisor() {
                   Select the supervisor you want to assign the project to
                 </DialogDescription>
               </DialogHeader>
+
               {matchedProjects.map((match) => {
                 return (
                   <React.Fragment key={match.supervisor._id}>

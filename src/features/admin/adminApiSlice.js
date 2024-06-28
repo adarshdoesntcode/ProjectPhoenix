@@ -84,6 +84,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    submitMatchedProjects: builder.mutation({
+      query: (credentials) => ({
+        url: "event/event/saveMatchedProjects",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     createDefenseData: builder.query({
       query: () => ({
         url: "/event/defense/create",
@@ -120,4 +127,5 @@ export const {
   useGetAllStudentsQuery,
   useGetAllSupervisorsQuery,
   useMatchProjectsMutation,
+  useSubmitMatchedProjectsMutation,
 } = adminApiSlice;

@@ -9,10 +9,12 @@ import ApiError from "@/components/error/ApiError";
 import { Button } from "@/components/ui/button";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ROLES_LIST } from "@/lib/config";
+import { Timeline } from "antd";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -21,8 +23,14 @@ import {
   Cctv,
   ChevronLeft,
   Footprints,
+  Mail,
   PlusCircle,
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
 
 function ProjectProgress() {
   const user = useSelector(selectCurrentUser);
@@ -44,8 +52,8 @@ function ProjectProgress() {
 
   const navigate = useNavigate();
 
-  console.log(progress);
-  console.log(project);
+  console.log("🚀 ~ ProjectProgress ~ progress:", progress);
+  console.log("🚀 ~ ProjectProgress ~ project:", project);
 
   let content;
 
@@ -75,77 +83,140 @@ function ProjectProgress() {
       );
     } else {
       content = (
-        <main className="grid  items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
-          <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
-            <Card>
-              <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
-                <div className="flex items-center gap-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() => navigate(-1)}
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
+        <>
+          <div className="flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
+              Project Progress Log
+            </h1>
+          </div>
+          <main className="grid  items-start gap-4  md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
+            <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2">
+              <Card>
+                <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                   <div>
-                    <CardTitle className="text-lg">Progress Log</CardTitle>
+                    <CardTitle className="text-lg">Progress</CardTitle>
 
                     <CardDescription className="text-xs">
-                      Log of the progress achieved by the members of the proejct
+                      Log of the progress achieved by the members
                     </CardDescription>
                   </div>
-                </div>
-                <Button>
-                  Log <PlusCircle className="w-4 h-4 ml-2" />
-                </Button>
-              </CardHeader>
 
-              <CardContent className="text-sm px-12 mt-6"></CardContent>
-            </Card>
-            {/* <div className="grid gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4"> */}
-            {/* <ProjectInfo
-                user={user}
-                project={project}
-                isLoading={isLoading}
-                isSuccess={isSuccess}
-              /> */}
-            {/* </div> */}
+                  <Button className="flex items-center gap-1">
+                    <span className="sr-only sm:not-sr-only">Log</span>
+                    <PlusCircle className="w-4 h-4" />
+                  </Button>
+                </CardHeader>
 
-            {/* <Card>
-              <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
-                <div>
-                  <CardTitle className="text-xl">Report Submission</CardTitle>
+                <CardContent className="text-sm px-12 mt-6">
+                  <Timeline
+                    items={[
+                      {
+                        children: <Children progress={progress.data[0]} />,
+                      },
+                      {
+                        children: "Solve initial network problems 2015-09-01",
+                      },
+                      {
+                        children: "Technical testing 2015-09-01",
+                      },
+                      {
+                        children: "Network problems being solved 2015-09-01",
+                      },
+                    ]}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
+              <Card>
+                <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
+                  <div>
+                    <CardTitle className="text-lg">Supervisor</CardTitle>
 
-                  <CardDescription className="text-xs">
-                    Submmit your report within deadline
-                  </CardDescription>
-                </div>
-                <ArchiveRestore className="text-slate-500" />
-              </CardHeader>
+                    <CardDescription className="text-xs">
+                      Your supervisor and their approvals
+                    </CardDescription>
+                  </div>
+                  <Cctv className="text-slate-500" />
+                </CardHeader>
 
-              <CardContent className="px-6 pb-6  mt-6">
-                <div></div>
-              </CardContent>
-            </Card> */}
-          </div>
-          <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
-            <Card>
-              <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
-                <div>
-                  <CardTitle className="text-lg">Supervisor</CardTitle>
+                <CardContent className="text-sm mt-6">
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex">
+                        <div className="flex flex-row items-center gap-3">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage
+                              src={project.data.supervisor.supervisorId.photo}
+                            />
+                            <AvatarFallback className="bg-slate-200">
+                              {getInitials(
+                                project.data.supervisor.supervisorId.fullname
+                              )}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="text-sm text-slate-500">
+                            <div className="text-slate-950 flex items-center font-medium ">
+                              <span>
+                                {project.data.supervisor.supervisorId.fullname}{" "}
+                              </span>
+                              <span className="font-xs text-slate-500 ">
+                                ,{" "}
+                                {
+                                  project.data.supervisor.supervisorId
+                                    .designation
+                                }{" "}
+                              </span>
+                            </div>
+                            <div className="text-xs">
+                              {project.data.supervisor.supervisorId.email}
+                            </div>
+                            <div className="text-xs">
+                              {project.data.supervisor.supervisorId.phoneNumber}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="text-xs"
+                        asChild
+                      >
+                        <a
+                          href={`mailto:${project.data.supervisor.supervisorId.email}`}
+                        >
+                          <Mail className="w-4 h-4" />
+                        </a>
+                      </Button>
+                    </div>
 
-                  <CardDescription className="text-xs">
-                    Your supervisor and their approvals
-                  </CardDescription>
-                </div>
-                <Cctv className="text-slate-500" />
-              </CardHeader>
-
-              <CardContent className="text-sm px-12 mt-6"></CardContent>
-            </Card>
-          </div>
-        </main>
+                    {project.data.supervisor.supervisorId.skillSet.map(
+                      (skill, index) => (
+                        <Badge
+                          className="mr-1 mb-1 font-normal"
+                          variant="outline"
+                          key={index}
+                        >
+                          {skill}
+                        </Badge>
+                      )
+                    )}
+                  </div>
+                  <Separator />
+                </CardContent>
+              </Card>
+            </div>
+          </main>
+        </>
       );
     }
   } else if (isError || projectIsError) {
@@ -154,5 +225,30 @@ function ProjectProgress() {
 
   return content;
 }
+
+const Children = ({ progress }) => {
+  return (
+    <Card>
+      <CardHeader className=" p-4 pb-1">
+        <CardDescription className="text-slate-800 font-semibold flex items-center justify-between">
+          <span>{progress.title}</span>
+          <Badge variant={progress.approved ? "" : "secondary"}>
+            {progress.approved ? "Verified" : "Unverified"}
+          </Badge>
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 pt-1 text-slate-600">
+        {progress.description}
+      </CardContent>
+      <CardFooter className="text-slate-500 border-t text-xs p-4 py-2 flex items-center justify-between">
+        <span>{progress.author.fullname}</span>
+        <span>
+          {format(progress.logDate, "PPP")},{" "}
+          {format(progress.logDate, "hh:mm aa")}
+        </span>
+      </CardFooter>
+    </Card>
+  );
+};
 
 export default ProjectProgress;
