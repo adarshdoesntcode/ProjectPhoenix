@@ -167,11 +167,27 @@ export const ProjectColumn = [
     cell: ({ row }) => {
       const shouldHide = row.original.projectType < 1;
 
-      return (
-        <TableCell className={`hidden ${shouldHide ? "" : " xl:table-cell"}`}>
-          {row.original.supervisor?.supervisorId?.fullname || "Not Assigned"}
-        </TableCell>
-      );
+      if (row.original.supervisor?.supervisorId?.fullname) {
+        return (
+          <TableCell
+            className={`hidden font-semibold ${
+              shouldHide ? "" : " xl:table-cell"
+            }`}
+          >
+            {row.original.supervisor?.supervisorId?.fullname}
+          </TableCell>
+        );
+      } else {
+        return (
+          <TableCell
+            className={`hidden text-slate-500 ${
+              shouldHide ? "" : " xl:table-cell"
+            }`}
+          >
+            Not Assigned
+          </TableCell>
+        );
+      }
     },
   },
   // {

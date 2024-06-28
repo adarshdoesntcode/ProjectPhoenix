@@ -157,6 +157,8 @@ export const EventColumns = [
 
   {
     id: "actions",
+    header: () => <TableHead className="hidden md:table-cell"> </TableHead>,
+
     cell: ({ row }) => {
       const event = row.original;
 

@@ -117,11 +117,21 @@ export const ProjectColumn = [
       );
     },
     cell: ({ row }) => {
-      return (
-        <TableCell className="hidden  xl:table-cell">
-          {row.original.supervisor?.supervisorId?.fullname || "Not Assigned"}
-        </TableCell>
-      );
+      const shouldHide = row.original.projectType < 1;
+
+      if (row.original.supervisor?.supervisorId?.fullname) {
+        return (
+          <TableCell className="hidden  xl:table-cell font-semibold">
+            {row.original.supervisor?.supervisorId?.fullname}
+          </TableCell>
+        );
+      } else {
+        return (
+          <TableCell className="hidden  xl:table-cell text-slate-400">
+            {shouldHide ? "-" : "Not Assigned"}
+          </TableCell>
+        );
+      }
     },
   },
   {

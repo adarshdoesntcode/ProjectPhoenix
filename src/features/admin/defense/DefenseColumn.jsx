@@ -132,6 +132,8 @@ export const DefenseColumn = [
 
   {
     id: "actions",
+    header: () => <TableHead className="hidden md:table-cell"> </TableHead>,
+
     cell: ({ row }) => {
       return (
         <TableCell className="hidden md:table-cell">
