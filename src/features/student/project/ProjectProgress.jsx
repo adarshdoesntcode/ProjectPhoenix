@@ -427,7 +427,7 @@ const Children = ({ progress }) => {
                     <CircleAlert className="w-4 text-slate-500 h-4" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{format(progress.approvedDate, "PPP")}</p>
+                    <p>{format(progress.approveDate, "PPP")}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

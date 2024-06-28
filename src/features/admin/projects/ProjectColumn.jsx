@@ -103,25 +103,32 @@ export const ProjectColumn = [
   },
   {
     accessorKey: "supervisor",
-    header: ({ column }) => (
-      <TableHead
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="cursor-pointer hidden xl:table-cell"
-      >
-        <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
-          Supervisor
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      </TableHead>
-    ),
-
-    cell: ({ row }) => {
-      // const teamMembers = row.original.teamMembers;
-
-      // const formatted = teamMembers.length;
+    header: ({ column, table }) => {
+      const shouldHide = table
+        .getRowModel()
+        .rows.every((row) => row.original.projectType < 1);
 
       return (
-        <TableCell className="hidden xl:table-cell">Not assigned</TableCell>
+        <TableHead
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={`cursor-pointer hidden  ${
+            shouldHide ? "" : "xl:table-cell"
+          }`}
+        >
+          <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
+            Supervisor
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </TableHead>
+      );
+    },
+    cell: ({ row }) => {
+      const shouldHide = row.original.projectType < 1;
+
+      return (
+        <TableCell className={`hidden ${shouldHide ? "" : " xl:table-cell"}`}>
+          {row.original.supervisor?.supervisorId?.fullname || "Not Assigned"}
+        </TableCell>
       );
     },
   },
