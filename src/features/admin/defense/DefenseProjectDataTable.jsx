@@ -40,7 +40,8 @@ const exportExcel = (rows) => {
       Name: row.original.projectName,
       Status: getEventStatusByCode(row.original.status),
       Type: getEventTypeByCode(row.original.projectType),
-      Supervisor: "Not Assigned",
+      Supervisor:
+        row.original.supervisor?.supervisorId?.fullname || "Not Assigned",
       Members: row.original.teamMembers.length,
       created_On: format(row.original.createdAt, "PPP"),
     };

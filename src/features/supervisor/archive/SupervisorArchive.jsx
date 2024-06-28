@@ -1,11 +1,8 @@
-import Loader from "@/components/Loader";
-import { useGetArchiveQuery } from "../studentApiSlice";
-import ApiError from "@/components/error/ApiError";
-import { Button } from "@/components/ui/button";
-
 import { useNavigate } from "react-router-dom";
-
-import { ChevronLeft, CheckCheck, Trash, File } from "lucide-react";
+import { useGetSupervisorArchiveProjectsQuery } from "../supervisorApiSlice";
+import { useRef } from "react";
+import { EVENT_STATUS } from "@/lib/config";
+import ApiError from "@/components/error/ApiError";
 import {
   Card,
   CardContent,
@@ -13,26 +10,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import Loader from "@/components/Loader";
+import { Button } from "@/components/ui/button";
+import { CheckCheck, ChevronLeft, File, Trash } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { EVENT_STATUS } from "@/lib/config";
-import { useRef } from "react";
 import { DataTable } from "./ProjectDataTable";
 import { ProjectColumn } from "./ProjectColumn";
 
-function StudentArchive() {
+function SupervisorArchive() {
   const {
     data: projects,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetArchiveQuery();
+  } = useGetSupervisorArchiveProjectsQuery();
   const navigate = useNavigate();
   const tableRef = useRef();
-
-  let compeleteProjects, archivedProjects;
+  let content, compeleteProjects, archivedProjects;
 
   if (projects) {
     compeleteProjects = projects.data.filter(
@@ -42,8 +37,6 @@ function StudentArchive() {
       (project) => project.status === EVENT_STATUS.Archive
     );
   }
-
-  let content;
 
   if (isLoading) {
     content = <Loader />;
@@ -55,7 +48,7 @@ function StudentArchive() {
             <h3 className="text-2xl font-bold tracking-tight">No Projects</h3>
 
             <p className="text-sm text-gray-500">
-              You have no compelete or rejected projects
+              Projects will apprear when your students complete their project
             </p>
           </div>
         </div>
@@ -170,8 +163,7 @@ function StudentArchive() {
   } else if (isError) {
     content = <ApiError error={error} />;
   }
-
   return content;
 }
 
-export default StudentArchive;
+export default SupervisorArchive;
