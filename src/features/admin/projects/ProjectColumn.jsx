@@ -103,17 +103,11 @@ export const ProjectColumn = [
   },
   {
     accessorKey: "supervisor",
-    header: ({ column, table }) => {
-      const shouldHide = table
-        .getRowModel()
-        .rows.every((row) => row.original.projectType < 1);
-
+    header: ({ column }) => {
       return (
         <TableHead
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={`cursor-pointer hidden  ${
-            shouldHide ? "" : "xl:table-cell"
-          }`}
+          className=" hidden xl:table-cell"
         >
           <Button variant="ghost" className="p-0 m-0 hover:bg-transparent">
             Supervisor
@@ -123,10 +117,8 @@ export const ProjectColumn = [
       );
     },
     cell: ({ row }) => {
-      const shouldHide = row.original.projectType < 1;
-
       return (
-        <TableCell className={`hidden ${shouldHide ? "" : " xl:table-cell"}`}>
+        <TableCell className="hidden  xl:table-cell">
           {row.original.supervisor?.supervisorId?.fullname || "Not Assigned"}
         </TableCell>
       );
