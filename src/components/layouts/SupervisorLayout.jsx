@@ -309,7 +309,7 @@ function SupervisorLayout() {
 
             <div className="relative ml-auto flex-1 md:grow-0">
               <Select>
-                <SelectTrigger className="md:w-[200px] lg:w-[236px] ">
+                <SelectTrigger className="md:w-[200px] lg:w-[246px] ">
                   <div className="flex items-center gap-2">
                     <Dot
                       strokeWidth={8}
@@ -319,14 +319,16 @@ function SupervisorLayout() {
                           : "text-red-500"
                       )}
                     />
-                    {user.isAvailable ? "Available" : "Unavailable"}{" "}
+                    {user.isAvailable
+                      ? "Accepting Projects"
+                      : "Not Accepting Projects"}{" "}
                   </div>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="light">
-                    <div className="flex">Available</div>
+                    <div className="flex">Accepting Projects</div>
                   </SelectItem>
-                  <SelectItem value="dark">Unavailable</SelectItem>
+                  <SelectItem value="dark">Not Accepting Projects</SelectItem>
                 </SelectContent>
               </Select>
             </div>

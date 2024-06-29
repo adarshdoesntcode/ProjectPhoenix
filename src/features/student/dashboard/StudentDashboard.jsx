@@ -88,7 +88,7 @@ function StudentDashboard() {
 
             <CalendarClock className="text-slate-500" />
           </CardHeader>
-          <CardContent className="text-sm pt-6 ">
+          <CardContent className="text-sm pt-8 pb-0">
             <StudentEventsTimeline />
           </CardContent>
         </Card>

@@ -44,6 +44,7 @@ import {
   CircleCheck,
   Dot,
   Footprints,
+  Info,
   Loader2,
   Mail,
   PlusCircle,
@@ -196,7 +197,7 @@ function ProjectProgress() {
                 </CardContent>
               </Card>
             </div>
-            <div className="grid auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
+            <div className="grid sticky top-20 auto-rows-max items-start gap-4 md:gap-6 lg:col-span-2 xl:col-span-1">
               <Card>
                 <CardHeader className="flex flex-row bg-slate-100 rounded-t-md border-b py-4 justify-between items-center">
                   <div>
@@ -420,20 +421,23 @@ const Children = ({ progress }) => {
         <div className="text-slate-800 font-semibold flex items-center justify-between">
           <span>{progress.title}</span>
           <div className="flex items-center gap-2">
-            {progress.approved && (
-              <TooltipProvider delayDuration="50">
-                <Tooltip>
-                  <TooltipTrigger>
-                    <CircleAlert className="w-4 text-slate-500 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{format(progress.approvedDate, "PPP")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-            <Badge variant={progress.approved ? "" : "secondary"}>
+            <Badge
+              className="flex items-center gap-1 py-1"
+              variant={progress.approved ? "" : "secondary"}
+            >
               {progress.approved ? "Verified" : "Unverified"}
+              {progress.approved && (
+                <TooltipProvider delayDuration="50">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="w-4 h-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{format(progress.approvedDate, "PPP")}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </Badge>
           </div>
         </div>

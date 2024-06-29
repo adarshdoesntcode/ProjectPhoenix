@@ -1,19 +1,20 @@
 import { Timeline } from "antd";
-import { useGetEventsQuery } from "../studentApiSlice";
+
 import { Loader2 } from "lucide-react";
 import { EVENT_STATUS, getEventTypeByCode } from "@/lib/config";
 import { CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { cn, daysFromToday, formatDays } from "@/lib/utils";
+import { useGetSupervisorEventsQuery } from "../supervisorApiSlice";
 
-function StudentEventsTimeline() {
+function SupervisorEventsTimeline() {
   const {
     data: events,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetEventsQuery();
+  } = useGetSupervisorEventsQuery();
 
   let activeEvents, content, flattenEvents, sortedEvents, render;
 
@@ -100,7 +101,11 @@ function StudentEventsTimeline() {
         </div>
       );
     } else {
-      content = <Timeline className="w-[95%]" mode="left" items={render} />;
+      content = (
+        <CardContent>
+          <Timeline className="w-[95%]" mode="left" items={render} />
+        </CardContent>
+      );
     }
   } else if (isError) {
     content = (
@@ -119,4 +124,4 @@ function StudentEventsTimeline() {
   return content;
 }
 
-export default StudentEventsTimeline;
+export default SupervisorEventsTimeline;

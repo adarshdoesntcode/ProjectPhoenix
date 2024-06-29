@@ -1,5 +1,5 @@
 import Error from "@/components/error/Error";
-import SupervisorDashboard from "@/features/supervisor/SupervisorDashboard";
+import SupervisorDashboard from "@/features/supervisor/dashboard/SupervisorDashboard";
 import SupervisorArchive from "@/features/supervisor/archive/SupervisorArchive";
 
 import { Navigate } from "react-router-dom";

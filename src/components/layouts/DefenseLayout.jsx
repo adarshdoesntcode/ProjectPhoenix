@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { getInitials } from "@/lib/utils";
+import { getGreeting, getInitials } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import useLogout from "@/hooks/useLogout";
 import { useSelector } from "react-redux";
@@ -28,20 +28,6 @@ import { toast } from "../ui/use-toast";
 import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
 import BreadCrumbGenerator from "../BreadCrumbGenerator";
 import { Helmet } from "react-helmet-async";
-
-const getGreeting = () => {
-  const currentHour = new Date().getHours();
-
-  if (currentHour >= 5 && currentHour < 12) {
-    return "Good Morning";
-  } else if (currentHour >= 12 && currentHour < 17) {
-    return "Good Afternoon";
-  } else if (currentHour >= 17 && currentHour < 22) {
-    return "Good Evening";
-  } else {
-    return "Goodnight";
-  }
-};
 
 const DefenseLayout = () => {
   const [logoutLoader, setLogoutLoader] = useState(false);
