@@ -14,6 +14,12 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getSupervisorAssignedProjectDetails: builder.query({
+      query: (id) => ({
+        url: `supervisor/project/${id}`,
+        method: "GET",
+      }),
+    }),
     getSupervisorEvents: builder.query({
       query: () => ({
         url: "supervisor/events/active",
@@ -36,4 +42,5 @@ export const {
   useGetSupervisorArchiveProjectsQuery,
   useGetSupervisorEventsQuery,
   useGetSupervisorAssignedProjectsQuery,
+  useGetSupervisorAssignedProjectDetailsQuery,
 } = supervisorApiSlice;

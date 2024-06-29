@@ -217,7 +217,7 @@ function DefenseDashboard() {
                             </Badge>
                           </Badge>
                         </HoverCardTrigger>
-                        <HoverCardContent side="top">
+                        <HoverCardContent side="right">
                           <div className="font-semibold text-base">
                             {evaluator.fullname}
                           </div>

@@ -124,7 +124,7 @@ export const DataTable = forwardRef(({ columns, data }, ref) => {
                   className="cursor-pointer"
                   onClick={() =>
                     navigate(
-                      `/${ROLES_LIST.student}/archive/${row.original._id}`
+                      `/${ROLES_LIST.supervisor}/archive/${row.original._id}`
                     )
                   }
                 >

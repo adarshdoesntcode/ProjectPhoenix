@@ -87,13 +87,15 @@ export const DefenseColumn = [
     ),
     cell: ({ row }) => {
       const defenseDate = format(row.original.defenseDate, "PPP");
-      const defenseTime = format(row.original.defenseTime, "HH:mm a");
+      const defenseTime = format(row.original.defenseTime, "hh:mm a");
 
       return (
         <TableCell>
           <div className="flex gap-2 items-center">
-            <div>{defenseDate}</div>
-            <span className=" lg:hidden">- {defenseTime}</span>
+            <div>
+              {defenseDate}
+              <span className="lg:hidden">, {defenseTime}</span>
+            </div>
           </div>
         </TableCell>
       );

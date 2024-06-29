@@ -3,6 +3,8 @@ import SupervisorDashboard from "@/features/supervisor/dashboard/SupervisorDashb
 import SupervisorArchive from "@/features/supervisor/archive/SupervisorArchive";
 
 import { Navigate } from "react-router-dom";
+import SupervisorProjectDetails from "@/features/supervisor/dashboard/SupervisorProjectDetails";
+import SupervisorArchiveProjectDetail from "@/features/supervisor/archive/SupervisorArchiveProjectDetail";
 
 const SupervisorRoutes = [
   {
@@ -16,8 +18,18 @@ const SupervisorRoutes = [
     errorElement: <Error />,
   },
   {
+    path: "dashboard/:id",
+    element: <SupervisorProjectDetails />,
+    errorElement: <Error />,
+  },
+  {
     path: "archive",
     element: <SupervisorArchive />,
+    errorElement: <Error />,
+  },
+  {
+    path: "archive/:id",
+    element: <SupervisorArchiveProjectDetail />,
     errorElement: <Error />,
   },
 ];
