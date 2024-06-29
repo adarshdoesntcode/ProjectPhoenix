@@ -93,6 +93,7 @@ function AdminNewEvent() {
   } = useForm();
 
   const eventType = watch("eventType");
+  console.log(eventType);
 
   const triggerSubmit = () => {
     if (subEvent.mid.defense) {
@@ -775,9 +776,7 @@ function AdminNewEvent() {
                           <ul className="grid gap-2">
                             <li className="flex items-center justify-between">
                               <span className="text-slate-500">Type</span>
-                              <span>
-                                {getEventTypeByCode(getValues("eventType"))}
-                              </span>
+                              <span>{getEventTypeByCode(eventType)}</span>
                             </li>
                             <li className="flex items-center justify-between">
                               <span className="text-slate-500">Target</span>

@@ -27,7 +27,7 @@ export const PROGRAM_CODE = {
 };
 
 export function getProgramByCode(value) {
-  const input = value.toString();
+  const input = value?.toString();
   return Object.keys(PROGRAM_CODE).find((key) => PROGRAM_CODE[key] === input);
 }
 
@@ -49,6 +49,9 @@ export function getEvaluatorTypeByCode(value) {
 }
 
 export function getEventTypeByCode(value) {
+  // console.log(value);
+  // const input = value.toString() || value;
+
   return Object.keys(EVENT_TYPE).find((key) => EVENT_TYPE[key] === value);
 }
 
