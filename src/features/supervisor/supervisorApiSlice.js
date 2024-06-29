@@ -19,6 +19,7 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
         url: `supervisor/project/${id}`,
         method: "GET",
       }),
+      providesTags: ["AssignedProject"],
     }),
     getSupervisorEvents: builder.query({
       query: () => ({
@@ -34,6 +35,22 @@ export const supervisorApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials.data },
       }),
     }),
+    verifyProgressLog: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisor/progress-log/verify/${credentials.id}`,
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
+    grantDefensePermission: builder.mutation({
+      query: (credentials) => ({
+        url: `supervisor/supervisor/progress-log/grant-approval/${credentials.id}`,
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["AssignedProject"],
+    }),
   }),
 });
 
@@ -43,4 +60,6 @@ export const {
   useGetSupervisorEventsQuery,
   useGetSupervisorAssignedProjectsQuery,
   useGetSupervisorAssignedProjectDetailsQuery,
+  useVerifyProgressLogMutation,
+  useGrantDefensePermissionMutation,
 } = supervisorApiSlice;

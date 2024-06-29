@@ -107,11 +107,7 @@ function SupervisorArchiveProjectDetail() {
                     <div className="grid gap-2">
                       <div className="flex flex-wrap gap-1">
                         {project.data.categories.map((category, index) => (
-                          <Badge
-                            // variant="outline"
-                            className="font-medium"
-                            key={index}
-                          >
+                          <Badge className="font-medium" key={index}>
                             {category}
                           </Badge>
                         ))}
@@ -256,7 +252,12 @@ function SupervisorArchiveProjectDetail() {
               </CardHeader>
 
               <CardContent className="text-sm pl-8 pt-4  mt-6">
-                <Timeline items={logItems} />
+                {logItems.length > 0 && <Timeline items={logItems} />}
+                {logItems.length === 0 && (
+                  <div className="h-[140px] flex items-center justify-center font-semibold text-slate-700 text-lg">
+                    No Progress Logged!
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

@@ -416,14 +416,14 @@ function ProjectProgress() {
 
 const Children = ({ progress }) => {
   return (
-    <Card>
+    <Card className={`${progress.approved ? "" : "bg-slate-100"}`}>
       <CardHeader className=" p-4 pb-1">
-        <div className="text-slate-800 font-semibold flex items-center justify-between">
+        <div className="text-slate-800  font-semibold flex items-center justify-between">
           <span>{progress.title}</span>
           <div className="flex items-center gap-2">
             <Badge
-              className="flex items-center gap-1 py-1"
-              variant={progress.approved ? "" : "secondary"}
+              className="flex items-center  gap-1 py-1"
+              variant={progress.approved ? "outline" : ""}
             >
               {progress.approved ? "Verified" : "Unverified"}
               {progress.approved && (
