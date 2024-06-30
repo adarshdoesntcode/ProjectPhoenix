@@ -60,6 +60,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { progress } from "framer-motion";
 
 function ProjectProgress() {
   const [open, setOpen] = useState(false);
@@ -72,13 +73,13 @@ function ProjectProgress() {
     error: projectError,
   } = useGetProjectQuery(user.project);
 
-  const {
-    data: progress,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetProjectProgressQuery(user.project);
+  // const {
+  //   data: progress,
+  //   isLoading,
+  //   isSuccess,
+  //   isError,
+  //   error,
+  // } = useGetProjectProgressQuery(user.project);
 
   const [createProgress] = useCreateProgressMutation();
   const {
@@ -93,8 +94,17 @@ function ProjectProgress() {
 
   let content, logItems;
 
-  if (progress) {
-    logItems = progress.data.map((log) => {
+  // if (progress) {
+  //   logItems = progress.data.map((log) => {
+  //     return {
+  //       dot: <DotSymbol approved={log.approved} />,
+  //       children: <Children progress={log} />,
+  //     };
+  //   });
+  // }
+  console.log(project);
+  if (project?.data?.progressLogs) {
+    logItems = project.data.progressLogs.map((log) => {
       return {
         dot: <DotSymbol approved={log.approved} />,
         children: <Children progress={log} />,
@@ -131,13 +141,13 @@ function ProjectProgress() {
     }
   }
 
-  if (isLoading || projectLoading) {
+  if (projectLoading) {
     content = <Loader />;
-  } else if (isSuccess && projectSuccess) {
+  } else if (projectSuccess) {
     if (!project.data.supervisor.supervisorId) {
       return <Navigate to={`/${ROLES_LIST.student}/project`} />;
     }
-    if (!progress) {
+    if (project.data.progressLogs?.length === 0) {
       content = (
         <div className="flex flex-1 items-center justify-center bg-slate-50 ">
           <div className="flex flex-col items-center gap-1 text-center">
@@ -338,8 +348,8 @@ function ProjectProgress() {
         </>
       );
     }
-  } else if (isError || projectIsError) {
-    content = <ApiError error={error || projectError} />;
+  } else if (projectIsError) {
+    content = <ApiError error={projectError} />;
   }
 
   return (

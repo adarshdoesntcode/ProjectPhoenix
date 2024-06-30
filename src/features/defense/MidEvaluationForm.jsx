@@ -209,6 +209,8 @@ function MidEvaluationForm({ project, defenseType, roomID }) {
 
       const res = await defenseEvaluation(body);
 
+      console.log(res);
+
       if (res.error) {
         if (res.error.status === 409) {
           throw new Error("Judgement Mismatch");
