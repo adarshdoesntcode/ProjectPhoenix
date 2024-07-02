@@ -19,6 +19,8 @@ import AdminLayout from "./components/layouts/AdminLayout";
 import StudentLayout from "./components/layouts/StudentLayout";
 import SupervisorLayout from "./components/layouts/SupervisorLayout";
 import DefenseLayout from "./components/layouts/DefenseLayout";
+import { StatusBar, Style } from "@capacitor/status-bar";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +80,16 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  useEffect(() => {
+    const configureStatusBar = async () => {
+      await StatusBar.setStyle({ style: Style.Light });
+      await StatusBar.setBackgroundColor({ color: "#ffffff" });
+      await StatusBar.show();
+      StatusBar.setOverlaysWebView({ overlay: true });
+    };
+
+    configureStatusBar();
+  }, []);
   return (
     <Provider store={store}>
       <RouterProvider router={router} />

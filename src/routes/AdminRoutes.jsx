@@ -1,4 +1,4 @@
-import AdminDashboard from "@/features/admin/AdminDashboard";
+import AdminDashboard from "@/features/admin/dashboard/AdminDashboard";
 import AdminEvaluators from "@/features/admin/evaluators/AdminEvaluators";
 
 import AdminNotices from "@/features/admin/AdminNotices";
@@ -15,6 +15,7 @@ import AdminNewDefense from "@/features/admin/defense/AdminNewDefense";
 import AdminDefenseDetails from "@/features/admin/defense/AdminDefenseDetails";
 import Error from "@/components/error/Error";
 import AssignSupervisor from "@/features/admin/events/AssignSupervisor";
+import AdminProjectDetails from "@/features/admin/projects/AdminProjectDetails";
 
 const AdminRoutes = [
   {
@@ -65,6 +66,11 @@ const AdminRoutes = [
   {
     path: "projects",
     element: <AdminProjects />,
+    errorElement: <Error />,
+  },
+  {
+    path: "projects/:id",
+    element: <AdminProjectDetails />,
     errorElement: <Error />,
   },
   {
