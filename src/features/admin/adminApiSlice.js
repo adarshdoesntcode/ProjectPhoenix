@@ -104,6 +104,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Project"],
     }),
+    getAdminDashboard: builder.query({
+      query: () => ({
+        url: "event/event/dashboard/",
+        method: "GET",
+      }),
+      providesTags: ["Defenses", "Events"],
+    }),
     getAllProjects: builder.query({
       query: () => ({
         url: "/event/event/projects",
@@ -136,4 +143,5 @@ export const {
   useMatchProjectsMutation,
   useSubmitMatchedProjectsMutation,
   useGetAdminProjectIdQuery,
+  useGetAdminDashboardQuery,
 } = adminApiSlice;

@@ -9,7 +9,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useLoginMutation } from "../auth/authApiSlice";
 import { useDispatch } from "react-redux";
@@ -25,6 +25,7 @@ import { ResetPassword } from "@/components/ResetPassword";
 function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [login, { isLoading }] = useLoginMutation();
@@ -36,6 +37,8 @@ function AdminLogin() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const home_path = window.location.origin;
 
   const from = location.state?.from?.pathname || `/${ROLES_LIST.admin}`;
 
@@ -191,7 +194,8 @@ function AdminLogin() {
               <Link
                 to={getGoogleOAuthURL(
                   GOOGLE_OAUTH_REDIRECT_URL,
-                  ROLES_LIST.admin
+                  ROLES_LIST.admin,
+                  home_path
                 )}
               >
                 Login with Google

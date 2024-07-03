@@ -73,6 +73,9 @@ function StudentProject() {
     error,
   } = useGetProjectQuery(user.project, { skip: !user.isAssociated });
 
+  console.log(user);
+  console.log(project);
+
   let content;
 
   if (user.isAssociated === false) {
