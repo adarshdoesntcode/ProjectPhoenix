@@ -92,10 +92,8 @@ export function getGoogleOAuthURL(redirect_uri, role, home_path) {
       "https://www.googleapis.com/auth/userinfo.profile",
       "https://www.googleapis.com/auth/userinfo.email",
     ].join(" "),
-    state: {
-      role,
-      home_path,
-    },
+    state: role,
+    home_path,
   };
 
   const qs = new URLSearchParams(options);
