@@ -18,6 +18,12 @@ import { Calendar, CalendarClock, Cctv } from "lucide-react";
 import { getGreeting } from "@/lib/utils";
 import AdminEventsTimeline from "./AdminEventsTimeline";
 import { useGetAdminDashboardQuery } from "../adminApiSlice";
+import { Link } from "react-router-dom";
+import { ROLES_LIST } from "@/lib/config";
+import { DefenseColumn } from "./DefenseColumn";
+import { DefenseDataTable } from "./DefenseDataTable";
+import { DataTable } from "./EventDataTable";
+import { EventColumns } from "./EventColumn";
 
 function AdminDashboard() {
   const user = useSelector(selectCurrentUser);
@@ -58,10 +64,12 @@ function AdminDashboard() {
               <Card className="sm:col-span-2">
                 <CardHeader className="pb-3">
                   <CardTitle>{user.fullname}</CardTitle>
-                  {/* <CardDescription className="max-w-lg text-balance leading-relaxed">
-                    Introducing Our Dynamic Orders Dashboard for Seamless
-                    Management and Insightful Analysis.
-                  </CardDescription> */}
+                  <CardDescription className="max-w-lg text-balance leading-relaxed">
+                    A centralized college platfrom using MERN Stack
+                    <br />
+                    Administrator portal to create and manage colleg project
+                    events and defenses
+                  </CardDescription>
                 </CardHeader>
                 {/* <CardFooter>
                   <Button>Create New Order</Button>
@@ -72,10 +80,15 @@ function AdminDashboard() {
                   <CardDescription>Active Defenses</CardDescription>
                   <CardTitle className="text-4xl">
                     {dashboard.data?.activeDefenses.length || 0}
+                    <span className="text-sm text-slate-400"> of 14</span>
                   </CardTitle>
                 </CardHeader>
                 <CardFooter>
-                  <Button>New Defense</Button>
+                  <Button asChild>
+                    <Link to={`/${ROLES_LIST.admin}/defense/new`}>
+                      New Defense
+                    </Link>
+                  </Button>
                 </CardFooter>
               </Card>
               <Card>
@@ -83,10 +96,15 @@ function AdminDashboard() {
                   <CardDescription>Active Events</CardDescription>
                   <CardTitle className="text-4xl">
                     {dashboard.data?.activeEvents.length || 0}
+                    <span className="text-sm text-slate-400"> of 3</span>
                   </CardTitle>
                 </CardHeader>
                 <CardFooter>
-                  <Button>New Event</Button>
+                  <Button asChild>
+                    <Link to={`/${ROLES_LIST.admin}/events/new`}>
+                      New Event
+                    </Link>
+                  </Button>
                 </CardFooter>
               </Card>
             </div>
@@ -106,15 +124,18 @@ function AdminDashboard() {
                     </CardDescription>
                   </CardHeader>
 
-                  <CardContent className="pt-6">
-                    {/* {projects.data.length > 0 && (
-                  <DataTable data={projects.data} columns={ProjectColumn} />
-                )} */}
-                    {/* {projects.data.length < 1 && (
-                  <div className="h-[250px] font-semibold text-slate-800 flex justify-center items-center">
-                    No Projects are assigned to you currently!
-                  </div>
-                )} */}
+                  <CardContent>
+                    {dashboard.data?.activeDefenses.length > 0 && (
+                      <DefenseDataTable
+                        data={dashboard.data?.activeDefenses}
+                        columns={DefenseColumn}
+                      />
+                    )}
+                    {dashboard.data?.activeDefenses.length < 1 && (
+                      <div className="h-[250px] font-semibold text-slate-800 flex justify-center items-center">
+                        No Active Defenses
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -129,14 +150,17 @@ function AdminDashboard() {
                   </CardHeader>
 
                   <CardContent className="pt-6">
-                    {/* {projects.data.length > 0 && (
-                  <DataTable data={projects.data} columns={ProjectColumn} />
-                )} */}
-                    {/* {projects.data.length < 1 && (
-                  <div className="h-[250px] font-semibold text-slate-800 flex justify-center items-center">
-                    No Projects are assigned to you currently!
-                  </div>
-                )} */}
+                    {dashboard.data?.activeEvents.length > 0 && (
+                      <DataTable
+                        data={dashboard.data?.activeEvents}
+                        columns={EventColumns}
+                      />
+                    )}
+                    {dashboard.data?.activeEvents.length < 1 && (
+                      <div className="h-[250px] font-semibold text-slate-800 flex justify-center items-center">
+                        No Active Events
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>

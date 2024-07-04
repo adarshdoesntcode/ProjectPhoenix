@@ -203,9 +203,11 @@ function AdminEventDetails() {
               <div className="ml-auto flex items-center gap-2">
                 <AdminExtendEvent event={event} />
 
-                <Button size="sm" className="h-10 gap-1 text-sm">
-                  <FileCheck className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only">Result</span>
+                <Button size="sm" className="h-10 gap-1 text-sm" asChild>
+                  <Link to={`/${ROLES_LIST.admin}/events/${id}/result`}>
+                    <FileCheck className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only">Result</span>
+                  </Link>
                 </Button>
               </div>
             </CardTitle>

@@ -123,6 +123,12 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    eventResult: builder.query({
+      query: (id) => ({
+        url: `/event/event/result/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -144,4 +150,5 @@ export const {
   useSubmitMatchedProjectsMutation,
   useGetAdminProjectIdQuery,
   useGetAdminDashboardQuery,
+  useEventResultQuery,
 } = adminApiSlice;
