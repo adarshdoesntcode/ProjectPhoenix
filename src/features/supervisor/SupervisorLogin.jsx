@@ -44,6 +44,7 @@ function SupervisorLogin() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+  const home_path = window.location.origin;
 
   const from = location.state?.from?.pathname || `/${ROLES_LIST.supervisor}`;
 
@@ -217,7 +218,8 @@ function SupervisorLogin() {
                   <Link
                     to={getGoogleOAuthURL(
                       GOOGLE_OAUTH_REDIRECT_URL,
-                      ROLES_LIST.supervisor
+                      ROLES_LIST.supervisor,
+                      home_path
                     )}
                   >
                     Login with Google

@@ -38,6 +38,7 @@ function StudentLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const home_path = window.location.origin;
 
   const location = useLocation();
   const [login, { isLoading }] = useLoginMutation();
@@ -223,7 +224,8 @@ function StudentLogin() {
                   <Link
                     to={getGoogleOAuthURL(
                       GOOGLE_OAUTH_REDIRECT_URL,
-                      ROLES_LIST.student
+                      ROLES_LIST.student,
+                      home_path
                     )}
                   >
                     Login with Google

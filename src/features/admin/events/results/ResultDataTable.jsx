@@ -272,6 +272,7 @@ export const ResultDataTable = forwardRef(({ columns, data }, ref) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="cursor-pointer"
+                  o
                 >
                   {row.getVisibleCells().map((cell) => (
                     <React.Fragment key={cell.id}>
