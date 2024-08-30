@@ -1,4 +1,11 @@
-import { FolderGit2, Home, Origami, Package, Route } from "lucide-react";
+import {
+  BookOpen,
+  FolderGit2,
+  Home,
+  Origami,
+  Package,
+  Route,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { ROLES_LIST } from "@/lib/config";
@@ -70,6 +77,17 @@ function StudentSideBar() {
             >
               <Route className="h-4 w-4" />
               Guidelines
+            </Link>
+            <Link
+              to={`/${ROLES_LIST.student}/coverpage`}
+              className={`flex items-center gap-3 rounded-md  px-3 py-2.5 ${
+                isTabActive(currentPath, "coverpage")
+                  ? "bg-slate-950 text-white"
+                  : "hover:text-slate-950"
+              } text-primary transition-all hover:pl-4`}
+            >
+              <BookOpen className="h-4 w-4" />
+              Coverpage
             </Link>
           </nav>
         </div>

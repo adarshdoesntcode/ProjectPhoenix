@@ -131,10 +131,10 @@ function SupervisorLogin() {
                       placeholder="name@ncit.edu.np"
                       {...register("email", {
                         required: "Email is required",
-                        pattern: {
-                          value: /^[^\d@]+@ncit\.edu\.np$/,
-                          message: "Invalid email address",
-                        },
+                        // pattern: {
+                        //   value: /^[^\d@]+@ncit\.edu\.np$/,
+                        //   message: "Invalid email address",
+                        // },
                       })}
                       className={errors.email ? "border-red-500" : ""}
                     />
